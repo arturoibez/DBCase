@@ -1,5 +1,8 @@
 package vista.frames;
+
+// Hola mikel
 //hola artu
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
