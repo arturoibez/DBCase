@@ -379,66 +379,7 @@ public class MyMenu extends JMenuBar{
 			}
 			
 		});
-		//Ayuda
-		menuAyuda = new JMenu();
-		menuAyuda.setForeground(theme.fontColor());
-		menuAyuda.setFont(theme.font());
-		add(menuAyuda);
-		menuAyuda.setText(Lenguaje.text(Lenguaje.HELP));
-		menuAyuda.setMnemonic(Lenguaje.text(Lenguaje.HELP).charAt(0));
 		
-			//Ayuda/acerca de
-			submenuAcercaDe = new JMenuItem();
-			submenuAcercaDe.setFont(theme.font());
-			submenuAcercaDe.setForeground(theme.fontColor());
-			menuAyuda.add(submenuAcercaDe);
-			submenuAcercaDe.setText(Lenguaje.text(Lenguaje.ABOUT));
-			submenuAcercaDe.setMnemonic(Lenguaje.text(Lenguaje.ABOUT).charAt(0));
-			submenuAcercaDe.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_ABOUT, null);
-				}
-			});
-			
-			//Ayuda/Reportar incidencia
-			submenuReportarIncidencia= new JMenuItem();
-			submenuReportarIncidencia.setFont(theme.font());
-			submenuReportarIncidencia.setForeground(theme.fontColor());
-			menuAyuda.add(submenuReportarIncidencia);
-			submenuReportarIncidencia.setText(Lenguaje.text(Lenguaje.REPORT));
-			submenuReportarIncidencia.setMnemonic(Lenguaje.text(Lenguaje.REPORT).charAt(0));
-			submenuReportarIncidencia.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REPORT, null);
-					
-				}
-			});
-			
-			//Ayuda/Manual
-			submenuManual = new JMenuItem();
-			submenuManual.setFont(theme.font());
-			submenuManual.setForeground(theme.fontColor());
-			menuAyuda.add(submenuManual);
-			submenuManual.setText(Lenguaje.text(Lenguaje.MANUAL));
-			submenuManual.setMnemonic(Lenguaje.text(Lenguaje.MANUAL).charAt(0));
-			submenuManual.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_MANUAL, null);
-				}
-			});
-			
-			//Ayuda/Galeria
-			/*submenuGaleria = new JMenuItem();
-			submenuGaleria.setFont(theme.font());
-			submenuGaleria.setForeground(theme.fontColor());
-			menuAyuda.add(submenuGaleria);
-			submenuGaleria.setText(Lenguaje.text(Lenguaje.GALERIA));
-			submenuGaleria.setMnemonic(Lenguaje.text(Lenguaje.GALERIA).charAt(0));
-			submenuGaleria.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_GALERIA, null);
-				}
-			});*/
 			
 			//Vista
 			menuVista = new JMenu();
@@ -762,6 +703,67 @@ public class MyMenu extends JMenuBar{
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_CrearDominio, 0);				}
 			});
+			
+			//Ayuda
+			menuAyuda = new JMenu();
+			menuAyuda.setForeground(theme.fontColor());
+			menuAyuda.setFont(theme.font());
+			add(menuAyuda);
+			menuAyuda.setText(Lenguaje.text(Lenguaje.HELP));
+			menuAyuda.setMnemonic(Lenguaje.text(Lenguaje.HELP).charAt(0));
+			
+				//Ayuda/acerca de
+				submenuAcercaDe = new JMenuItem();
+				submenuAcercaDe.setFont(theme.font());
+				submenuAcercaDe.setForeground(theme.fontColor());
+				menuAyuda.add(submenuAcercaDe);
+				submenuAcercaDe.setText(Lenguaje.text(Lenguaje.ABOUT));
+				submenuAcercaDe.setMnemonic(Lenguaje.text(Lenguaje.ABOUT).charAt(0));
+				submenuAcercaDe.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_ABOUT, null);
+					}
+				});
+				
+				//Ayuda/Manual
+				submenuManual = new JMenuItem();
+				submenuManual.setFont(theme.font());
+				submenuManual.setForeground(theme.fontColor());
+				menuAyuda.add(submenuManual);
+				submenuManual.setText(Lenguaje.text(Lenguaje.MANUAL));
+				submenuManual.setMnemonic(Lenguaje.text(Lenguaje.MANUAL).charAt(0));
+				submenuManual.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_MANUAL, null);
+					}
+				});
+				
+				//Ayuda/Reportar incidencia
+				submenuReportarIncidencia= new JMenuItem();
+				submenuReportarIncidencia.setFont(theme.font());
+				submenuReportarIncidencia.setForeground(theme.fontColor());
+				menuAyuda.add(submenuReportarIncidencia);
+				submenuReportarIncidencia.setText(Lenguaje.text(Lenguaje.REPORT));
+				submenuReportarIncidencia.setMnemonic(Lenguaje.text(Lenguaje.REPORT).charAt(0));
+				submenuReportarIncidencia.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REPORT, null);
+						
+					}
+				});
+				
+				//Ayuda/Galeria
+				/*submenuGaleria = new JMenuItem();
+				submenuGaleria.setFont(theme.font());
+				submenuGaleria.setForeground(theme.fontColor());
+				menuAyuda.add(submenuGaleria);
+				submenuGaleria.setText(Lenguaje.text(Lenguaje.GALERIA));
+				submenuGaleria.setMnemonic(Lenguaje.text(Lenguaje.GALERIA).charAt(0));
+				submenuGaleria.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_GALERIA, null);
+					}
+				});*/
 			
 			//botones vistas
 			JToolBar iconosPerspectiva = new JToolBar();
