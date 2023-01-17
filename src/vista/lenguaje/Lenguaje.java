@@ -649,6 +649,7 @@ public class Lenguaje {
 	public static final int MENU_LOGICODESC = 5063;
 	public static final int MENU_FISICODESC = 5064;
 	public static final int MENU_DOMINIOSDESC = 5065;
+	public static final int MENU_FISICODESC2 = 5066;
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
 	 * Indica en qué idioma están actualmente los campos de texto.
@@ -1387,6 +1388,7 @@ public class Lenguaje {
 		case MENU_CONCEPTUALDESC: texto=_textos.get("menuConceDesc");break;
 		case MENU_LOGICODESC: texto=_textos.get("menuLogicoDesc");break;
 		case MENU_FISICODESC: texto=_textos.get("menuFisicoDesc");break;
+		case MENU_FISICODESC2: texto=_textos.get("menuFisicoDesc2");break;
 		case MENU_DOMINIOSDESC: texto=_textos.get("menuDominiosDesc");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}

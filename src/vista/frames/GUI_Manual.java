@@ -4,7 +4,9 @@ package vista.frames;
 //hola artu
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 
 import javax.swing.BorderFactory;
@@ -101,7 +103,8 @@ public class GUI_Manual extends JFrame{
 		//scrollBar.getVerticalScrollBar().setValue(0);
 		/*JScrollPane scrollBar = new JScrollPane();
 		scrollBar.setViewportView(panel_principal);*/
-		this.add(scrollBar, BorderLayout.CENTER);
+		this.add(scrollBar);
+	
 		
 	}
 	public void setActiva(boolean b) {
@@ -198,7 +201,8 @@ public class GUI_Manual extends JFrame{
 			"<li><p><strong>"+Lenguaje.text(Lenguaje.MENU_LOGICO)+"</strong></p>"+
 			"<p>"+Lenguaje.text(Lenguaje.MENU_LOGICODESC)+"</p><br>" + 
 			"<li><p><strong>"+Lenguaje.text(Lenguaje.MENU_FISICO)+"</strong></p>"+
-			"<p>"+Lenguaje.text(Lenguaje.MENU_FISICODESC)+"</p><br>" +
+			"<p>"+Lenguaje.text(Lenguaje.MENU_FISICODESC)+"</p>" +
+			"<p>"+Lenguaje.text(Lenguaje.MENU_FISICODESC2)+"</p><br>" +
 			"<li><p><strong>"+Lenguaje.text(Lenguaje.MENU_DOMINIOS)+"</strong></p>"+
 			"<p>"+Lenguaje.text(Lenguaje.MENU_DOMINIOSDESC)+"</p><br>" 
 			//"<h3>"+Lenguaje.text(Lenguaje.GALERY_NEXT_OPTION)+"</h3>"

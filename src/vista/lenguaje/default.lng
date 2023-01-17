@@ -9,7 +9,7 @@ English
 
 #Conceptual
 # Application name
-dbcase=DBCASE 5.0
+dbcase=DBCASE 3.0
 
 #
 # General messages
@@ -420,7 +420,7 @@ domMenuRenameInOrder=Sort values
 domTreeCreatedDoms=Available domains
 domTreeTypes=Base type
 domTreeValues=Values
-dbCaseTool=DBCASE 5.0
+dbCaseTool=DBCASE 3.0
 toolForDesing=A tool for designing databases.
 ssii=Computer engineering (2022/2023)
 college=Facultad de Informática
@@ -433,16 +433,16 @@ authors2=Projects authors:
 author1=Miguel Derecho Prieto and Arturo Ibáñez Martínez
 contact=Contact: fernan@sip.ucm.es
 based=Based on:
-based1=DBCASE 1.0 - Sistemas Informáticos (2008/2009).
+based1=DBCASE - Sistemas Informáticos (2008/2009).
 based1a1=Rodrigo Denis Cepeda Mateos
 based1a2=Cristina Marco de Francisco
 based1a3=Tello Serrano Gordillo.
-based2=DBDT 1.0 - Sistemas Informáticos (2007/2008).
+based2=DBDT - Sistemas Informáticos (2007/2008).
 based2a1=Alberto Milán Gutiérrez
 based2a2=Miguel Martínez Segura
 based2a3=Francisco Javier Cáceres González
 based2p=Professor: Yolanda García Ruiz.
-based3=DBCASE 2.0 (2018/2019).
+based3=DBCASE 1.0 (2018/2019).
 based3a1=Eduardo Gonzalo Montero
 based3a2=Miguel Arriba García
 based3a3=Sergio Díaz Renedo.
@@ -452,10 +452,10 @@ based4a2=Yrving David Conde Cubas
 based4a3=Álvaro Rojo Sánchez.
 based4a4=Roxanne Antonieta Caiafa
 based4a5=Henar Martín Domínguez
-based5=DBCASE (2021/2022)
+based5=DBCASE 2.0 (2021/2022)
 based5a1=Guillermo Garvi Villegas
 based5a2=José María Martín Dasilva
-dbcaseLabel=DBCASE 5.0
+dbcaseLabel=DBCASE 3.0
 system=System
 exitMincase=Exit
 options=Options
@@ -600,5 +600,6 @@ menuFisico=Physical Menu
 menuDominios=Domains Menu
 menuConceDesc=As the Design Pannel, it allows the user to insert elements in the Conceptual Schema.
 menuLogicoDesc=As the buttons of the Logical Schema, it allows the user to generate and save the tables of the logical model.
-menuFisicoDesc=It allows the user to generate and save the code corresponding to the physical model of the database.It also has the option of executing real scripts by choosing from different Database systems present in the Physical Schema.
+menuFisicoDesc=It allows the user to generate and save the code corresponding to the physical model of the database.
+menuFisicoDesc2=It also has the option of executing real scripts by choosing from different Database systems present in the Physical Schema.
 menuDominiosDesc=It allows to create new domains.

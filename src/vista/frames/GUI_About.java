@@ -1,6 +1,7 @@
 package vista.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,9 +32,11 @@ public class GUI_About extends JFrame{
 		
 		texto = new ReportPanel();
 		texto.setEditable(false);
-		panel.add(texto);
-		JScrollPane scrollBar=new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		panel.add(texto, BorderLayout.NORTH);
+		JScrollPane scrollBar=new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.add(scrollBar);
+		
+	
 		
 	}
 	public void setActiva(boolean b) {
