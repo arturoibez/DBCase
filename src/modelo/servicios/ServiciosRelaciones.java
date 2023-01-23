@@ -909,7 +909,7 @@ public class ServiciosRelaciones {
 	//Aqui fallan los atributos no se porque
 	public boolean tieneAtributo(TransferRelacion tr, TransferAtributo ta){
 		for (int i=0; i<tr.getListaAtributos().size(); i++){
-			if(Integer.parseInt(((TransferAtributo) tr.getListaAtributos().get(i)).getNombre())==ta.getIdAtributo())
+			if(Integer.parseInt((String) tr.getListaAtributos().get(i))==ta.getIdAtributo())
 				return true;
 		}
 		return false;
