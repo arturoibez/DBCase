@@ -392,6 +392,7 @@ public class Controlador {
 			setCambios(false);
 			break;
 		}
+		
 		case GUI_WorkSpace_Click_Guardar:{
 			String guardarPath =(String)datos;
 			String tempPath =this.filetemp.getAbsolutePath();
@@ -1209,6 +1210,11 @@ public class Controlador {
 		}
 		case GUI_Principal_GALERIA:{
 			galeria.setActiva(true);
+			break;
+		}
+		case GUI_Principal_RESET:{
+			this.getTheServiciosSistema().reset();
+			this.getTheGUIPrincipal().loadInfo();
 			break;
 		}
 		case GUI_Principal_REPORT:{

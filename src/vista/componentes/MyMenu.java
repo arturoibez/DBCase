@@ -101,6 +101,7 @@ public class MyMenu extends JMenuBar{
 	private allIcon allIcon;
 	private JButton deshacer;
 	private JButton rehacer;
+	private JButton reset;
 	private Vector<Transfer> listaTransfers;
 
 	@SuppressWarnings("deprecation")
@@ -450,7 +451,7 @@ public class MyMenu extends JMenuBar{
 			});
 			
 			//Vista/Cuadricula
-			submenuCuadricula = new JMenuItem();
+			submenuCuadricula = new JRadioButtonMenuItem();
 			submenuCuadricula.setFont(theme.font());
 			submenuCuadricula.setForeground(theme.fontColor());
 			menuVista.add(submenuCuadricula);
@@ -815,6 +816,25 @@ public class MyMenu extends JMenuBar{
 			  }
 			deshacer.setForeground(theme.fontColor());
 			add(rehacer);
+			
+			//Boton reset
+			reset=new JButton();
+			reset.setPreferredSize(d);
+			try {
+			    Image img = ImageIO.read(getClass().getResource("/vista/imagenes/Reset.png"));
+			    reset.setIcon(new ImageIcon(img));
+			  } catch (Exception ex) {
+			    System.out.println(ex);
+			  }
+			//reset.setForeground(theme.fontColor());
+			reset.setToolTipText("Reset");
+			add(reset);
+			reset.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_RESET, null);
+					
+				}
+			});
 			
 			iconosPerspectiva.add(Box.createRigidArea(new Dimension(4,0)));
 			iconosPerspectiva.add(diagramLabel);

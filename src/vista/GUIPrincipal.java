@@ -1,10 +1,13 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,11 +42,13 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -1777,7 +1782,19 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	
 	
 	public void modoCuadricula(boolean cuadricula) {
-		this.dealer.modoCuadricula(cuadricula);
+		//this.dealer.modoCuadricula(cuadricula);
+		/*if (cuadricula) {
+			panelDiagrama.setLayout(new GridLayout(5,2,20,50));
+			JTextPane p1 = new JTextPane();
+			p1.setEditable(false);
+			p1.setBackground(theme.background());
+			Border border = BorderFactory.createLineBorder(theme.fontColor());
+			p1.setBorder(border);
+			panelDiagrama.add(p1);
+			panelDiagrama.add (new JTextPane());
+			panelDiagrama.add (new JTextPane());
+			panelDiagrama.add (new JTextPane());
+		}*/
 	}
 	
 	public ReportPanel getModeloText() {
