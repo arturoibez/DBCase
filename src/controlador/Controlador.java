@@ -159,6 +159,7 @@ public class Controlador {
 		setListaEntidades(new Vector<TransferEntidad>());
 		setListaRelaciones(new Vector<TransferRelacion>());
 		modoSoporte=false;
+		cuadricula=false;
 		
 	}
 	
@@ -1213,8 +1214,28 @@ public class Controlador {
 			break;
 		}
 		case GUI_Principal_RESET:{
-			this.getTheServiciosSistema().reset();
-			this.getTheGUIPrincipal().loadInfo();
+			if (cambios){
+				int respuesta = panelOpciones.setActiva(
+						Lenguaje.text(Lenguaje.WISH_SAVE),
+						Lenguaje.text(Lenguaje.DBCASE),true);
+				if (respuesta==1) {
+						filetemp.delete();
+						this.getTheGUIWorkSpace().nuevoTemp();
+						setCambios(false);
+				}else if (respuesta==0) {
+						theGUIWorkSpace = new GUI_SaveAs();
+						theGUIWorkSpace.setControlador(this);
+						if (this.getTheGUIWorkSpace().setActiva(2)){
+							filetemp.delete();
+							this.getTheGUIWorkSpace().nuevoTemp();
+							setCambios(false);
+						}
+				}		
+			}else{
+				filetemp.delete();
+				this.getTheGUIWorkSpace().nuevoTemp();
+				setCambios(false);
+			}
 			break;
 		}
 		case GUI_Principal_REPORT:{
@@ -1282,9 +1303,14 @@ public class Controlador {
 			break;
 		}
 		case GUI_Principal_Cuadricula:{
-			this.getTheGUIPrincipal().modoCuadricula(!cuadricula);
+			try {
+				this.getTheGUIPrincipal().modoCuadricula(!cuadricula);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			setCuadricula(!cuadricula);
-			this.getTheGUIPrincipal().loadInfo();
+			//this.getTheGUIPrincipal().loadInfo();
 			break;
 		}
 		case GUI_Principal_Click_Imprimir:{

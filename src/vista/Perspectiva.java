@@ -2,12 +2,18 @@ package vista;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.IOException;
+import java.awt.Graphics;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+
+import vista.componentes.GUIPanels.ImagePanel;
 
 
 /*
@@ -16,6 +22,7 @@ import javax.swing.JTabbedPane;
 public class Perspectiva {
 	
 	private Container mainPanel;
+	//private ImagePanel diagrama;
 	private JPanel diagrama;
 	private JPanel codigos;
 	private JSplitPane diagramaSplitCode;
@@ -79,11 +86,90 @@ public class Perspectiva {
 		modo = 1;
 	}
 	
-	public void modoCuadricula(boolean cuadricula) {
-		if (cuadricula) {
-		
-			
+	public void modoCuadricula(boolean cuadricula) throws IOException {
+		/*if (cuadricula) {
+			Image img = ImageIO.read(getClass().getResource("/vista/imagenes/casillas.PNG"));
+			if (modo == 0) {
+				mainPanel.removeAll();
+				infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+				mainPanel.add(diagramaSplitCode);
+				splitCodigos.setOrientation(JSplitPane.VERTICAL_SPLIT);
+				diagramaSplitCode.add(codigos, JSplitPane.RIGHT);
+				diagramaSplitCode.add(diagrama, JSplitPane.LEFT);
+				infoSplitMapa.setResizeWeight(0.2);
+				diagramaSplitCode.setResizeWeight(0);
+				diagramaSplitCode.setVisible(true);
+				programmerSplit.setVisible(false);
+				mainPanel.revalidate();		
+				mainPanel.repaint();
+				diagrama.setFondo(img, diagrama.getGraphics());	
+			}
+			else if (modo == 1) {
+				mainPanel.removeAll();
+				infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+				mainPanel.add(diagrama);
+				infoSplitMapa.setResizeWeight(0.2);
+				diagramaSplitCode.setResizeWeight(0.1);
+				diagramaSplitCode.setVisible(false);
+				programmerSplit.setVisible(false);
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				diagrama.setFondo(img, diagrama.getGraphics());
+			}
+			else if (modo == 2) {
+				mainPanel.removeAll();
+				splitCodigos.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+				programmerSplit.add(infoPanel, JSplitPane.LEFT);
+				programmerSplit.add(codigos, JSplitPane.RIGHT);
+				mainPanel.add(programmerSplit);
+				diagramaSplitCode.setVisible(false);
+				programmerSplit.setVisible(true);
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				diagrama.setFondo(img, diagrama.getGraphics());
+			}
 		}
+		else {
+			if (modo == 0) {
+				mainPanel.removeAll();
+				infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+				mainPanel.add(diagramaSplitCode);
+				splitCodigos.setOrientation(JSplitPane.VERTICAL_SPLIT);
+				diagramaSplitCode.add(codigos, JSplitPane.RIGHT);
+				diagramaSplitCode.add(diagrama, JSplitPane.LEFT);
+				infoSplitMapa.setResizeWeight(0.2);
+				diagramaSplitCode.setResizeWeight(0);
+				diagramaSplitCode.setVisible(true);
+				programmerSplit.setVisible(false);
+				mainPanel.revalidate();		
+				mainPanel.repaint();
+				diagrama.setFondo(null, diagrama.getGraphics());	
+			}
+			else if (modo == 1) {
+				mainPanel.removeAll();
+				infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+				mainPanel.add(diagrama);
+				infoSplitMapa.setResizeWeight(0.2);
+				diagramaSplitCode.setResizeWeight(0.1);
+				diagramaSplitCode.setVisible(false);
+				programmerSplit.setVisible(false);
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				diagrama.setFondo(null, diagrama.getGraphics());
+			}
+			else if (modo == 2) {
+				mainPanel.removeAll();
+				splitCodigos.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+				programmerSplit.add(infoPanel, JSplitPane.LEFT);
+				programmerSplit.add(codigos, JSplitPane.RIGHT);
+				mainPanel.add(programmerSplit);
+				diagramaSplitCode.setVisible(false);
+				programmerSplit.setVisible(true);
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				diagrama.setFondo(null, diagrama.getGraphics());
+			}
+		}*/
 	}
 	
 	/*

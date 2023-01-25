@@ -6,7 +6,9 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -20,9 +22,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -67,6 +72,7 @@ import vista.componentes.ArbolDominiosRender;
 import vista.componentes.ArbolElementosRender;
 import vista.componentes.MyComboBoxRenderer;
 import vista.componentes.MyMenu;
+import vista.componentes.GUIPanels.ImagePanel;
 import vista.componentes.GUIPanels.ReportPanel;
 import vista.componentes.GUIPanels.TablaVolumenes;
 import vista.componentes.GUIPanels.addTransfersPanel;
@@ -105,6 +111,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	private JButton botonEjecutarEnDBMS;
 	private JSplitPane splitDisenoInfo;
 	private JPanel panelGeneracion;
+	//private ImagePanel panelDiagrama;
 	private JPanel panelDiagrama;
 	private MyMenu barraDeMenus;
 	private static JPopupMenu popup;
@@ -126,7 +133,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
 		
-		this.panelDiagrama = new JPanel();
+		this.panelDiagrama = new ImagePanel();
 		this.panelGeneracion = new JPanel();
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ObtenDBMSDisponibles, null);
 		
@@ -147,7 +154,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	
 	public void reiniciar(){
 		int modo = dealer.getPanelsMode();
-		this.panelDiagrama = new JPanel();
+		this.panelDiagrama = new ImagePanel();
 		this.panelGeneracion = new JPanel();
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ObtenDBMSDisponibles, null);
 		conexionActual = listaConexiones.get(0);
@@ -1781,20 +1788,15 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	}
 	
 	
-	public void modoCuadricula(boolean cuadricula) {
+	public void modoCuadricula(boolean cuadricula) throws IOException {
 		//this.dealer.modoCuadricula(cuadricula);
 		/*if (cuadricula) {
-			panelDiagrama.setLayout(new GridLayout(5,2,20,50));
-			JTextPane p1 = new JTextPane();
-			p1.setEditable(false);
-			p1.setBackground(theme.background());
-			Border border = BorderFactory.createLineBorder(theme.fontColor());
-			p1.setBorder(border);
-			panelDiagrama.add(p1);
-			panelDiagrama.add (new JTextPane());
-			panelDiagrama.add (new JTextPane());
-			panelDiagrama.add (new JTextPane());
-		}*/
+			System.out.println("hola");
+			Image img = ImageIO.read(getClass().getResource("/vista/imagenes/casillas.PNG"));
+			panelDiagrama.setFondo(img, this.getGraphics());
+		}
+		else panelDiagrama.setOpaque(true);*/
+		
 	}
 	
 	public ReportPanel getModeloText() {
