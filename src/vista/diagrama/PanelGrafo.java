@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -381,6 +382,17 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	public Controlador getControlador() {
 		return controlador;
 	}
+	
+	public void setFondo(Image imagenInicial, Graphics g) {
+        if (imagenInicial != null) {
+            g.drawImage(imagenInicial, 0, 0, getWidth(), getHeight(), this);
+            setOpaque(false);
+        } 
+        else {
+            setOpaque(true);
+        }
+        super.paint(g);
+    }
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
