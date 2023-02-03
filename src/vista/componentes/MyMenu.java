@@ -487,7 +487,7 @@ public class MyMenu extends JMenuBar{
 			submenuZoom.setText(Lenguaje.text(Lenguaje.ZOOM));
 			submenuZoom.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Zoom_Mas, null);
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Zoom, null);
 				}
 			});
 			

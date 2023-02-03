@@ -67,6 +67,7 @@ import vista.frames.GUI_Report;
 import vista.frames.GUI_SeleccionarConexion;
 import vista.frames.GUI_TablaUniqueEntidad;
 import vista.frames.GUI_TablaUniqueRelacion;
+import vista.frames.GUI_Zoom;
 import vista.lenguaje.Lenguaje;
 import vista.frames.GUI_SaveAs;
 import vista.tema.Theme;
@@ -117,6 +118,9 @@ public class Controlador {
 	//report
 	private GUI_Report report;
 	//manual
+	private GUI_Zoom zoom;
+	private static int valorZoom;
+	//manual
 	private GUI_Manual manual;
 	//galeria
 	private GUI_Galeria galeria;
@@ -160,7 +164,7 @@ public class Controlador {
 		setListaRelaciones(new Vector<TransferRelacion>());
 		modoSoporte=false;
 		cuadricula=false;
-		
+		//valorZoom=0;
 	}
 	
 	public static void main(String[] args)throws Exception {
@@ -188,6 +192,8 @@ public class Controlador {
 		Lenguaje.encuentraLenguajes();//AQUI 
 		Theme.loadThemes();
 		Theme.changeTheme(conf.obtenTema());
+		//valorZoom=conf.obtenZoom();
+		
 		
 		if (conf.existeFichero()){
 			Vector<String> lengs = Lenguaje.obtenLenguajesDisponibles();
@@ -200,8 +206,10 @@ public class Controlador {
 			
 			if (encontrado) Lenguaje.cargaLenguaje(conf.obtenLenguaje());
 			else Lenguaje.cargaLenguajePorDefecto();
+			
 		}else{
 			Lenguaje.cargaLenguajePorDefecto();
+			
 			Theme.loadDefaultTheme();
 		}
 		Controlador controlador = new Controlador();
@@ -223,8 +231,10 @@ public class Controlador {
         		// Abrimos el documento guardado últimamente
         		File ultimo = new File(conf.obtenUltimoProyecto());
         		if (ultimo.exists()){
+        			controlador.setZoom(0);
         			controlador.setFileguardar(ultimo);
         			controlador.setModoVista(conf.obtenModoVista());
+        			controlador.setZoom(conf.obtenZoom());
         			controlador.setNullAttrs(conf.obtenNullAttr());
         			String abrirPath =conf.obtenUltimoProyecto();
         			String tempPath =controlador.filetemp.getAbsolutePath();
@@ -236,6 +246,7 @@ public class Controlador {
         			controlador.getTheServiciosSistema().reset();
         			controlador.setCambios(false);
         			controlador.getTheGUIPrincipal().loadInfo();
+        			controlador.getTheGUIPrincipal().cambiarZoom(valorZoom);
         			
         		}else {
         			controlador.setModoVista(0);
@@ -362,6 +373,8 @@ public class Controlador {
 		panelOpciones= new GUI_Pregunta();
 		report=new GUI_Report();
 		report.setControlador(this);
+		zoom=new GUI_Zoom();
+		zoom.setControlador(this);
 	}
 		
 	// Mensajes que le manda la GUI_WorkSpace al Controlador
@@ -1253,12 +1266,13 @@ public class Controlador {
 			this.getTheGUIPrincipal().modoDiseno();
 			break;
 		}
-		case GUI_Principal_Zoom_Mas:{
-			//this.getTheGUIPrincipal().zoomMas();
+		case GUI_Principal_Zoom:{
+			zoom.setActiva();
 			break;
 		}
-		case GUI_Principal_Zoom_Menos:{
-			//this.getTheGUIPrincipal().zoomMenos();
+		case GUI_Principal_Zoom_Aceptar:{
+			this.getTheGUIPrincipal().cambiarZoom((int) datos);
+			this.setZoom((int) datos);
 			break;
 		}
 		case GUI_Principal_IniciaFrames:{
@@ -3464,7 +3478,7 @@ public class Controlador {
 		ConfiguradorInicial conf = new ConfiguradorInicial(
 			Lenguaje.getIdiomaActual(),
 			this.getTheGUIPrincipal().getConexionActual().getRuta(),
-			ruta, theme.getThemeName(), this.getTheGUIPrincipal().getPanelsMode(), nullAttrs
+			ruta, theme.getThemeName(), this.getTheGUIPrincipal().getPanelsMode(), nullAttrs, valorZoom
 		);
 		conf.guardarFicheroCofiguracion();
     }
@@ -3817,6 +3831,14 @@ public class Controlador {
 
 	public boolean getOcultarDominios() {
 		return ocultarDominios;
+	}
+	
+	public int getZoom() {
+		return this.valorZoom;
+	}
+
+	public void setZoom(int z) {
+		this.valorZoom = z;
 	}
 	
 }

@@ -650,6 +650,10 @@ public class Lenguaje {
 	public static final int MENU_FISICODESC = 5064;
 	public static final int MENU_DOMINIOSDESC = 5065;
 	public static final int MENU_FISICODESC2 = 5066;
+	//Zoom
+	public static final int ZOOM_HEADER = 5067;
+	public static final int ACEPTAR = 5068;
+	
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
 	 * Indica en qué idioma están actualmente los campos de texto.
@@ -1390,6 +1394,8 @@ public class Lenguaje {
 		case MENU_FISICODESC: texto=_textos.get("menuFisicoDesc");break;
 		case MENU_FISICODESC2: texto=_textos.get("menuFisicoDesc2");break;
 		case MENU_DOMINIOSDESC: texto=_textos.get("menuDominiosDesc");break;
+		case ZOOM_HEADER: texto=_textos.get("zoomHeader");break;
+		case ACEPTAR: texto=_textos.get("aceptar");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);
