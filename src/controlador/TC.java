@@ -26,7 +26,8 @@ public enum TC {
 	GUI_Principal_Vista2,
 	GUI_Principal_Vista3,
 	GUI_Principal_Vista4,
-	GUI_Principal_Zoom_Mas,
+	GUI_Principal_Zoom,
+	GUI_Principal_Zoom_Aceptar,
 	GUI_Principal_Zoom_Menos,
 	GUI_Principal_RESET,
 	// Click en la barra de menus y submenus

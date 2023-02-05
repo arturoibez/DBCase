@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LayoutManager;
@@ -22,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
@@ -121,6 +123,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	protected ReportPanel codigoText;
 	protected ReportPanel modeloText;
 	private Perspectiva dealer;
+	private int zoom;
 	
 	/*
 	 * Activar y desctivar la ventana
@@ -133,7 +136,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
 		
-		this.panelDiagrama = new ImagePanel();
+		this.panelDiagrama = new JPanel();
 		this.panelGeneracion = new JPanel();
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ObtenDBMSDisponibles, null);
 		
@@ -154,7 +157,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	
 	public void reiniciar(){
 		int modo = dealer.getPanelsMode();
-		this.panelDiagrama = new ImagePanel();
+		this.panelDiagrama = new JPanel();
 		this.panelGeneracion = new JPanel();
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ObtenDBMSDisponibles, null);
 		conexionActual = listaConexiones.get(0);
@@ -1785,6 +1788,23 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		if(this.dealer.getPanelsMode() == 0) return;
 		this.dealer.modoVerTodo();
 		this.barraDeMenus.setModoVista(getPanelsMode());
+	}
+	
+	public void cambiarZoom(int zoom) {
+		this.zoom = zoom;
+		if(this.dealer.getPanelsMode() == 2) return;
+		Double d = Double.valueOf(zoom);
+		Graphics g = panelDiseno.getGraphics();
+		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform savedXForm = g2d.getTransform();
+		g2d.scale(1+(d/100.0), 1+(d/100.0));
+		savedXForm.scale(1+(d/100.0), 1+(d/100.0));
+		panelDiseno.paintC(g);
+		g2d.setTransform(savedXForm);
+		panelDiseno.revalidate();
+		this.revalidate();
+		//System.out.println(zoom);
+		//this.dealer.cambiarZoom(zoom);
 	}
 	
 	

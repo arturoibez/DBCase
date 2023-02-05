@@ -3,8 +3,10 @@ package vista;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -85,6 +87,82 @@ public class Perspectiva {
 		mainPanel.repaint();
 		modo = 1;
 	}
+	
+	/*public void cambiarZoom(int zoom) {
+		if(modo==0) {
+			
+			//diagrama.revalidate();
+			//diagrama.repaint();
+			mainPanel.removeAll();
+			Double d = Double.valueOf(zoom);
+			Graphics g = diagrama.getGraphics();
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform savedXForm = g2d.getTransform();
+			g2d.scale(1.5, 1.5);
+			diagrama.paint(g);
+			g2d.setTransform(savedXForm);
+			infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+			mainPanel.add(diagramaSplitCode);
+			splitCodigos.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			diagramaSplitCode.add(codigos, JSplitPane.RIGHT);
+			diagramaSplitCode.add(diagrama, JSplitPane.LEFT);
+			infoSplitMapa.setResizeWeight(0.2);
+			diagramaSplitCode.setResizeWeight(0);
+			diagramaSplitCode.setVisible(true);
+			programmerSplit.setVisible(false);
+			mainPanel.revalidate();		
+			mainPanel.repaint();
+		}
+		
+		else if (modo==1) {
+			mainPanel.removeAll();
+			Double d = Double.valueOf(zoom);
+			Graphics g = diagrama.getGraphics();
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform savedXForm = g2d.getTransform();
+			g2d.scale(1.5, 1.5);
+			diagrama.paint(g);
+			g2d.setTransform(savedXForm);
+			infoSplitMapa.add(infoPanel, JSplitPane.RIGHT);
+			mainPanel.add(diagrama);
+			infoSplitMapa.setResizeWeight(0.2);
+			diagramaSplitCode.setResizeWeight(0.1);
+			diagramaSplitCode.setVisible(false);
+			programmerSplit.setVisible(false);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		
+		else if (modo==2) {
+			mainPanel.removeAll();
+			Double d = Double.valueOf(zoom);
+			Graphics g = diagrama.getGraphics();
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform savedXForm = g2d.getTransform();
+			g2d.scale(1.5, 1.5);
+			diagrama.paint(g);
+			g2d.setTransform(savedXForm);
+			splitCodigos.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			programmerSplit.add(infoPanel, JSplitPane.LEFT);
+			programmerSplit.add(codigos, JSplitPane.RIGHT);
+			mainPanel.add(programmerSplit);
+			diagramaSplitCode.setVisible(false);
+			programmerSplit.setVisible(true);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		/*Double d = Double.valueOf(zoom);
+		Graphics g = panelDiseno.getGraphics();
+		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform savedXForm = g2d.getTransform();
+		g2d.scale(1.5, 1.5);
+		panelDiseno.paint(g);
+		g2d.setTransform(savedXForm);
+		this.revalidate();
+		this.repaint();
+		panelDiseno.revalidate();
+		panelDiseno.repaint();
+	}*/
 	
 	public void modoCuadricula(boolean cuadricula) throws IOException {
 		/*if (cuadricula) {

@@ -51,6 +51,12 @@ public class ConfiguradorInicial{
 	/**
 	 * Indica si existe un fichero .config con la configuración actual
 	 */
+	
+	/**
+	 * Zoom por defecto
+	 */
+	protected int _zoom;
+	
 	protected boolean _existe;
 	
 	protected Hashtable<String, TransferConexion> _conexiones;
@@ -65,6 +71,7 @@ public class ConfiguradorInicial{
 		_gestorBBDD = "";
 		_ultimoProyecto = "";
 		_modoVista = 0;
+		_zoom = 0;
 		_existe = false;
 		_nullAttr = false;
 		_conexiones = new Hashtable<String, TransferConexion>();
@@ -78,7 +85,7 @@ public class ConfiguradorInicial{
 	 * @param gestorBBDD Gestor de bases de datos por defecto
 	 * @param ultimoProy Último proyecto abierto
 	 */
-	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme, int modoVista, boolean nullAttr){
+	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme, int modoVista, boolean nullAttr, int zoom){
 		_modoVista = modoVista;
 		_tema = theme;
 		_lenguaje = lenguaje;
@@ -86,6 +93,7 @@ public class ConfiguradorInicial{
 		_ultimoProyecto = ultimoProy;
 		_existe = false;
 		_nullAttr = nullAttr;
+		_zoom = zoom;
 		
 		ConfiguradorInicial aux = new ConfiguradorInicial();
 		aux.leerFicheroConfiguracion();
@@ -127,6 +135,7 @@ public class ConfiguradorInicial{
 			out.write("lastProject=\"" + _ultimoProyecto + "\" ");
 			out.write("theme=\"" + _tema + "\" ");
 			out.write("modoVista=\"" + _modoVista + "\" ");
+			out.write("zoom=\"" + _zoom + "\" ");
 			out.write("nullAttr=\"" + _nullAttr + "\"");
 			out.write(" > \n");
 			
@@ -182,6 +191,7 @@ public class ConfiguradorInicial{
 			_tema = atributos.getNamedItem("theme").getNodeValue();
 			_modoVista = Integer.parseInt(atributos.getNamedItem("modoVista").getNodeValue());
 			_nullAttr = Boolean.parseBoolean(atributos.getNamedItem("nullAttr").getNodeValue());
+			_zoom = Integer.parseInt(atributos.getNamedItem("zoom").getNodeValue());
 			// Obtener conexiones
 			NodeList connections = doc.getElementsByTagName("connection");
 			for (int i=0; i < connections.getLength(); i++){
@@ -239,6 +249,10 @@ public class ConfiguradorInicial{
 		return _modoVista;
 	}
 	
+	public int obtenZoom(){
+		return _zoom;
+	}
+	
 	public boolean obtenNullAttr(){
 		return _nullAttr;
 	}
@@ -261,6 +275,10 @@ public class ConfiguradorInicial{
 	
 	public void ponLenguaje(String lenguaje){
 		_lenguaje = lenguaje;
+	}
+	
+	public void ponZoom(int zoom){
+		_zoom = zoom;
 	}
 	
 	public void ponTema(String tema){

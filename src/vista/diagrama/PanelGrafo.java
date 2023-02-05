@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -39,6 +41,7 @@ import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeIndexFunction;
+import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 import edu.uci.ics.jung.visualization.RenderContext;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
@@ -277,8 +280,10 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 				super.mouseWheelMoved(new MouseWheelEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
 						e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getScrollType(),
 						e.getScrollAmount(), rot));
+				
 			}
 		};
+		
 		translating = new TranslatingGraphMousePlugin() {
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -400,9 +405,11 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	}
 	private void creaGraphMouse() {
 		graphMouse = new DefaultModalGraphMouse() {
+			
 			// Esta historia invierte el zoom de la rueda del raton
 			@Override
 			public void mouseWheelMoved(final MouseWheelEvent e) {
+				System.out.println("zoom");
 				int rot = e.getWheelRotation();
 				rot *= -1;
 				super.mouseWheelMoved(new MouseWheelEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
@@ -453,6 +460,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		});
 		
 	}
+	
 	
 	public void toggleDragMode(boolean b) {
 		if(b==mouseMode) return;
@@ -886,6 +894,10 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	 */
 	private Point2D obtenerPuntoExacto(MouseEvent ev) {
 		return vv.getRenderContext().getMultiLayerTransformer().inverseTransform(ev.getPoint());
+	}
+	
+	public void paintC(Graphics g) {
+		super.paint(g);
 	}
 
 }
