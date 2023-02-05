@@ -30,8 +30,8 @@
 	<classpathentry kind="lib" path="libs/xercesimpl.jar"/>
 	<classpathentry kind="lib" path="libs/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="lib" path="libs/jung-api-2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/mdere/Downloads/DBCase/DBCase/libs/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/mdere/Downloads/DBCase/DBCase/libs/cli-module-7.5.0-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/mdere/Downloads/DBCase/DBCase/libs/javax.activation-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/JavaWorkspace/DBCase/DBCase/libs/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/JavaWorkspace/DBCase/DBCase/libs/cli-module-7.5.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/JavaWorkspace/DBCase/DBCase/libs/javax.activation-1.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
