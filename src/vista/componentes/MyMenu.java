@@ -55,6 +55,7 @@ public class MyMenu extends JMenuBar{
 	private JMenu menuSistema;
 	private JMenuItem submenuNuevo;
 	private JMenuItem submenuAbrir;
+	private JMenuItem submenuAbrirRecentFiles;
 	private JMenuItem submenuGuardar;
 	private JMenuItem submenuGuardarComo;
 	private AbstractButton submenuImprimir;
@@ -158,6 +159,27 @@ public class MyMenu extends JMenuBar{
 			submenuAbrir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Abrir, null);
+				}
+			});
+			
+			//File/openRecentFiles
+			submenuAbrirRecentFiles = new JMenuItem(); 
+			submenuAbrirRecentFiles.setForeground(theme.fontColor());
+			submenuAbrirRecentFiles.setFont(theme.font());
+			menuSistema.add(submenuAbrirRecentFiles);
+			ImageIcon abrir2 = new ImageIcon();
+			try {
+				abrir2.setImage(ImageIO.read(getClass().getResource("/vista/imagenes/Recientes.PNG")));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1);
+			}
+			submenuAbrirRecentFiles.setIcon(abrir2);
+			submenuAbrirRecentFiles.setText(Lenguaje.text(Lenguaje.RECENT_FILES)+"...");
+			submenuAbrirRecentFiles.setMnemonic(Lenguaje.text(Lenguaje.RECENT_FILES).charAt(0));
+			submenuAbrirRecentFiles.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Recientes, null);
 				}
 			});
 			

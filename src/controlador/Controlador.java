@@ -33,6 +33,7 @@ import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
 import persistencia.EntidadYAridad;
 import vista.GUIPrincipal;
+import vista.componentes.ArchivosRecientes;
 import vista.frames.GUI_About;
 import vista.frames.GUI_Manual;
 import vista.frames.GUI_AnadirAtributo;
@@ -59,6 +60,7 @@ import vista.frames.GUI_ModificarRelacion;
 import vista.frames.GUI_QuitarEntidadARelacion;
 import vista.frames.GUI_QuitarEntidadHija;
 import vista.frames.GUI_QuitarEntidadPadre;
+import vista.frames.GUI_Recientes;
 import vista.frames.GUI_RenombrarAtributo;
 import vista.frames.GUI_RenombrarDominio;
 import vista.frames.GUI_RenombrarEntidad;
@@ -77,6 +79,7 @@ public class Controlador {
 	// GUIs
 	private GUIPrincipal theGUIPrincipal;
 	private GUI_SaveAs theGUIWorkSpace;
+	private GUI_Recientes theGUIRecientes;
 	// Fuera
 	private GUI_ModificarEntidad theGUIModificarEntidad;
 	private GUI_ModificarRelacion theGUIModificarRelacion;
@@ -131,6 +134,8 @@ public class Controlador {
 	private ServiciosDominios theServiciosDominios;
 	private GeneradorEsquema theServiciosSistema;
 	private ServiciosReporte theServiciosReporte;
+	//Archivos recientes
+	private ArchivosRecientes archivosRecent = new ArchivosRecientes();
 	//Otros
 	private String path;
 	private Vector<TransferAtributo> listaAtributos;
@@ -364,6 +369,7 @@ public class Controlador {
 		theGUIModificarElementosDominio = new GUI_ModificarDominio();
 		theGUIModificarElementosDominio.setControlador(this);
 		
+		
 		// Otras
 		about = new GUI_About();
 		manual = new GUI_Manual();
@@ -380,6 +386,10 @@ public class Controlador {
 	// Mensajes que le manda la GUI_WorkSpace al Controlador
 	public void mensajeDesde_GUIWorkSpace(TC mensaje, Object datos){
 		switch (mensaje){
+		case GUI_WorkSpace_Recent:{
+			archivosRecent.add((File)datos);
+			break;
+		}
 		case GUI_WorkSpace_Nuevo:{
 			this.setPath((String)datos);
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1380,6 +1390,12 @@ public class Controlador {
 			}
 			break;
 		}
+		
+		case GUI_Principal_Click_Submenu_Recientes:{
+			theGUIRecientes = new GUI_Recientes(archivosRecent.darRecientes(),this);
+			break;
+		}
+		
 		case GUI_Principal_Click_Submenu_Guardar:{
 			theGUIWorkSpace = new GUI_SaveAs();
 			theGUIWorkSpace.setControlador(this);

@@ -520,4 +520,9 @@ public enum TC {
 	GUI_Principal_Cuadricula,
 	GUI_Principal_ModoSoporte,
 	GUI_Principal_IniciaFrames,
+	
+	//esto no va aqui
+	GUI_Principal_Click_Submenu_Recientes,
+	GUI_WorkSpace_Recent,
+	
 }
