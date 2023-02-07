@@ -160,6 +160,9 @@ public class Lenguaje {
 	public static final int WRITE_RELATION_WEAK= 1205;
 	public static final int CREATE_STRONG_ENTITY = 1206;
 	
+	//Ventana GUI_SaveAs
+	public static final int RECENT_FILES = 1207;
+	
 	//Ventana GUI_InsertarRelacion 13XX
 	public static final int INSERT_RELATION = 1300;
 	public static final int WRITE_RELATION_NAME = 1301;
@@ -1399,6 +1402,7 @@ public class Lenguaje {
 		case ZOOM_HEADER: texto=_textos.get("zoomHeader");break;
 		case ACEPTAR: texto=_textos.get("aceptar");break;
 		case OPEN_CASOS: texto=_textos.get("casosPrueba");break;
+		case RECENT_FILES: texto=_textos.get("recentfiles");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);
