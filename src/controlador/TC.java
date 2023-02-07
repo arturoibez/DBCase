@@ -39,6 +39,7 @@ public enum TC {
 	GUI_Principal_Click_Salir,
 	//GUI_Principal_Click_Submenu_SeleccionarWorkSpace,
 	GUI_Principal_Click_Submenu_Abrir,
+	GUI_Principal_Click_Submenu_Abrir_Casos,
 	GUI_Principal_Click_Submenu_Guardar,
 	GUI_Principal_Click_Submenu_Nuevo,
 	GUI_Principal_Click_Submenu_GuardarComo,

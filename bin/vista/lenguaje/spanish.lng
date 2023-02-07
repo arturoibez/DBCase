@@ -613,3 +613,5 @@ menuFisicoDesc=Permite generar y guardar el código correspondiente al modelo f�
 menuFisicoDesc2=Incluye también la opción de jecutar scripts reales eligiendo entre los diversos gestores de Bases de Datos presentes en el Esquema Físico.
 menuDominiosDesc=Permite crear nuevos dominios.
 zoomHeader=¿Deseas cambiar el valor del zoom?
+aceptar=Aceptar
+casosPrueba=Abrir casos de prueba

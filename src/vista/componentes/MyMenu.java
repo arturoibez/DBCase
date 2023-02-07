@@ -47,6 +47,9 @@ import vista.iconos.perspective.diagramIcon;
 import vista.lenguaje.Lenguaje;
 import vista.tema.Theme;
 
+
+// ICONOS: https://icon-icons.com/es/
+
 @SuppressWarnings("serial")
 public class MyMenu extends JMenuBar{
 
@@ -55,6 +58,7 @@ public class MyMenu extends JMenuBar{
 	private JMenu menuSistema;
 	private JMenuItem submenuNuevo;
 	private JMenuItem submenuAbrir;
+	private JMenuItem submenuAbrirCasos;
 	private JMenuItem submenuGuardar;
 	private JMenuItem submenuGuardarComo;
 	private AbstractButton submenuImprimir;
@@ -158,6 +162,27 @@ public class MyMenu extends JMenuBar{
 			submenuAbrir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Abrir, null);
+				}
+			});
+			
+			//File/abrirCasos
+			submenuAbrirCasos = new JMenuItem();
+			submenuAbrirCasos.setForeground(theme.fontColor());
+			submenuAbrirCasos.setFont(theme.font());
+			menuSistema.add(submenuAbrirCasos);
+			ImageIcon abrirCasos = new ImageIcon();
+			try {
+				abrirCasos.setImage(ImageIO.read(getClass().getResource("/vista/imagenes/AbrirCasos.PNG")));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1);
+			}
+			submenuAbrirCasos.setIcon(abrirCasos);
+			submenuAbrirCasos.setText(Lenguaje.text(Lenguaje.OPEN_CASOS)+"...");
+			//submenuAbrir.setMnemonic(Lenguaje.text(Lenguaje.OPEN).charAt(0));
+			submenuAbrirCasos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Abrir_Casos, null);
 				}
 			});
 			

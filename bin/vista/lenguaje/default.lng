@@ -604,3 +604,5 @@ menuFisicoDesc=It allows the user to generate and save the code corresponding to
 menuFisicoDesc2=It also has the option of executing real scripts by choosing from different Database systems present in the Physical Schema.
 menuDominiosDesc=It allows to create new domains.
 zoomHeader=Do you want to change the zoom value?
+aceptar=Accept
+casosPrueba=Open test examples

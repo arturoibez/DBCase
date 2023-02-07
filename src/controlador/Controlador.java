@@ -368,7 +368,7 @@ public class Controlador {
 		about = new GUI_About();
 		manual = new GUI_Manual();
 		galeria = new GUI_Galeria();
-		theGUIWorkSpace = new GUI_SaveAs();
+		theGUIWorkSpace = new GUI_SaveAs(true);
 		theGUIWorkSpace.setControlador(this);
 		panelOpciones= new GUI_Pregunta();
 		report=new GUI_Report();
@@ -1051,7 +1051,7 @@ public class Controlador {
 				//Se elimina también la entidad débil asociada
 				if(tr.getTipo().equals("Debil")){
 					Vector lista_entidades = tr.getListaEntidadesYAridades();
-					int cont =0;
+					int cont = 0;
 					TransferEntidad te = new TransferEntidad();
 					while (cont < lista_entidades.size()){
 						EntidadYAridad eya=(EntidadYAridad)(tr.getListaEntidadesYAridades().get(cont));
@@ -1236,7 +1236,7 @@ public class Controlador {
 						this.getTheGUIWorkSpace().nuevoTemp();
 						setCambios(false);
 				}else if (respuesta==0) {
-						theGUIWorkSpace = new GUI_SaveAs();
+						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
 						if (this.getTheGUIWorkSpace().setActiva(2)){
 							filetemp.delete();
@@ -1289,7 +1289,7 @@ public class Controlador {
 						Lenguaje.text(Lenguaje.DBCASE),true);
 				if (respuesta==1) guardarYSalir();
 				else if (respuesta==0) {
-						theGUIWorkSpace = new GUI_SaveAs();
+						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
 						if (this.getTheGUIWorkSpace().setActiva(2)) salir();
 				}	
@@ -1348,7 +1348,7 @@ public class Controlador {
 						Lenguaje.text(Lenguaje.DBCASE),true);
 				if (respuesta==1) guardarYSalir();
 				else if (respuesta==0) {
-						theGUIWorkSpace = new GUI_SaveAs();
+						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
 						if (this.getTheGUIWorkSpace().setActiva(2)) guardarYSalir();
 				}	
@@ -1360,7 +1360,7 @@ public class Controlador {
 			break;
 		}
 		case GUI_Principal_Click_Submenu_Abrir:{
-			theGUIWorkSpace = new GUI_SaveAs();
+			theGUIWorkSpace = new GUI_SaveAs(true);
 			theGUIWorkSpace.setControlador(this);
 			theGUIWorkSpace.setModoSoporte(this.getModoSoporte());
 			if (cambios){
@@ -1380,8 +1380,31 @@ public class Controlador {
 			}
 			break;
 		}
+		
+		case GUI_Principal_Click_Submenu_Abrir_Casos:{
+			theGUIWorkSpace = new GUI_SaveAs(false);//si mandamos false se va al directorio de casos prueba
+			theGUIWorkSpace.setControlador(this);
+			theGUIWorkSpace.setModoSoporte(this.getModoSoporte());
+			if (cambios){
+				int respuesta = panelOpciones.setActiva(
+						Lenguaje.text(Lenguaje.WISH_SAVE),
+						Lenguaje.text(Lenguaje.DBCASE),true);
+				if (respuesta==1) {
+						this.getTheGUIWorkSpace().setActiva(4);
+				}else if (respuesta==0) {
+						boolean guardado = this.getTheGUIWorkSpace().setActiva(2);
+						if (guardado){
+							this.getTheGUIWorkSpace().setActiva(4);
+						}
+				}		
+			}else{
+				this.getTheGUIWorkSpace().setActiva(4);
+			}
+			break;
+		}
+		
 		case GUI_Principal_Click_Submenu_Guardar:{
-			theGUIWorkSpace = new GUI_SaveAs();
+			theGUIWorkSpace = new GUI_SaveAs(true);
 			theGUIWorkSpace.setControlador(this);
 			this.getTheGUIWorkSpace().setActiva(2);
 			getTheGUIPrincipal().setTitle(getTitle());
@@ -1405,6 +1428,9 @@ public class Controlador {
 				this.getTheGUIModificarRelacion().setActiva();
 			}
 			else if (datos instanceof TransferAtributo) {
+				Vector<TransferDominio> lista = this.getTheServiciosDominios().getListaDeDominios();
+				this.getTheGUIModificarAtributo().setListaDominios(lista);
+				
 				TransferAtributo ta=(TransferAtributo) datos;
 				
 				if(this.getTheGUIModificarAtributo()==null)
@@ -1440,7 +1466,7 @@ public class Controlador {
 			break;
 		}
 		case GUI_Principal_Click_Submenu_GuardarComo:{
-			theGUIWorkSpace = new GUI_SaveAs();
+			theGUIWorkSpace = new GUI_SaveAs(true);
 			theGUIWorkSpace.setControlador(this);
 			this.getTheGUIWorkSpace().setActiva(3);
 			getTheGUIPrincipal().setTitle(getTitle());
@@ -1456,7 +1482,7 @@ public class Controlador {
 						this.getTheGUIWorkSpace().nuevoTemp();
 						setCambios(false);
 				}else if (respuesta==0) {
-						theGUIWorkSpace = new GUI_SaveAs();
+						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
 						if (this.getTheGUIWorkSpace().setActiva(2)){
 							filetemp.delete();

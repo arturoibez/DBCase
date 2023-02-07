@@ -32,8 +32,10 @@ public class GUI_SaveAs extends Parent_GUI{
 	private int abrir;
 	private boolean actuado; //vale true tras guardar o abrir, false si pulsa en cancelar o cierra la ventana
 	private boolean modoSoporte=false;
+	private boolean projects;
 	
-	public GUI_SaveAs() {
+	public GUI_SaveAs(boolean dir) {
+		this.projects=dir;
 		this.initComponents();
 	}
 
@@ -53,7 +55,8 @@ public class GUI_SaveAs extends Parent_GUI{
 		jLabel1.setBounds(12, 12, 521, 14);
 		jfc = new MyFileChooser();
 		jfc.setFont(theme.font());
-		jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/projects"));
+		if (this.projects) jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/projects"));
+		else jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/Casos Prueba"));
 		panelPrincipal.add(jfc);
 		jfc.setBounds(0, 32, 547, 286);
 		jfc.setDialogType(2);
@@ -109,6 +112,13 @@ public class GUI_SaveAs extends Parent_GUI{
 				this.setVisible(true);	
 				break;
 			}
+			case 4:{
+				jLabel1.setText(Lenguaje.text(Lenguaje.OPEN_CASOS)+":");
+				abrir=b;
+				this.centraEnPantalla();
+				this.setVisible(true);	
+				break;
+			}
 		}
 		return actuado;
 	}
@@ -128,6 +138,7 @@ public class GUI_SaveAs extends Parent_GUI{
 				case 1: abrirProyecto(); break;
 				case 2: guardarComo(); break;
 				case 3: guardarComo(); break;
+				case 4: abrirProyecto(); break;
 			}
 			this.dispose();
 		}

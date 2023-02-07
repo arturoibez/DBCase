@@ -1809,13 +1809,13 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	
 	
 	public void modoCuadricula(boolean cuadricula) throws IOException {
-		//this.dealer.modoCuadricula(cuadricula);
-		/*if (cuadricula) {
+		if (cuadricula) {
 			System.out.println("hola");
 			Image img = ImageIO.read(getClass().getResource("/vista/imagenes/casillas.PNG"));
-			panelDiagrama.setFondo(img, this.getGraphics());
+			panelDiseno.setFondo(img, panelDiseno.getGraphics());
+			this.revalidate();
 		}
-		else panelDiagrama.setOpaque(true);*/
+		else panelDiseno.setOpaque(true);
 		
 	}
 	

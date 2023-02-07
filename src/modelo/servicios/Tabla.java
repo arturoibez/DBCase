@@ -235,17 +235,27 @@ public class Tabla {
 		//dejamos los elementos en las 3 listas sin duplicados.
 		definitivo=this.filtra(atributos, primaries);
 		int i=0;
+		int contRepe2=0;
+		boolean repe2=false;
 		if(!primaries.isEmpty())
 			for (i=0;i<primaries.size();i++){
 				String repe="";
-				if (this.estaRepe(primaries.elementAt(i)[0], atributos)) repe +=primaries.elementAt(i)[2]+"_";
+				//if (this.estaRepe(primaries.elementAt(i)[0], atributos)) repe +=primaries.elementAt(i)[2]+"_";
+				if (this.noEsMio(primaries.elementAt(i))) repe +=primaries.elementAt(i)[2]+"_";
+				if(this.estaRepe2(primaries.elementAt(i), atributos)){ 
+					contRepe2++;
+					repe2=true;
+				}
 				if (i>0) mr+=", ";
-				mr+=this.ponGuionesBajos("<u>"+repe+primaries.elementAt(i)[0]+"</u>");
+				if (repe2)mr+=this.ponGuionesBajos("<u>"+repe+primaries.elementAt(i)[0]+ Integer.toString(contRepe2) +"</u>");
+				else mr+=this.ponGuionesBajos("<u>"+repe+primaries.elementAt(i)[0] +"</u>");
+				repe2=false;
 			}
 		for (int j=0;j<definitivo.size();j++){
 			if (i>0||j>0) mr+=", ";
 			String repe="";
-			if (this.estaRepe(definitivo.elementAt(j)[0], atributos) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
+			//if (this.estaRepe(definitivo.elementAt(j)[0], atributos) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
+			if (this.noEsMio(definitivo.elementAt(j)) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
 			mr+=this.ponGuionesBajos(repe+definitivo.elementAt(j)[0]+asterisco(definitivo.elementAt(j)));
 		}	
 		mr+=")";
@@ -307,6 +317,23 @@ public class Tabla {
 		while (i<vector.size()&& cont<2){
 			String [] trio = vector.elementAt(i);
 			if (trio[0].equalsIgnoreCase(elem)) cont++;
+			i++;
+		}
+		return (cont>1);
+	}
+	
+	public boolean noEsMio(String[] elem){
+		if(this.nombreTabla==elem[2]) return false;
+		else return true;
+	}
+	
+	public boolean estaRepe2(String[] elem, Vector<String[]> vector){
+		int cont = 0;
+		int i = 0;
+		
+		while (i<vector.size()&& cont<2){
+			String [] trio = vector.elementAt(i);
+			if (trio[0].equalsIgnoreCase(elem[0]) && trio[2].equalsIgnoreCase(elem[2])) cont++;
 			i++;
 		}
 		return (cont>1);

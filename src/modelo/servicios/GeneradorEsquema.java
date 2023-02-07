@@ -168,7 +168,9 @@ public class GeneradorEsquema {
 						String[] clave = new String[5];
 						clave[3]="0";
 						clave[4]=eya.getPrincipioRango()==0?"0":"1";
-						if (!eya.getRol().equals("")) clave[0] = eya.getRol() + "_" + previasPrimarias.get(q)[0];
+						if (!eya.getRol().equals("")) {
+							clave[0] = eya.getRol() + "_" + previasPrimarias.get(q)[0];
+						}
 						else clave[0] = previasPrimarias.get(q)[0];
 						clave[1] = previasPrimarias.get(q)[1];
 						clave[2] = previasPrimarias.get(q)[2];
@@ -793,6 +795,7 @@ public class GeneradorEsquema {
 		for (int q=0; q<clavesEntidad.size(); q++) referenciadas[q] = clavesEntidad.get(q)[0];
 		
 		tablaMulti.aniadeListaClavesForaneas(tablaEntidad.getPrimaries(),tablaEntidad.getNombreTabla(), referenciadas);
+		tablaMulti.aniadeListaClavesPrimarias(tablaMulti.getAtributos());
 		tablasMultivalorados.add(tablaMulti);
 		for(String rest : (Vector<String>)ta.getListaRestricciones())
 			restriccionesPerdidas.add(new restriccionPerdida(tablaMulti.getNombreTabla(), rest, restriccionPerdida.TABLA));

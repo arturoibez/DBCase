@@ -40,7 +40,7 @@ public class DAORelaciones{
 	}
 
 	// Metodos del DAOCllientes
-	public int anadirRelacion(TransferRelacion tc) {
+	public int anadirRelacion(TransferRelacion tc) {//tr.getTipo().equalsIgnoreCase("Normal")
 		// Resultado que se devolvera
 		int resultado = 0;
 		// Sacamos la <ListaRelaciones>
