@@ -24,7 +24,6 @@ import vista.lenguaje.Lenguaje;
 
 @SuppressWarnings("serial")
 public class GUI_SaveAs extends Parent_GUI{
-
 	private Controlador controlador;
 	private JPanel panelPrincipal;
 	private MyFileChooser jfc;
@@ -67,6 +66,8 @@ public class GUI_SaveAs extends Parent_GUI{
 				jfcActionPerformed(evt);
 			}
 		});
+		
+		
 		this.setSize(553, 354);
 		this.setContentPane(panelPrincipal);
 	}
@@ -140,6 +141,7 @@ public class GUI_SaveAs extends Parent_GUI{
 	
 	private void abrirProyecto(){
 		File f = this.jfc.getSelectedFile();
+		
 		//construimos la ruta
 		String ruta = f.getPath();
 		if (!ruta.endsWith(".xml")) ruta = ruta+".xml";
@@ -149,6 +151,7 @@ public class GUI_SaveAs extends Parent_GUI{
 			if (esValido(f)){
 				controlador.setFileguardar(f);
 				this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir, ruta);
+				this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, f);
 			}else{
 				JOptionPane.showMessageDialog(null,
 						Lenguaje.text(Lenguaje.WRONG_FILE),
@@ -162,14 +165,19 @@ public class GUI_SaveAs extends Parent_GUI{
 	}
 	
 	private void guardarProyecto(){
+		
 		String ruta=controlador.getFileguardar().getAbsolutePath();
 		if (!ruta.endsWith(".xml")) ruta = ruta+".xml";
-		if (controlador.getFileguardar().exists())
+		if (controlador.getFileguardar().exists()) {
 			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
+			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, controlador.getFileguardar());
+		}
+			
 	}
 	
 	private void guardarComo(){
 		File f = this.jfc.getSelectedFile();
+		
 		String ruta = f.getPath();
 		if (!ruta.endsWith(".xml")) ruta = ruta+".xml";
 		
@@ -177,6 +185,7 @@ public class GUI_SaveAs extends Parent_GUI{
 		if (f.exists()) this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
 		else this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
 		f = new File(ruta);
+		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, f);
 		controlador.setFileguardar(f);
 	}
 			
