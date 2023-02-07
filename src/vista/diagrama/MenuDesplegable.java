@@ -527,8 +527,8 @@ public class MenuDesplegable extends JPopupMenu {
 				JMenuItem j5 = new JMenuItem(Lenguaje.text(Lenguaje.EDIT_CARD_ROL));
 				j5.setFont(theme.font());
 				j5.setForeground(theme.fontColor());
-				if (((TransferRelacion) nodo).getTipo().equals("Debil")) j5.setEnabled(false);
-				else {
+				//if (((TransferRelacion) nodo).getTipo().equals("Debil")) j5.setEnabled(false);
+				//else {
 					j5.setEnabled(true);
 					j5.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -538,7 +538,7 @@ public class MenuDesplegable extends JPopupMenu {
 							controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarCardinalidadEntidad,clon_relacion);
 						}
 					});
-				}
+				//}
 				this.add(j5);
 				this.add(new JSeparator());
 

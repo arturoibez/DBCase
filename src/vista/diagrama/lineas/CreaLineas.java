@@ -60,7 +60,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
             return;
         // don't draw edge if either incident vertex is not drawn
         Pair<V> endpoints = graph.getEndpoints(e);
-        V v1 = endpoints.getFirst(); //Relación
+        V v1 = endpoints.getFirst(); //RelaciÃÂ³n
         V v2 = endpoints.getSecond(); //Entidad
         Collection<E> aris= graph.getEdges();
         ArrayList<Pair<V>> lista= new ArrayList<Pair<V>>();//Lista que representa el grafo
@@ -71,7 +71,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
         for (E o : aris){
             //boolean esRecursiva = false;
         	par = graph.getEndpoints(o);
-        	if (endpoints.equals(par)) {//Lo que voy a añadir en la lista es igual que la arista que voy a pintar
+        	if (endpoints.equals(par)) {//Lo que voy a aÃÂ±adir en la lista es igual que la arista que voy a pintar
         		numApariciones++;
         		nom1 = par.getFirst().toString();
         		//if(nom2.equals(par.getSecond().toString())) esRecursiva = true;
@@ -113,7 +113,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
         Graphics2D graf2d = g.getDelegate();
         Graph<V,E> graph = layout.getGraph();
         Pair<V> endpoints = graph.getEndpoints(e);
-        V v1 = endpoints.getFirst();//Relación
+        V v1 = endpoints.getFirst();//RelaciÃÂ³n
         V v2 = endpoints.getSecond();//Entidad
         
         Point2D p1 = layout.transform(v1);//Coordenadas de la relacion
@@ -121,7 +121,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
         p1 = rc.getMultiLayerTransformer().transform(Layer.LAYOUT, p1);
         p2 = rc.getMultiLayerTransformer().transform(Layer.LAYOUT, p2);
         
-        //Ancho del rectángulo donde va la entidad. Sólo importa su tamaño en IsA->Hija
+        //Ancho del rectÃÂ¡ngulo donde va la entidad. SÃÂ³lo importa su tamaÃÂ±o en IsA->Hija
         int anchoRect=0;
         
         //A las coordenadas se le suma el parametro noTocan para evitar que se superpongan las lineas si hay que pintar muchas
@@ -130,7 +130,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
        	float xEnti = (float) p2.getX();//Coordenada x de la entidad	        	        
        	float yEnti = (float) p2.getY();//Coordenada y de la entidad
        	
-       	//Variables para calcular el centro desde donde se pinta la arista, y la inclinación
+       	//Variables para calcular el centro desde donde se pinta la arista, y la inclinaciÃÂ³n
        	float dx = 0, dy = 0, thetaRadians = 0;
         boolean diagonal=false;
         double entiSize;
@@ -141,7 +141,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
         }
         else {*/
         	
-    		//Si hay mas de una aparicion cambia �n las coordenadas
+
         float incrementoX = 0;
         float incrementoY = 0;
 		
@@ -150,7 +150,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
 			incrementoX = (float) p.getFirst();
 			incrementoY = (float) p.getSecond();
 		}
-	       	//Si la relacion es IsA en lugar de una arista normal se pintará una flecha	
+
 	        if((endpoints.getFirst() instanceof TransferRelacion) && 
 	        		(((TransferRelacion)endpoints.getFirst()).getTipo().equals("IsA"))){
 		         
@@ -158,7 +158,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
 	        		EntidadYAridad padre = (EntidadYAridad)rela.getListaEntidadesYAridades().get(0);
 	        		int idPadre =padre.getEntidad();        		
 	        		TransferEntidad enti =(TransferEntidad)endpoints.getSecond();
-	        		//Flecha del padre a la relación IsA
+	        		//Flecha del padre a la relaciÃÂ³n IsA
 	        		if(enti.getIdEntidad()==idPadre){
 	        			xEnti += incrementoX;
 	        			xIsA += incrementoX;
@@ -168,7 +168,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
 	        			miFlecha.createArrow(yEnti,yIsA,xEnti,xIsA,true,anchoRect);
 	        			miFlecha.paintComponent(graf2d,xIsA,yIsA,xEnti,yEnti,true,anchoRect);
 	        		}
-	        		//Flecha de la relación IsA al hijo
+	        		//Flecha de la relaciÃÂ³n IsA al hijo
 	        		else{
 	        			anchoRect = enti.getNombre().length();
 	        			xEnti += incrementoX;
@@ -181,14 +181,14 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
 	        		}
 		        diagonal= false;
 	        }
-	        //Si la relacion es IsA en lugar de una arista normal se pintará una flecha
+	        //Si la relacion es IsA en lugar de una arista normal se pintarÃÂ¡ una flecha
 	        else if((endpoints.getSecond() instanceof TransferRelacion) && 
 	        		(((TransferRelacion)endpoints.getSecond()).getTipo().equals("IsA"))){	        
 	        	TransferRelacion rela =(TransferRelacion)endpoints.getSecond();
 	    		EntidadYAridad padre = (EntidadYAridad)rela.getListaEntidadesYAridades().get(0);
 	    		int idPadre =padre.getEntidad();
 	    		TransferEntidad enti =(TransferEntidad)endpoints.getFirst();
-	    		//Flecha del padre a la relación IsA
+	    		//Flecha del padre a la relaciÃÂ³n IsA
 	    		if(enti.getIdEntidad()==idPadre){
 	    			xEnti += incrementoX;
         			xIsA += incrementoX;
@@ -198,7 +198,7 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
 	    			miFlecha.createArrow(yEnti,yIsA,xEnti,xIsA,true,anchoRect);
 	    			miFlecha.paintComponent(graf2d,xIsA,yIsA,xEnti,yEnti,true,anchoRect);
 	    		}
-	    		//Flecha de la relación IsA al hijo
+	    		//Flecha de la relaciÃÂ³n IsA al hijo
 	    		else{
 	    			xEnti += incrementoX;
         			xIsA += incrementoX;
@@ -280,16 +280,19 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
    Pair sacarCoordenadas(String nombre1,String nombre2, int numApariciones, int vuelta,
 			float xIsA, float yIsA, float xEnti, float yEnti) {
 	
-       //parte de código nueva para las líneas de los roles
+       //parte de cÃ³digo nueva para las lÃ­neas de los roles
+
        float xCentro;
 	   float yCentro;
 	   float xNoCentro;
 	   float yNoCentro;
 	  	
        int alto = 0,anchoNoCentro=0, altoNoCentro=0;
-       //Calculo el ancho mínimo entre la relación y la entidad.
+
+       //Calculo el ancho mÃ­nimo entre la relaciÃ³n y la entidad.
        int ancho = Math.min(nombre1.length(),nombre2.length());
-       //Hay que saber si el ancho mínimo es de la entidad o de la relación
+       //Hay que saber si el ancho mÃ­nimo es de la entidad o de la relaciÃ³n
+
        xCentro = xIsA;
 		yCentro = yIsA;
 		xNoCentro = xEnti;
@@ -297,7 +300,9 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
        if(ancho == nombre1.length()) anchoNoCentro = nombre2.length();
        else anchoNoCentro=nombre2.length();
        
-       //Si el ancho  es menor que 8 la figura tiene un tamaño fijo
+
+       //Si el ancho  es menor que 8 la figura tiene un tamaÃ±o fijo
+
        if(ancho < 8){
        	ancho = 45;
        	alto = 20;
@@ -307,7 +312,9 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
        	ancho = (ancho *5) +5;
        	alto = 25;
        }
-       //Si el ancho de la otra figura es menor que 8 la figura tiene un tamaño fijo
+
+       //Si el ancho de la otra figura es menor que 8 la figura tiene un tamaÃ±o fijo
+
        if(anchoNoCentro < 8){
        	anchoNoCentro = 45;
        	altoNoCentro = 20;
@@ -321,11 +328,12 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
        	float incrementoX = 0;
        	float incrementoY = 0;
        	int epsilon = ancho /4;
-       	//La separación entre las líneas de los roles es proporcional al número de veces que participe la entidad en la relación
-       	 //y la posición relativa entre la entidad y la relacion
+
+       	//La separaciÃ³n entre las lÃ­neas de los roles es proporcional al nÃºmero de veces que participe la entidad en la relaciÃ³n
+       	 //y la posiciÃ³n relativa entre la entidad y la relacion
        	if ((((xNoCentro+anchoNoCentro)>=(xCentro-epsilon))&&((xNoCentro-anchoNoCentro) <= xCentro+epsilon)) ||
        		((xNoCentro>=(xCentro-epsilon))&&(xNoCentro <= xCentro+epsilon))){
-       		//Están a distintas alturas pero en la misma franja de las xs
+       		//EstÃ¡n a distintas alturas pero en la misma franja de las xs
        		incrementoY = 0;
        		if (numApariciones > 3){
        			incrementoX = (ancho*2)/(numApariciones+1);
@@ -351,7 +359,8 @@ public class CreaLineas<V,E> implements Renderer.Edge<V, E> {
        	}
        	else if((((yNoCentro+altoNoCentro)>=(yCentro-epsilon))&&((yNoCentro-altoNoCentro)<=(yCentro+epsilon))) ||
        			((yNoCentro>=(yCentro-epsilon))&&(yNoCentro<=(yCentro+epsilon)))){
-       	//Están en la misma franja de las ys
+
+       	//EstÃ¡n en la misma franja de las ys
        		incrementoX = 0;
        		if (numApariciones > 3){
        			incrementoY = (alto*2)/(numApariciones+1);

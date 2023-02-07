@@ -214,7 +214,7 @@ public class GUI_ModificarEntidad extends Parent_GUI{
 	
 	/*Redimensiona la ventana para que se oculten la parte de las entidades débiles*/
 	public void reducirVentana(){
-		this.setSize(350, 178); 
+		this.setSize(350, 280); 
 		botonModificar.setBounds(200, 100, 120, 30);
 	}
 	

@@ -390,12 +390,13 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	
 	public void setFondo(Image imagenInicial, Graphics g) {
         if (imagenInicial != null) {
-            g.drawImage(imagenInicial, 0, 0, getWidth(), getHeight(), this);
-            setOpaque(false);
+        	setOpaque(false);
+            g.drawImage(imagenInicial, 0, 0, getWidth(), getHeight(), this);   
         } 
         else {
             setOpaque(true);
         }
+        this.revalidate();
         super.paint(g);
     }
 	
@@ -409,7 +410,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			// Esta historia invierte el zoom de la rueda del raton
 			@Override
 			public void mouseWheelMoved(final MouseWheelEvent e) {
-				System.out.println("zoom");
+				//System.out.println("zoom");
 				int rot = e.getWheelRotation();
 				rot *= -1;
 				super.mouseWheelMoved(new MouseWheelEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),

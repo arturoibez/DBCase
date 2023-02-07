@@ -34,6 +34,20 @@ public class ServiciosDominios {
 		controlador.mensajeDesde_SD(TC.SD_ListarDominios_HECHO, lista_dominios);
 	}
 	
+	public Vector <TransferDominio> getListaDeDominios(){
+		Object[] items = modelo.transfers.TipoDominio.values();
+		DAODominios dao = new DAODominios(this.controlador.getPath());
+		Vector <TransferDominio> lista_dominios = dao.ListaDeDominios();
+		for(int i = 0; i < items.length;i++){
+			TransferDominio td = new TransferDominio();
+			td.setNombre(items[i].toString());
+			td.setTipoBase((TipoDominio) items[i]);
+			td.setListaValores(null);
+			lista_dominios.add(td);
+		}
+		return lista_dominios;
+	}
+	
 	/* Anadir Dominio
 	 * Parametros: un TransferDominio que contiene el nombre del nuevo dominio
 	 * Devuelve: El dominio en un TransferDominio y el mensaje -> SD_InsertarDominio_HECHO

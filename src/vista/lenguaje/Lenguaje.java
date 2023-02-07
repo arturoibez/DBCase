@@ -656,6 +656,8 @@ public class Lenguaje {
 	//Zoom
 	public static final int ZOOM_HEADER = 5067;
 	public static final int ACEPTAR = 5068;
+	//Test cases
+	public static final int OPEN_CASOS = 5069;
 	
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
@@ -1399,6 +1401,7 @@ public class Lenguaje {
 		case MENU_DOMINIOSDESC: texto=_textos.get("menuDominiosDesc");break;
 		case ZOOM_HEADER: texto=_textos.get("zoomHeader");break;
 		case ACEPTAR: texto=_textos.get("aceptar");break;
+		case OPEN_CASOS: texto=_textos.get("casosPrueba");break;
 		case RECENT_FILES: texto=_textos.get("recentfiles");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}

@@ -612,6 +612,8 @@ menuLogicoDesc=Al igual que los botones presentes en el Esquema LÃ³gico, permi
 menuFisicoDesc=Permite generar y guardar el cÃ³digo correspondiente al modelo fÃ­sico de la Base de Datos. 
 menuFisicoDesc2=Incluye tambiÃ©n la opciÃ³n de jecutar scripts reales eligiendo entre los diversos gestores de Bases de Datos presentes en el Esquema FÃ­sico.
 menuDominiosDesc=Permite crear nuevos dominios.
-zoomHeader=Â¿Deseas cambiar el valor del zoom?
+zoomHeader=¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
+casosPrueba=Abrir casos de prueba
 recentfiles=Archivos recientes
+
