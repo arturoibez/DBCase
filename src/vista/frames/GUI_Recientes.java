@@ -30,7 +30,7 @@ public class GUI_Recientes extends Parent_GUI{
 	
 	public GUI_Recientes(ArrayList<File> files, Controlador c) {
 		
-		recientes = files;
+		recientes = files; 
 		controlador = c;
 		
 		this.setTitle(Lenguaje.text(Lenguaje.DBCASE));

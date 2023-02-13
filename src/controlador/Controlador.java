@@ -135,7 +135,7 @@ public class Controlador {
 	private GeneradorEsquema theServiciosSistema;
 	private ServiciosReporte theServiciosReporte;
 	//Archivos recientes
-	private ArchivosRecientes archivosRecent = new ArchivosRecientes();
+	private static ArchivosRecientes archivosRecent = new ArchivosRecientes();
 	//Otros
 	private String path;
 	private Vector<TransferAtributo> listaAtributos;
@@ -201,6 +201,7 @@ public class Controlador {
 		
 		
 		if (conf.existeFichero()){
+			archivosRecent.recibeRecientes(conf.darRecientes());
 			Vector<String> lengs = Lenguaje.obtenLenguajesDisponibles();
 			boolean encontrado = false;
 			int k = 0;
@@ -1410,6 +1411,7 @@ public class Controlador {
 			}else{
 				this.getTheGUIWorkSpace().setActiva(4);
 			}
+		}
 
 		case GUI_Principal_Click_Submenu_Recientes:{
 			theGUIRecientes = new GUI_Recientes(archivosRecent.darRecientes(),this);
@@ -3519,6 +3521,7 @@ public class Controlador {
 			this.getTheGUIPrincipal().getConexionActual().getRuta(),
 			ruta, theme.getThemeName(), this.getTheGUIPrincipal().getPanelsMode(), nullAttrs, valorZoom
 		);
+		conf.ponRecientes(archivosRecent.darRecientes());
 		conf.guardarFicheroCofiguracion();
     }
     
@@ -3881,3 +3884,4 @@ public class Controlador {
 	}
 	
 }
+
