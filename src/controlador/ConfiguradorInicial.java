@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -60,6 +61,9 @@ public class ConfiguradorInicial{
 	protected boolean _existe;
 	
 	protected Hashtable<String, TransferConexion> _conexiones;
+	
+	//Archivos recientes
+	protected ArrayList<File> _recientes;
 
 	// --- --- --- CONSTRUCTORES --- --- ---
 	/**
@@ -76,6 +80,7 @@ public class ConfiguradorInicial{
 		_nullAttr = false;
 		_conexiones = new Hashtable<String, TransferConexion>();
 		_conexiones.clear();
+		_recientes = new ArrayList<File>();
 	}
 	
 	/**
@@ -85,7 +90,9 @@ public class ConfiguradorInicial{
 	 * @param gestorBBDD Gestor de bases de datos por defecto
 	 * @param ultimoProy Último proyecto abierto
 	 */
-	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme, int modoVista, boolean nullAttr, int zoom){
+	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme,
+			int modoVista, boolean nullAttr, int zoom){
+		
 		_modoVista = modoVista;
 		_tema = theme;
 		_lenguaje = lenguaje;
@@ -103,6 +110,7 @@ public class ConfiguradorInicial{
 			_conexiones = new Hashtable<String, TransferConexion>();
 			_conexiones.clear();
 		}
+		//?_recientes = new ArrayList<File>();
 	}
 	
 	// --- --- --- METODOS --- --- ---
@@ -136,9 +144,15 @@ public class ConfiguradorInicial{
 			out.write("theme=\"" + _tema + "\" ");
 			out.write("modoVista=\"" + _modoVista + "\" ");
 			out.write("zoom=\"" + _zoom + "\" ");
-			out.write("nullAttr=\"" + _nullAttr + "\"");
+			out.write("nullAttr=\"" + _nullAttr + "\" ");
+			for (int i = 0; i < _recientes.size(); ++i) {
+				out.write("reciente" + i + "=\"" + _recientes.get(i).getAbsolutePath() + "\" ");
+			}
+			for (int i = _recientes.size(); i <  10; ++i) { // llegamos a 10 si no teniamos 10 recientes
+				out.write("reciente" + i + "=\"" + "nada\" ");
+			}
 			out.write(" > \n");
-			
+						
 			// Conexiones
 			Enumeration<String> keys = _conexiones.keys();
 			while (keys.hasMoreElements()){
@@ -192,6 +206,15 @@ public class ConfiguradorInicial{
 			_modoVista = Integer.parseInt(atributos.getNamedItem("modoVista").getNodeValue());
 			_nullAttr = Boolean.parseBoolean(atributos.getNamedItem("nullAttr").getNodeValue());
 			_zoom = Integer.parseInt(atributos.getNamedItem("zoom").getNodeValue());
+			//Obtener recientes
+			boolean ya = false;
+			for(int i = 0; i < 10 && !ya; ++i) {
+				if(atributos.getNamedItem("reciente"+i).getNodeValue().equals("nada")) {
+					ya = true;
+				}
+				else addRecentFile(atributos.getNamedItem("reciente"+i).getNodeValue());
+			}
+			
 			// Obtener conexiones
 			NodeList connections = doc.getElementsByTagName("connection");
 			for (int i=0; i < connections.getLength(); i++){
@@ -272,6 +295,9 @@ public class ConfiguradorInicial{
 	public TransferConexion obtenConexion(String nombreConexion){
 		return _conexiones.get(nombreConexion);
 	}
+	public ArrayList<File> darRecientes(){
+		return _recientes;
+	}
 	
 	public void ponLenguaje(String lenguaje){
 		_lenguaje = lenguaje;
@@ -299,5 +325,15 @@ public class ConfiguradorInicial{
 	
 	public void ponConexiones(Hashtable<String, TransferConexion> conexiones){
 		_conexiones = conexiones;
+	}
+	public void ponRecientes(ArrayList<File> re) {
+		_recientes = re;
+	}
+	
+	
+	
+	private void addRecentFile(String ruta) {
+		File f = new File (ruta);
+		_recientes.add(f);
 	}
 }
