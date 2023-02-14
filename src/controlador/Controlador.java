@@ -33,6 +33,7 @@ import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
 import persistencia.EntidadYAridad;
 import vista.GUIPrincipal;
+import vista.componentes.ArchivosRecientes;
 import vista.frames.GUI_About;
 import vista.frames.GUI_Manual;
 import vista.frames.GUI_AnadirAtributo;
@@ -59,6 +60,7 @@ import vista.frames.GUI_ModificarRelacion;
 import vista.frames.GUI_QuitarEntidadARelacion;
 import vista.frames.GUI_QuitarEntidadHija;
 import vista.frames.GUI_QuitarEntidadPadre;
+import vista.frames.GUI_Recientes;
 import vista.frames.GUI_RenombrarAtributo;
 import vista.frames.GUI_RenombrarDominio;
 import vista.frames.GUI_RenombrarEntidad;
@@ -77,6 +79,7 @@ public class Controlador {
 	// GUIs
 	private GUIPrincipal theGUIPrincipal;
 	private GUI_SaveAs theGUIWorkSpace;
+	private GUI_Recientes theGUIRecientes;
 	// Fuera
 	private GUI_ModificarEntidad theGUIModificarEntidad;
 	private GUI_ModificarRelacion theGUIModificarRelacion;
@@ -115,6 +118,8 @@ public class Controlador {
 	private GUI_ModificarDominio theGUIModificarElementosDominio;
 	//About
 	private GUI_About about;
+	//Recientes
+	private static ArchivosRecientes archivosRecent = new ArchivosRecientes();
 	//report
 	private GUI_Report report;
 	//manual
@@ -196,6 +201,7 @@ public class Controlador {
 		
 		
 		if (conf.existeFichero()){
+			archivosRecent.recibeRecientes(conf.darRecientes());
 			Vector<String> lengs = Lenguaje.obtenLenguajesDisponibles();
 			boolean encontrado = false;
 			int k = 0;
@@ -231,6 +237,7 @@ public class Controlador {
         		// Abrimos el documento guardado últimamente
         		File ultimo = new File(conf.obtenUltimoProyecto());
         		if (ultimo.exists()){
+        			archivosRecent.add(ultimo);
         			controlador.setZoom(0);
         			controlador.setFileguardar(ultimo);
         			controlador.setModoVista(conf.obtenModoVista());
@@ -380,6 +387,10 @@ public class Controlador {
 	// Mensajes que le manda la GUI_WorkSpace al Controlador
 	public void mensajeDesde_GUIWorkSpace(TC mensaje, Object datos){
 		switch (mensaje){
+		case GUI_WorkSpace_Recent:{
+			archivosRecent.add((File)datos);
+			break;
+		}
 		case GUI_WorkSpace_Nuevo:{
 			this.setPath((String)datos);
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1400,6 +1411,11 @@ public class Controlador {
 			}else{
 				this.getTheGUIWorkSpace().setActiva(4);
 			}
+			break;
+		}
+		
+		case GUI_Principal_Click_Submenu_Recientes:{
+			this.theGUIRecientes = new GUI_Recientes(archivosRecent.darRecientes(),this);
 			break;
 		}
 		
@@ -3506,6 +3522,7 @@ public class Controlador {
 			this.getTheGUIPrincipal().getConexionActual().getRuta(),
 			ruta, theme.getThemeName(), this.getTheGUIPrincipal().getPanelsMode(), nullAttrs, valorZoom
 		);
+		conf.ponRecientes(archivosRecent.darRecientes());
 		conf.guardarFicheroCofiguracion();
     }
     

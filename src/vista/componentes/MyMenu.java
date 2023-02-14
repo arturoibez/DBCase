@@ -59,6 +59,7 @@ public class MyMenu extends JMenuBar{
 	private JMenuItem submenuNuevo;
 	private JMenuItem submenuAbrir;
 	private JMenuItem submenuAbrirCasos;
+	private JMenuItem submenuAbrirRecentFiles;
 	private JMenuItem submenuGuardar;
 	private JMenuItem submenuGuardarComo;
 	private AbstractButton submenuImprimir;
@@ -183,6 +184,27 @@ public class MyMenu extends JMenuBar{
 			submenuAbrirCasos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Abrir_Casos, null);
+				}
+			});
+			
+			//File/openRecentFiles
+			submenuAbrirRecentFiles = new JMenuItem(); 
+			submenuAbrirRecentFiles.setForeground(theme.fontColor());
+			submenuAbrirRecentFiles.setFont(theme.font());
+			menuSistema.add(submenuAbrirRecentFiles);
+			ImageIcon abrir2 = new ImageIcon();
+			try {
+				abrir2.setImage(ImageIO.read(getClass().getResource("/vista/imagenes/AbrirReciente.PNG")));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1);
+			}
+			submenuAbrirRecentFiles.setIcon(abrir2);
+			submenuAbrirRecentFiles.setText(Lenguaje.text(Lenguaje.RECENT_FILES)+"...");
+			//submenuAbrirRecentFiles.setMnemonic(Lenguaje.text(Lenguaje.RECENT_FILES).charAt(0));
+			submenuAbrirRecentFiles.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Recientes, null);
 				}
 			});
 			
@@ -843,7 +865,7 @@ public class MyMenu extends JMenuBar{
 			add(rehacer);
 			
 			//Boton reset
-			reset=new JButton();
+			/*reset=new JButton();
 			reset.setPreferredSize(d);
 			try {
 			    Image img = ImageIO.read(getClass().getResource("/vista/imagenes/Reset.png"));
@@ -859,7 +881,7 @@ public class MyMenu extends JMenuBar{
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_RESET, null);
 					
 				}
-			});
+			});*/
 			
 			iconosPerspectiva.add(Box.createRigidArea(new Dimension(4,0)));
 			iconosPerspectiva.add(diagramLabel);

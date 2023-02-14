@@ -240,8 +240,8 @@ public class Tabla {
 		if(!primaries.isEmpty())
 			for (i=0;i<primaries.size();i++){
 				String repe="";
-				//if (this.estaRepe(primaries.elementAt(i)[0], atributos)) repe +=primaries.elementAt(i)[2]+"_";
-				if (this.noEsMio(primaries.elementAt(i))) repe +=primaries.elementAt(i)[2]+"_";
+				if (this.estaRepe(primaries.elementAt(i)[0], atributos)) repe +=primaries.elementAt(i)[2]+"_";
+				//if (this.noEsMio(primaries.elementAt(i))) repe +=primaries.elementAt(i)[2]+"_";
 				if(this.estaRepe2(primaries.elementAt(i), atributos)){ 
 					contRepe2++;
 					repe2=true;
@@ -254,8 +254,8 @@ public class Tabla {
 		for (int j=0;j<definitivo.size();j++){
 			if (i>0||j>0) mr+=", ";
 			String repe="";
-			//if (this.estaRepe(definitivo.elementAt(j)[0], atributos) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
-			if (this.noEsMio(definitivo.elementAt(j)) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
+			if (this.estaRepe(definitivo.elementAt(j)[0], atributos) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
+			//if (this.noEsMio(definitivo.elementAt(j)) && nombreTabla != definitivo.elementAt(j)[2]) repe +=definitivo.elementAt(j)[2]+"_";
 			mr+=this.ponGuionesBajos(repe+definitivo.elementAt(j)[0]+asterisco(definitivo.elementAt(j)));
 		}	
 		mr+=")";

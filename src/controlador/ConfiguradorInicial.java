@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -60,6 +61,10 @@ public class ConfiguradorInicial{
 	protected boolean _existe;
 	
 	protected Hashtable<String, TransferConexion> _conexiones;
+	
+	//Archivos recientes
+	protected ArrayList<File> _recientes;
+
 
 	// --- --- --- CONSTRUCTORES --- --- ---
 	/**
@@ -76,6 +81,7 @@ public class ConfiguradorInicial{
 		_nullAttr = false;
 		_conexiones = new Hashtable<String, TransferConexion>();
 		_conexiones.clear();
+		_recientes = new ArrayList<File>();
 	}
 	
 	/**
@@ -137,6 +143,12 @@ public class ConfiguradorInicial{
 			out.write("modoVista=\"" + _modoVista + "\" ");
 			out.write("zoom=\"" + _zoom + "\" ");
 			out.write("nullAttr=\"" + _nullAttr + "\"");
+			for (int i = 0; i < _recientes.size(); ++i) {
+				out.write("reciente" + i + "=\"" + _recientes.get(i).getAbsolutePath() + "\" ");
+			}
+			for (int i = _recientes.size(); i <  10; ++i) { // llegamos a 10 si no teniamos 10 recientes
+				out.write("reciente" + i + "=\"" + "nada\" ");
+			}
 			out.write(" > \n");
 			
 			// Conexiones
@@ -277,6 +289,10 @@ public class ConfiguradorInicial{
 		_lenguaje = lenguaje;
 	}
 	
+	public ArrayList<File> darRecientes(){
+		return _recientes;
+	}
+	
 	public void ponZoom(int zoom){
 		_zoom = zoom;
 	}
@@ -299,5 +315,14 @@ public class ConfiguradorInicial{
 	
 	public void ponConexiones(Hashtable<String, TransferConexion> conexiones){
 		_conexiones = conexiones;
+	}
+	
+	public void ponRecientes(ArrayList<File> re) {
+		_recientes = re;
+	}
+	
+	private void addRecentFile(String ruta) {
+		File f = new File (ruta);
+		_recientes.add(f);
 	}
 }

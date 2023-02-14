@@ -230,7 +230,7 @@ mustValidateModel=You must validate model before generating the relational model
 relationalModelGenerated=RELATIONAL MODEL GENERATED		
 
 #Persistencia
-unespectedXMLerror=Unspected error in file
+unespectedXMLerror=Unexpected error in file
 entArity=Entity and arity: 
 rol=Role 
 idEnt=, entity Id 	
@@ -606,3 +606,4 @@ menuDominiosDesc=It allows to create new domains.
 zoomHeader=Do you want to change the zoom value?
 aceptar=Accept
 casosPrueba=Open test examples
+recentfiles=Recent files
