@@ -40,6 +40,7 @@ public enum TC {
 	//GUI_Principal_Click_Submenu_SeleccionarWorkSpace,
 	GUI_Principal_Click_Submenu_Abrir,
 	GUI_Principal_Click_Submenu_Abrir_Casos,
+	GUI_Principal_Click_Submenu_Recientes,
 	GUI_Principal_Click_Submenu_Guardar,
 	GUI_Principal_Click_Submenu_Nuevo,
 	GUI_Principal_Click_Submenu_GuardarComo,
@@ -62,6 +63,7 @@ public enum TC {
 	//---------------------------------------------------------------------------------
 	GUI_WorkSpace_PrimeraSeleccion,
 	GUI_WorkSpace_Nuevo,
+	GUI_WorkSpace_Recent,
 	GUI_WorkSpace_Click_Abrir,
 	GUI_WorkSpace_Click_Guardar,
 	GUI_WorkSpace_ClickBotonCancelar,

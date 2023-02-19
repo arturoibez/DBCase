@@ -311,10 +311,10 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			Vector<Object> v = new Vector<Object>();
 			v.add(tr);			
 			v.add(this.getListaEntidades().get(indiceAsociado(this.comboEntidadesFuertes.getSelectedIndex())));
-			v.add(Integer.toString(1));//Inicio
+			v.add(Integer.toString(0));//Inicio
 			v.add("1");//Fin
 			v.add("");//Rol
-			//INcluimos en el vector MarcadaConCardinalidad(true), MarcadaConParticipacion(false), MarcadaConMinMax(false)
+			//INcluimos en el vector MarcadaConCardinalidad(true), MarcadaConParticipacion(false), MarcadaConMinMax(false)			
 			v.add(true);
 			v.add(false);
 			v.add(false);

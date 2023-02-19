@@ -564,7 +564,7 @@ public class ServiciosAtributos {
 		DAOEntidades daoEntidades = new DAOEntidades(this.controlador.getPath());
 		if (daoEntidades.modificarEntidad(te) == false)
 			controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_ERROR_DAOEntidades,vectorDeTransfer);
-		else controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_HECHO,vectorDeTransfer);
+		else controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_HECHO, vectorDeTransfer);
 	}
 	public String getNombreAtributo(int id){
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);

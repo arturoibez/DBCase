@@ -614,7 +614,12 @@ menuFisicoDesc2=Incluye tambiÃ©n la opciÃ³n de jecutar scripts reales eligie
 menuDominiosDesc=Permite crear nuevos dominios.
 zoomHeader=¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
+<<<<<<< HEAD
+casosPrueba=Abrir Ejemplos
+recentfiles=Archivos recientes
+=======
 casosPrueba=Abrir casos de prueba
 zoomHeader=Â¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
 recentfiles=Archivos recientes
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810

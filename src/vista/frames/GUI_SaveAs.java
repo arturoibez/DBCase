@@ -55,7 +55,7 @@ public class GUI_SaveAs extends Parent_GUI{
 		jfc = new MyFileChooser();
 		jfc.setFont(theme.font());
 		if (this.projects) jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/projects"));
-		else jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/Casos Prueba"));
+		else jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/Examples"));
 		panelPrincipal.add(jfc);
 		jfc.setBounds(0, 32, 547, 286);
 		jfc.setDialogType(2);
@@ -182,8 +182,12 @@ public class GUI_SaveAs extends Parent_GUI{
 		if (controlador.getFileguardar().exists()) {
 			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
 			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, controlador.getFileguardar());
+<<<<<<< HEAD
+		}	
+=======
 		}
 			
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 	}
 	
 	private void guardarComo(){
