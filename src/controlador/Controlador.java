@@ -31,6 +31,8 @@ import modelo.transfers.TransferConexion;
 import modelo.transfers.TransferDominio;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import persistencia.DAOEntidades;
+import persistencia.DAORelaciones;
 import persistencia.EntidadYAridad;
 import vista.GUIPrincipal;
 import vista.componentes.ArchivosRecientes;
@@ -238,7 +240,7 @@ public class Controlador {
         		File ultimo = new File(conf.obtenUltimoProyecto());
         		if (ultimo.exists()){
         			archivosRecent.add(ultimo);
-        			controlador.setZoom(0);
+        			//controlador.setZoom(0);
         			controlador.setFileguardar(ultimo);
         			controlador.setModoVista(conf.obtenModoVista());
         			controlador.setZoom(conf.obtenZoom());
@@ -1454,9 +1456,15 @@ public class Controlador {
 				//Le pasamos a la GUI el transfer del atributo seleccionado
 				this.getTheGUIModificarAtributo().setTransferAtributo(ta);
 				//Buscamos a quien pertenece este atributo
-				Vector<TransferEntidad> listaE=this.getListaEntidades();
-				Vector <TransferRelacion>listaR=this.getListaRelaciones();
+				
+				
 				String nombrePadre="";
+				DAOEntidades daoEntidades = new DAOEntidades(this.getPath());
+				Vector<TransferEntidad> listaE = daoEntidades.ListaDeEntidades();
+				
+				DAORelaciones daoRelaciones = new DAORelaciones(this.getPath());
+				Vector <TransferRelacion> listaR = daoRelaciones.ListaDeRelaciones();
+				
 				for(int i=0;i<listaE.size();++i) {
 					TransferEntidad transferE=listaE.get(i);
 					Vector<String> listaA=transferE.getListaAtributos();
@@ -1651,7 +1659,9 @@ public class Controlador {
 			}
 			this.getTheServiciosAtributos().editarDomnioAtributo(vDominio);
 			//Buscamos si el atributo pertenece a una entidad y si es asi a cual
-			Vector<TransferEntidad> entidades=this.getListaEntidades();
+			
+			DAOEntidades daoEntidades = new DAOEntidades(this.getPath());
+			Vector<TransferEntidad> entidades = daoEntidades.ListaDeEntidades();
 			TransferEntidad te=new TransferEntidad();
 			boolean encontrado=false;
 			for(int i=0;i<entidades.size();++i) {
@@ -3883,5 +3893,6 @@ public class Controlador {
 	public void setZoom(int z) {
 		this.valorZoom = z;
 	}
+	
 	
 }

@@ -51,9 +51,7 @@
         <Entity EntityId="4">
             <Name>Profesor</Name>
             <Weak>false</Weak>
-            <AttribList>
-                <Attrib>15</Attrib>
-            </AttribList>
+            <AttribList/>
             <PrimaryKeyList/>
             <AssertionList/>
             <UniqueList/>
@@ -303,17 +301,6 @@
             <Multivalued>false</Multivalued>
             <AssertionList/>
             <Position>762,305</Position>
-        </Attribute>
-        <Attribute AttributeId="15">
-            <Name>nombre</Name>
-            <Dom>VARCHAR(10)</Dom>
-            <Composed>false</Composed>
-            <NotNull>false</NotNull>
-            <Unique>false</Unique>
-            <ComponentList/>
-            <Multivalued>false</Multivalued>
-            <AssertionList/>
-            <Position>483,331</Position>
         </Attribute>
         <Attribute AttributeId="18">
             <Name>Fecha</Name>

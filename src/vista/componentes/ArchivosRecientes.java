@@ -23,7 +23,7 @@ public class ArchivosRecientes {
 		return recientes;
 	}
 	
-	public void recibeRecientes( ArrayList<File>v) {
+	public void recibeRecientes( ArrayList<File> v) {
 		recientes = v;
 	}
 	

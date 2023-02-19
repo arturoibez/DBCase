@@ -142,13 +142,13 @@ public class ConfiguradorInicial{
 			out.write("theme=\"" + _tema + "\" ");
 			out.write("modoVista=\"" + _modoVista + "\" ");
 			out.write("zoom=\"" + _zoom + "\" ");
-			out.write("nullAttr=\"" + _nullAttr + "\"");
 			for (int i = 0; i < _recientes.size(); ++i) {
 				out.write("reciente" + i + "=\"" + _recientes.get(i).getAbsolutePath() + "\" ");
 			}
 			for (int i = _recientes.size(); i <  10; ++i) { // llegamos a 10 si no teniamos 10 recientes
 				out.write("reciente" + i + "=\"" + "nada\" ");
 			}
+			out.write("nullAttr=\"" + _nullAttr + "\"");
 			out.write(" > \n");
 			
 			// Conexiones
@@ -204,6 +204,16 @@ public class ConfiguradorInicial{
 			_modoVista = Integer.parseInt(atributos.getNamedItem("modoVista").getNodeValue());
 			_nullAttr = Boolean.parseBoolean(atributos.getNamedItem("nullAttr").getNodeValue());
 			_zoom = Integer.parseInt(atributos.getNamedItem("zoom").getNodeValue());
+			
+			//Obtener recientes
+			boolean ya = false;
+			for(int i = 0; i < 10 && !ya; ++i) {
+				if(atributos.getNamedItem("reciente"+i).getNodeValue().equals("nada")) {
+					ya = true;
+				}
+				else addRecentFile(atributos.getNamedItem("reciente"+i).getNodeValue());
+			}
+			
 			// Obtener conexiones
 			NodeList connections = doc.getElementsByTagName("connection");
 			for (int i=0; i < connections.getLength(); i++){

@@ -56,7 +56,7 @@ public class GUI_SaveAs extends Parent_GUI{
 		jfc = new MyFileChooser();
 		jfc.setFont(theme.font());
 		if (this.projects) jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/projects"));
-		else jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/Casos Prueba"));
+		else jfc.setCurrentDirectory(new File(System.getProperty("user.dir")+"/Examples"));
 		panelPrincipal.add(jfc);
 		jfc.setBounds(0, 32, 547, 286);
 		jfc.setDialogType(2);
