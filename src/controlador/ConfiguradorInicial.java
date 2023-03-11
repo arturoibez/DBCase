@@ -64,7 +64,10 @@ public class ConfiguradorInicial{
 	
 	//Archivos recientes
 	protected ArrayList<File> _recientes;
+<<<<<<< HEAD
 
+=======
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 
 	// --- --- --- CONSTRUCTORES --- --- ---
 	/**
@@ -91,7 +94,9 @@ public class ConfiguradorInicial{
 	 * @param gestorBBDD Gestor de bases de datos por defecto
 	 * @param ultimoProy Último proyecto abierto
 	 */
-	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme, int modoVista, boolean nullAttr, int zoom){
+	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme,
+			int modoVista, boolean nullAttr, int zoom){
+		
 		_modoVista = modoVista;
 		_tema = theme;
 		_lenguaje = lenguaje;
@@ -109,6 +114,7 @@ public class ConfiguradorInicial{
 			_conexiones = new Hashtable<String, TransferConexion>();
 			_conexiones.clear();
 		}
+		//?_recientes = new ArrayList<File>();
 	}
 	
 	// --- --- --- METODOS --- --- ---
@@ -142,15 +148,22 @@ public class ConfiguradorInicial{
 			out.write("theme=\"" + _tema + "\" ");
 			out.write("modoVista=\"" + _modoVista + "\" ");
 			out.write("zoom=\"" + _zoom + "\" ");
+<<<<<<< HEAD
+=======
+			out.write("nullAttr=\"" + _nullAttr + "\" ");
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 			for (int i = 0; i < _recientes.size(); ++i) {
 				out.write("reciente" + i + "=\"" + _recientes.get(i).getAbsolutePath() + "\" ");
 			}
 			for (int i = _recientes.size(); i <  10; ++i) { // llegamos a 10 si no teniamos 10 recientes
 				out.write("reciente" + i + "=\"" + "nada\" ");
 			}
+<<<<<<< HEAD
 			out.write("nullAttr=\"" + _nullAttr + "\"");
+=======
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 			out.write(" > \n");
-			
+						
 			// Conexiones
 			Enumeration<String> keys = _conexiones.keys();
 			while (keys.hasMoreElements()){
@@ -204,7 +217,10 @@ public class ConfiguradorInicial{
 			_modoVista = Integer.parseInt(atributos.getNamedItem("modoVista").getNodeValue());
 			_nullAttr = Boolean.parseBoolean(atributos.getNamedItem("nullAttr").getNodeValue());
 			_zoom = Integer.parseInt(atributos.getNamedItem("zoom").getNodeValue());
+<<<<<<< HEAD
 			
+=======
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 			//Obtener recientes
 			boolean ya = false;
 			for(int i = 0; i < 10 && !ya; ++i) {
@@ -294,6 +310,9 @@ public class ConfiguradorInicial{
 	public TransferConexion obtenConexion(String nombreConexion){
 		return _conexiones.get(nombreConexion);
 	}
+	public ArrayList<File> darRecientes(){
+		return _recientes;
+	}
 	
 	public void ponLenguaje(String lenguaje){
 		_lenguaje = lenguaje;
@@ -326,11 +345,19 @@ public class ConfiguradorInicial{
 	public void ponConexiones(Hashtable<String, TransferConexion> conexiones){
 		_conexiones = conexiones;
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 	public void ponRecientes(ArrayList<File> re) {
 		_recientes = re;
 	}
 	
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 	private void addRecentFile(String ruta) {
 		File f = new File (ruta);
 		_recientes.add(f);
