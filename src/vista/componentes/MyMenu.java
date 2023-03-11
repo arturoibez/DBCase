@@ -851,9 +851,14 @@ public class MyMenu extends JMenuBar{
 			  }
 			deshacer.setForeground(theme.fontColor());
 			add(deshacer);
+			deshacer.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+				}
+			});
 			
 			//Boton rehacer
-			rehacer=new JButton();
+			/*rehacer=new JButton();
 			rehacer.setPreferredSize(d);
 			try {
 			    Image img = ImageIO.read(getClass().getResource("/vista/imagenes/redoIcon.png"));
@@ -862,7 +867,7 @@ public class MyMenu extends JMenuBar{
 			    System.out.println(ex);
 			  }
 			deshacer.setForeground(theme.fontColor());
-			add(rehacer);
+			add(rehacer);*/
 			
 			//Boton reset
 			/*reset=new JButton();

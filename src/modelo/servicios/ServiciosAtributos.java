@@ -1,5 +1,6 @@
 package modelo.servicios;
 
+import java.awt.geom.Point2D;
 import java.util.Vector;
 
 import controlador.Controlador;
@@ -100,13 +101,28 @@ public class ServiciosAtributos {
 	 */
 	public void eliminarAtributo (TransferAtributo ta){
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
+		TransferAtributo aux = ta;
 		ta = daoAtributos.consultarAtributo(ta);
+		ta.setClavePrimaria(aux.getClavePrimaria());
+		ta.setCompuesto(aux.getCompuesto());
+		ta.setDominio(aux.getDominio());
+		ta.setFrecuencia(aux.getFrecuencia());
+		//ta.setIdAtributo(aux.getIdAtributo() + 10);
+		ta.setListaComponentes(aux.getListaComponentes());
+		ta.setListaRestricciones(aux.getListaComponentes());
+		ta.setMultivalorado(aux.getMultivalorado());
+		//ta.setNombre(aux.getNombre());
+		ta.setNotnull(aux.getNotnull());
+		ta.setUnique(aux.getUnique());
+		ta.setVolumen(aux.getVolumen());
+		
 		if (ta == null){
 			//el atributo puede haber sido eliminado al eliminar la entidad o relacion a la que pertenecía
 			//al hacer una eliminación de múltiples nodos 
 			//controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_ERROR_DAOAtributos, ta);
 			return;
 		}
+		
 		// Si no es compuesto
 		if (!ta.getCompuesto()){
 			if (daoAtributos.borrarAtributo(ta) == false)
@@ -138,11 +154,18 @@ public class ServiciosAtributos {
 				cont++;
 			}
 			// Ya estan eliminados todos sus subatributos. Ponemos compuesto a falso y eliminamos
-			ta.setCompuesto(false);
+			//ta.setCompuesto(false);
 			daoAtributos = new DAOAtributos(controlador);
 			daoAtributos.modificarAtributo(ta);
-			System.out.println("asas");
-			this.eliminarAtributo(ta);
+			if (daoAtributos.borrarAtributo(ta) == false)
+				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_ERROR_DAOAtributos, ta);
+			else{
+				Transfer elem_mod = this.eliminaRefererenciasAlAtributo(ta);
+				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
+				vectorAtributoYElemMod.add(ta);
+				vectorAtributoYElemMod.add(elem_mod);
+				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_HECHO, vectorAtributoYElemMod);
+			}
 		}
 	}
 
@@ -154,7 +177,7 @@ public class ServiciosAtributos {
 	 * de un atributo compuesto). El metodo moficara el elemento (uno de estos 3) que lo referencia
 	 * y lo devolvera en un transfer para comunicar la modificacion al controlador.
 	 */
-	private Transfer eliminaRefererenciasAlAtributo(TransferAtributo ta){
+	public Transfer eliminaRefererenciasAlAtributo(TransferAtributo ta){
 		// Obtenemos el identificador del atributo
 		int idAtributo = ta.getIdAtributo();
 		boolean enEntidad = false;
@@ -242,6 +265,7 @@ public class ServiciosAtributos {
 						// Lo quitamos de la lista de componentes
 						listaSubatributos.remove(k);
 						// Modificamos en la persistencia el atributo y lo devolvemos
+						boolean clavePrim = ta_padre.getClavePrimaria();
 						daoAtributos.modificarAtributo(ta_padre);
 						return ta_padre;
 					}
@@ -253,6 +277,7 @@ public class ServiciosAtributos {
 		// Si devuelve null es que el atributo no esta referenciado (ERROR!)
 		return null;
 	}
+	
 
 
 	/*

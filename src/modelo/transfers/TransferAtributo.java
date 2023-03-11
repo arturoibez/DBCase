@@ -113,10 +113,16 @@ public class TransferAtributo extends Transfer{
 	public boolean isMultivalorado() {
 		return multivalorado;
 	}
+	public boolean getMultivalorado() {
+		return multivalorado;
+	}
 	public void setMultivalorado(boolean multivalorado) {
 		this.multivalorado = multivalorado;
 	}
 	public boolean isClavePrimaria() {
+		return ClavePrimaria;
+	}
+	public boolean getClavePrimaria() {
 		return ClavePrimaria;
 	}
 	public void setClavePrimaria(boolean clavePrimaria) {
