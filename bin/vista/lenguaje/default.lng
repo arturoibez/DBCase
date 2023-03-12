@@ -608,7 +608,12 @@ aceptar=Accept
 <<<<<<< HEAD
 casosPrueba=Open Examples
 recentfiles=Recent files
+<<<<<<< HEAD
+copiar=Copy
+pegar=Paste
+=======
 =======
 casosPrueba=Open test examples
 recentfiles=Recent files
 >>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
+>>>>>>> 4d1665726918b4ac02f3770c9baab125ca64bd7f

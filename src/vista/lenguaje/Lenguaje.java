@@ -658,6 +658,9 @@ public class Lenguaje {
 	public static final int ACEPTAR = 5068;
 	//Test cases
 	public static final int OPEN_CASOS = 5069;
+	//copiar y pegar
+	public static final int COPIAR = 5070;
+	public static final int PEGAR = 5071;
 	
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
@@ -1403,6 +1406,8 @@ public class Lenguaje {
 		case ACEPTAR: texto=_textos.get("aceptar");break;
 		case OPEN_CASOS: texto=_textos.get("casosPrueba");break;
 		case RECENT_FILES: texto=_textos.get("recentfiles");break;
+		case COPIAR: texto=_textos.get("copiar");break;
+		case PEGAR: texto=_textos.get("pegar");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

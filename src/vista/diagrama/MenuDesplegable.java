@@ -102,6 +102,20 @@ public class MenuDesplegable extends JPopupMenu {
 				}
 			});
 			this.add(j4);
+			
+			//Pegar
+			JMenuItem j5 = new JMenuItem(Lenguaje.text(Lenguaje.PEGAR));
+			j5.setFont(theme.font());
+			j5.setForeground(theme.fontColor());
+			j5.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+					Point2D p = menu.punto;
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Pegar, p);
+				}
+			});
+			this.add(j5);
+			
 			return;
 		}
 		
@@ -197,6 +211,20 @@ public class MenuDesplegable extends JPopupMenu {
 				}
 			});
 			this.add(j6);
+			
+			//copiar Entidad
+			JMenuItem j7 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
+			j7.setFont(theme.font());
+			j7.setForeground(theme.fontColor());
+			j7.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+				TransferEntidad entidad = (TransferEntidad) menu.nodo;
+				TransferEntidad clon_entidad = entidad.clonar();
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_entidad);
+			}
+			});
+			this.add(j7);
 		}
 
 		if (nodo instanceof TransferAtributo) { // Si es atributo
@@ -396,6 +424,20 @@ public class MenuDesplegable extends JPopupMenu {
 				}
 			});
 			this.add(j8);
+			
+			//copiar Entidad
+			JMenuItem j9 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
+			j9.setFont(theme.font());
+			j9.setForeground(theme.fontColor());
+			j9.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+				TransferAtributo atributo = (TransferAtributo) menu.nodo;
+				TransferAtributo clon_atributo = atributo.clonar();
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_atributo);
+			}
+			});
+			this.add(j9);
 		}
 
 		if (nodo instanceof TransferRelacion) { // Si es relación
@@ -484,6 +526,20 @@ public class MenuDesplegable extends JPopupMenu {
 					});
 					this.add(j6);
 				}
+				
+				//copiar Relacion IsA
+				JMenuItem j9 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
+				j9.setFont(theme.font());
+				j9.setForeground(theme.fontColor());
+				j9.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+					TransferRelacion relacion = (TransferRelacion) menu.nodo;
+					TransferRelacion clon_relacion = relacion.clonar();
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_relacion);
+				}
+				});
+				this.add(j9);
 			}
 
 			// Si es una relacion "Normal"
@@ -637,6 +693,20 @@ public class MenuDesplegable extends JPopupMenu {
 					}
 				});
 				this.add(j9);
+				
+				//copiar Relacion IsA
+				JMenuItem j11 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
+				j11.setFont(theme.font());
+				j11.setForeground(theme.fontColor());
+				j11.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+					TransferRelacion relacion = (TransferRelacion) menu.nodo;
+					TransferRelacion clon_relacion = relacion.clonar();
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_relacion);
+				}
+				});
+				this.add(j11);
 			} // else
 		}
 

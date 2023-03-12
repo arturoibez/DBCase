@@ -617,9 +617,14 @@ aceptar=Aceptar
 <<<<<<< HEAD
 casosPrueba=Abrir Ejemplos
 recentfiles=Archivos recientes
+<<<<<<< HEAD
+copiar=Copiar
+pegar=Pegar
+=======
 =======
 casosPrueba=Abrir casos de prueba
 zoomHeader=Â¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
 recentfiles=Archivos recientes
 >>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
+>>>>>>> 4d1665726918b4ac02f3770c9baab125ca64bd7f
