@@ -32,6 +32,8 @@ public class TransferRelacion extends Transfer {
 		return getTipo().equals("IsA");
 	}	
 	
+	private int pegado;
+	
 	public TransferRelacion clonar() {
 		TransferRelacion clon_tr = new TransferRelacion();
 		clon_tr.setIdRelacion(this.getIdRelacion());
@@ -43,6 +45,7 @@ public class TransferRelacion extends Transfer {
 		clon_tr.setRelacionConParticipacion(this.getRelacionConParticipacion());
 		clon_tr.setListaEntidadesYAridades((Vector) this.getListaEntidadesYAridades().clone());
 		clon_tr.setListaAtributos((Vector) this.getListaAtributos().clone());
+		clon_tr.setPegado(this.getPegado());
 		if (!clon_tr.isIsA()){
 			clon_tr.setListaRestricciones((Vector) this.getListaRestricciones().clone());
 			clon_tr.setListaUniques((Vector) this.getListaUniques().clone());
@@ -67,6 +70,7 @@ public class TransferRelacion extends Transfer {
 		this.listaUniques = arg0.getListaUniques();
 		this.rol=arg0.getRol();
 		this.offsetAttr = arg0.getOffsetAttr();
+		this.pegado = arg0.getPegado();
 		//Si entidad ya está asociada con dicha relación, la línea que las unirá deberá ser diferente a la existente
 		//Filtramos la lista de entidades quitando las entidades que ya estan
 		//Puesto que se van a permitir hacer relaciones circulares no filtramos la lista de entidades
@@ -298,5 +302,13 @@ public class TransferRelacion extends Transfer {
 	}
 	public void setRelacionConCardinalidad1(boolean relacionConCardinalidad1) {
 		this.relacionConCardinalidad1 = relacionConCardinalidad1;
+	}
+	
+	public int getPegado() {
+		return this.pegado;
+	}
+	
+	public void setPegado(int p) {
+		this.pegado = p;
 	}
 }

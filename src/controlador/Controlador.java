@@ -182,9 +182,6 @@ public class Controlador {
 	private Vector<TransferAtributo> antiguosSubatributos;
 	
 	private Transfer copiado;
-	private int contCopiadosEnt = 0;
-	private int contCopiadosRel = 0;
-	private int contCopiadosAt = 0;
 	
 	public Controlador() {
 		iniciaFrames();
@@ -864,9 +861,9 @@ public class Controlador {
 			TransferAtributo ta = (TransferAtributo) datos;
 			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
 			
-			this.getTheServiciosEntidades().ListaDeEntidades();
-			this.getTheServiciosAtributos().ListaDeAtributos();
-			this.getTheServiciosRelaciones().ListaDeRelaciones();
+			//this.getTheServiciosEntidades().ListaDeEntidades();
+			//this.getTheServiciosAtributos().ListaDeAtributos();
+			//this.getTheServiciosRelaciones().ListaDeRelaciones();
 			//modificar la tabla de Uniques de la entidad o la relacion a la que pertenece
 			Vector<TransferRelacion> relaciones = this. getTheGUIPrincipal().getListaRelaciones();
 			Vector<TransferEntidad> entidades = this.getTheGUIPrincipal().getListaEntidades();
@@ -1293,10 +1290,11 @@ public class Controlador {
 		case PanelDiseno_Click_Pegar:{
 			if(this.copiado instanceof TransferEntidad) {
 				TransferEntidad te = (TransferEntidad) copiado;
+				int p = te.getPegado();
 				TransferEntidad nueva = new TransferEntidad();
 				Point2D punto = (Point2D) datos;
 				nueva.setPosicion(punto);
-				nueva.setNombre(te.getNombre() + Integer.toString(this.contCopiadosEnt));
+				nueva.setNombre(te.getNombre() + Integer.toString(p));
 				nueva.setDebil(te.isDebil());
 				nueva.setListaAtributos(new Vector());
 				nueva.setListaClavesPrimarias(new Vector());
@@ -1342,11 +1340,13 @@ public class Controlador {
 				nueva.setFrecuencia(te.getFrecuencia());
 				nueva.setVolumen(te.getVolumen());
 				nueva.setOffsetAttr(te.getOffsetAttr());
-				++this.contCopiadosEnt;
+				te.setPegado(p + 1);
+				ActualizaArbol(te);
 			}
 			
 			if(this.copiado instanceof TransferRelacion) {
 				TransferRelacion tr = (TransferRelacion) copiado;
+				int p = tr.getPegado();
 				TransferRelacion nueva = new TransferRelacion();
 				Point2D punto = (Point2D) datos;
 				nueva.setPosicion(punto);
@@ -1356,7 +1356,7 @@ public class Controlador {
 				
 				else {
 					
-					nueva.setNombre(tr.getNombre() + Integer.toString(this.contCopiadosRel));
+					nueva.setNombre(tr.getNombre() + Integer.toString(p));
 					nueva.setCheckQuitarFlechas(tr.getCheckQuitarFlechas());
 					nueva.setListaEntidadesYAridades(new Vector<EntidadYAridad>());
 					nueva.setFrecuencia(tr.getFrecuencia());
@@ -1405,14 +1405,15 @@ public class Controlador {
 						}
 						
 					}
-					++this.contCopiadosRel;
-					
+					tr.setPegado(p+1);
+					ActualizaArbol(tr);
 					
 				}
 			}
 			
 			if(this.copiado instanceof TransferAtributo) {
 				TransferAtributo ta = (TransferAtributo) copiado;
+				int p = ta.getPegado();
 				TransferAtributo nuevo = new TransferAtributo(this);
 				Point2D punto = (Point2D) datos;
 				nuevo.setPosicion(punto);
@@ -1421,7 +1422,7 @@ public class Controlador {
 				nuevo.setClavePrimaria(ta.getClavePrimaria());
 				nuevo.setCompuesto(ta.getCompuesto());
 				nuevo.setDominio(ta.getDominio());
-				nuevo.setNombre(ta.getNombre() + Integer.toString(this.contCopiadosAt));
+				nuevo.setNombre(ta.getNombre() + Integer.toString(p));
 				nuevo.setIdAtributo(ta.getIdAtributo() + 10);
 				nuevo.setMultivalorado(ta.getMultivalorado());
 				nuevo.setNotnull(ta.getNotnull());
@@ -1459,12 +1460,14 @@ public class Controlador {
 					mensajeDesde_GUI(TC.GUIAnadirSubAtributoAtributo_Click_BotonAnadir, v);
 				}
 				
-				++this.contCopiadosAt;
+				ta.setPegado(p + 1);
+				ActualizaArbol(ta);
 				
 			}
 			
 			break;
 		}
+		
 		default: break;
 		} // switch 
 	}
@@ -1991,6 +1994,7 @@ public class Controlador {
 			}
 			//Si se ha debilitado añadimos la relación entre la entidad modificada y la especificada en la GUI
 			if(debilitar) {
+				boolean debilitada = false;
 				if(!eraDebil) {
 					this.getTheServiciosEntidades().debilitarEntidad(te);
 				}
@@ -2023,10 +2027,22 @@ public class Controlador {
 					v3.add(false);
 					this.getTheServiciosRelaciones().anadirEntidadARelacion(v3);
 				}
+				else if(!eraDebil) {
+					this.getTheServiciosEntidades().debilitarEntidad(te);
+				}
 			}
 			else if(eraDebil) {
 				this.getTheServiciosEntidades().debilitarEntidad(te);
-				this.getTheServiciosRelaciones().restablecerDebilidadRelaciones();
+				//this.getTheServiciosRelaciones().restablecerDebilidadRelaciones();
+				for(int i = 0; i<this.getListaRelaciones().size(); ++i) {
+					TransferRelacion tr = this.getListaRelaciones().get(i);
+					Vector<EntidadYAridad> eya = tr.getListaEntidadesYAridades();
+					for(int j = 0; j < eya.size(); ++j) {
+						if (eya.get(j).getEntidad() == te.getIdEntidad() && tr.getTipo().equals("Debil"))
+							this.getTheServiciosRelaciones().debilitarRelacion(tr);
+					}					
+				}
+				
 			}
 			ActualizaArbol((Transfer)v.get(0));
 			this.getTheServiciosSistema().reset();
@@ -4299,7 +4315,11 @@ public class Controlador {
 	}
 
 	public Vector<TransferRelacion> getListaRelaciones() {
-		return listaRelaciones;
+		return this.listaRelaciones;
+	}
+	
+	public Vector<TransferAtributo> getListaAtributos() {
+		return listaAtributos;
 	}
 
 	public void setListaRelaciones(Vector<TransferRelacion> listaRelaciones) {

@@ -129,6 +129,14 @@ public class ServiciosAtributos {
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_ERROR_DAOAtributos, ta);
 			else{
 				Transfer elem_mod = this.eliminaRefererenciasAlAtributo(ta);
+				if (elem_mod instanceof TransferAtributo) {
+					TransferAtributo t = (TransferAtributo) elem_mod;
+					Vector<TransferAtributo> cta = this.controlador.getListaAtributos();
+					for (int i = 0; i<cta.size(); ++i) {
+						if(cta.get(i).getIdAtributo() == t.getIdAtributo()) ((TransferAtributo) elem_mod).setClavePrimaria(cta.get(i).getClavePrimaria());
+					}
+				}
+					
 				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
 				vectorAtributoYElemMod.add(ta);
 				vectorAtributoYElemMod.add(elem_mod);

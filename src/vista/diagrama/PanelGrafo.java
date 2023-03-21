@@ -93,8 +93,14 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	private boolean mouseMode = false;
 	private DefaultModalGraphMouse graphMouse;
 	private Theme theme = Theme.getInstancia();
+	
+	private int[] coords;
+	private int diagramWidth;
 
 	public PanelGrafo(Vector<TransferEntidad> entidades, Vector<TransferAtributo> atributos, Vector<TransferRelacion> relaciones) {
+		coords = new int[2];
+		coords[0]=400;
+		coords[1]=50;
 		this.setLayout(new GridLayout(1, 1));
 		// Para que los grafos admitan paralelas el tipo de grafo debe ser este:
 		graph = new UndirectedSparseMultigraph<Transfer, Object>();
@@ -516,10 +522,30 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		case 127:
 			this.clickDerecho.suprimir();
 			break;
+			
+		case 67: //CTR C
+			this.clickDerecho.copiar();
+			break;	
+			
+		case 86: //CTR V
+			Point2D p = new Point2D.Double(coords[0],coords[1]);
+			this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Pegar, p);
+			this.aumentaCoords();
+			break;
+			
 		case 83:// CTRL S
 			if (e.isControlDown())
 				this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Guardar, null);
 			break;
+			
+		case 89: //CTR Y
+			this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+			break;	
+			
+		case 90: //CTR Z
+			this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+			break;
+			
 		case 32:// Space
 			toggleDragMode(true);
 		break;
@@ -899,6 +925,11 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	
 	public void paintC(Graphics g) {
 		super.paint(g);
+	}
+	
+	private void aumentaCoords() {
+		coords[0]=coords[0]<diagramWidth?coords[0]-150:70;
+		coords[1]=coords[0]==70?coords[1]+70:coords[1];
 	}
 
 }
