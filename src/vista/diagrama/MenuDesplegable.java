@@ -221,7 +221,7 @@ public class MenuDesplegable extends JPopupMenu {
 				MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 				TransferEntidad entidad = (TransferEntidad) menu.nodo;
 				TransferEntidad clon_entidad = entidad.clonar();
-				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_entidad);
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, entidad);
 			}
 			});
 			this.add(j7);
@@ -434,7 +434,7 @@ public class MenuDesplegable extends JPopupMenu {
 				MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 				TransferAtributo atributo = (TransferAtributo) menu.nodo;
 				TransferAtributo clon_atributo = atributo.clonar();
-				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_atributo);
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, atributo);
 			}
 			});
 			this.add(j9);
@@ -536,7 +536,7 @@ public class MenuDesplegable extends JPopupMenu {
 					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 					TransferRelacion relacion = (TransferRelacion) menu.nodo;
 					TransferRelacion clon_relacion = relacion.clonar();
-					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_relacion);
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, relacion);
 				}
 				});
 				this.add(j9);
@@ -694,7 +694,7 @@ public class MenuDesplegable extends JPopupMenu {
 				});
 				this.add(j9);
 				
-				//copiar Relacion IsA
+				//copiar Relacion
 				JMenuItem j11 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
 				j11.setFont(theme.font());
 				j11.setForeground(theme.fontColor());
@@ -703,7 +703,7 @@ public class MenuDesplegable extends JPopupMenu {
 					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 					TransferRelacion relacion = (TransferRelacion) menu.nodo;
 					TransferRelacion clon_relacion = relacion.clonar();
-					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, clon_relacion);
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, relacion);
 				}
 				});
 				this.add(j11);
@@ -742,6 +742,17 @@ public class MenuDesplegable extends JPopupMenu {
 		}
 	}
 	
+	protected void copiar() {
+		PickedState<Transfer> p = vv.getPickedVertexState();
+		int seleccionados = 0;
+		for (@SuppressWarnings("unused")Transfer t : p.getPicked()) seleccionados++;
+		PickedState<Transfer> ps = vv.getPickedVertexState();
+		for (Transfer t : ps.getPicked()) {
+			this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, t);
+			return;
+		}
+	}
+	
 	@Override
     public void paintComponent(final Graphics g) {
         g.setColor(theme.menuDesplegable());
@@ -768,5 +779,9 @@ public class MenuDesplegable extends JPopupMenu {
 
 	protected void setControlador(Controlador controlador) {
 		this.controlador = controlador;
+	}
+	
+	public Point2D getPunto() {
+		return this.punto;
 	}
 }
