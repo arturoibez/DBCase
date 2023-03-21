@@ -138,6 +138,8 @@ public class Controlador {
 	private ServiciosDominios theServiciosDominios;
 	private GeneradorEsquema theServiciosSistema;
 	private ServiciosReporte theServiciosReporte;
+	//Archivos recientes
+	private static ArchivosRecientes archivosRecent = new ArchivosRecientes();
 	//Otros
 	private String path;
 	private Vector<TransferAtributo> listaAtributos;
@@ -396,6 +398,7 @@ public class Controlador {
 		theGUIRenombrarDominio.setControlador(this);
 		theGUIModificarElementosDominio = new GUI_ModificarDominio();
 		theGUIModificarElementosDominio.setControlador(this);
+		
 		
 		// Otras
 		about = new GUI_About();
@@ -1689,6 +1692,10 @@ public class Controlador {
 			}else{
 				this.getTheGUIWorkSpace().setActiva(4);
 			}
+		}
+
+		case GUI_Principal_Click_Submenu_Recientes:{
+			theGUIRecientes = new GUI_Recientes(archivosRecent.darRecientes(),this);
 			break;
 		}
 		
@@ -4812,3 +4819,4 @@ public class Controlador {
 		}
 	}
 }
+

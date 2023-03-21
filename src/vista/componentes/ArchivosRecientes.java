@@ -13,17 +13,27 @@ public class ArchivosRecientes {
 		if(recientes.contains(f)) {
 			recientes.remove(f);
 		}
+<<<<<<< HEAD
 		recientes.add(0,f); //lo aÃ±ade al principio
 		if(recientes.size() > max_size) {
 			recientes.remove(recientes.size()-1);
+=======
+		recientes.add(0,f); //lo añade al principio
+		if(recientes.size() > max_size) {
+			recientes.remove(recientes.size()-1);//elimina el que hace mas tiempo que no se abre
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 		}
 	}
 	
 	public  ArrayList<File> darRecientes(){
 		return recientes;
 	}
+<<<<<<< HEAD
 	
 	public void recibeRecientes( ArrayList<File> v) {
+=======
+	public void recibeRecientes( ArrayList<File>v) {
+>>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 		recientes = v;
 	}
 	
