@@ -13,6 +13,7 @@ public class TransferEntidad extends Transfer{
 	private Vector listaClavesPrimarias;
 	private Vector listaRestricciones;
 	private Vector listaUniques;
+	private Vector listaRelaciones; //relaciones en las que participa guarda el Id
 	private Point2D posicion;
 	private int volumen;
 	private int frecuencia;
@@ -28,6 +29,7 @@ public class TransferEntidad extends Transfer{
 		clon_te.setListaClavesPrimarias((Vector) this.getListaClavesPrimarias().clone());
 		clon_te.setListaRestricciones((Vector) this.getListaRestricciones().clone());
 		clon_te.setListaUniques((Vector) this.getListaUniques().clone());
+		clon_te.setListaRelaciones((Vector) this.getListaRelaciones().clone());
 		clon_te.setPosicion((Point2D) this.getPosicion().clone());	
 		clon_te.setVolumen(this.getVolumen());
 		clon_te.setFrecuencia(this.getFrecuencia());
@@ -43,6 +45,7 @@ public class TransferEntidad extends Transfer{
 		this.listaClavesPrimarias = arg0.getListaClavesPrimarias();
 		this.listaRestricciones = arg0.getListaRestricciones();
 		this.listaUniques = arg0.getListaUniques();
+		this.listaRelaciones = arg0.getListaRelaciones();
 		this.volumen = arg0.getVolumen();
 		this.frecuencia = arg0.getFrecuencia();
 		this.posicion = new Point2D.Double(arg0.getPosicion().getX(),arg0.getPosicion().getY());
@@ -140,6 +143,15 @@ public class TransferEntidad extends Transfer{
 	public String toString() {
 		return this.nombre;
 	}
+
+	public Vector getListaRelaciones() {
+		return listaRelaciones;
+	}
+
+	public void setListaRelaciones(Vector listaRelaciones) {
+		this.listaRelaciones = listaRelaciones;
+	}
+	
 	@Override
 	public Shape toShape() {
 		// 	Si el tamaño del nombre es pequeño dibuja rectángulo standard

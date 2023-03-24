@@ -24,8 +24,10 @@ import modelo.servicios.ServiciosEntidades;
 import modelo.servicios.ServiciosRelaciones;
 import modelo.servicios.ServiciosReporte;
 import modelo.servicios.GeneradorEsquema;
+import modelo.servicios.ServiciosAgregaciones;
 import vista.frames.GUI_Pregunta;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferConexion;
 import modelo.transfers.TransferDominio;
@@ -138,8 +140,8 @@ public class Controlador {
 	private ServiciosDominios theServiciosDominios;
 	private GeneradorEsquema theServiciosSistema;
 	private ServiciosReporte theServiciosReporte;
-	//Archivos recientes
-	private static ArchivosRecientes archivosRecent = new ArchivosRecientes();
+	private ServiciosAgregaciones theServiciosAgregaciones;
+
 	//Otros
 	private String path;
 	private Vector<TransferAtributo> listaAtributos;
@@ -307,6 +309,7 @@ public class Controlador {
 			fw.write("<RelationList proximoID=\"1\">" + "\n" + "</RelationList>"+ "\n");
 			fw.write("<AttributeList proximoID=\"1\">" + "\n" + "</AttributeList>"+ "\n");
 			fw.write("<DomainList proximoID=\"1\">" + "\n" + "</DomainList>");
+			fw.write("<AggregationList proximoID=\"1\">" + "\n" + "</AggregationList>");
 			fw.write("</Inf_dbcase>" +"\n");
 			fw.close();
 			return true;
@@ -332,6 +335,8 @@ public class Controlador {
 		theServiciosSistema.setControlador(this);
 		theServiciosReporte=new ServiciosReporte();
 		theServiciosReporte.setControlador(this);
+		theServiciosAgregaciones = new ServiciosAgregaciones();
+		theServiciosAgregaciones.setControlador(this);
 		// Fuera
 		theGUIInsertarEntidad = new GUI_InsertarEntidad();
 		theGUIInsertarEntidad.setControlador(this);
@@ -471,7 +476,6 @@ public class Controlador {
 		
 		switch(mensaje){
 		case PanelDiseno_Click_InsertarEntidad:{
-			//System.out.println("hola");
 			Point2D punto = (Point2D) datos;
 			this.getTheGUIInsertarEntidad().setPosicionEntidad(punto);
 			this.getTheGUIInsertarEntidad().setActiva();
@@ -1692,10 +1696,6 @@ public class Controlador {
 			}else{
 				this.getTheGUIWorkSpace().setActiva(4);
 			}
-		}
-
-		case GUI_Principal_Click_Submenu_Recientes:{
-			theGUIRecientes = new GUI_Recientes(archivosRecent.darRecientes(),this);
 			break;
 		}
 		
@@ -1896,6 +1896,25 @@ public class Controlador {
 	// Mensajes que le mandan las GUIs al controlador
 	public void mensajeDesde_GUI(TC mensaje, Object datos){
 		switch(mensaje){
+		
+		case GUIInsertarAgregacion:{
+			Vector v = (Vector) datos;
+			TransferRelacion t = (TransferRelacion) v.elementAt(0); //elemento sobre el que se construye la agregacion
+			String nombre = (String) v.elementAt(1); //nombre de la nueva agregacion
+			TransferAgregacion agreg = new TransferAgregacion();
+
+			agreg.setNombre(nombre);
+			Vector relaciones = new Vector();
+			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
+			agreg.setListaRelaciones(relaciones);
+			agreg.setListaAtributos(new Vector());
+			
+			this.getTheServiciosAgregaciones().anadirAgregacion(agreg);
+			ActualizaArbol(agreg);
+			this.getTheServiciosSistema().reset();
+			break;
+		}
+		
 		case GUIInsertarEntidad_Click_BotonInsertar:{
 			TransferEntidad te = (TransferEntidad) datos;
 			this.getTheServiciosEntidades().anadirEntidad(te,pilaDeshacer);
@@ -2362,6 +2381,9 @@ public class Controlador {
 			if(relDebil && entDebil && relTieneEntDebil)
 				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ALREADY_WEAK_ENTITY), Lenguaje.text(Lenguaje.ERROR), 0);
 			else this.getTheServiciosRelaciones().anadirEntidadARelacion(v);
+			
+			//añadimos la relacion a la entidad para que sepa a que relaciones esta conectada
+			this.getTheServiciosEntidades().anadirRelacionAEntidad(v);
 			
 			ActualizaArbol(tr);
 			this.getTheServiciosSistema().reset();
@@ -3303,7 +3325,39 @@ public class Controlador {
 		default: break;
 		} // switch
 	}
-
+	
+	//mensajes que manda el ServivioAgregaciones al controlador
+	public void mensajeDesde_AG(TC mensaje, Object datos) {
+		switch(mensaje) {
+		
+		case SAG_InsertarAgregacion_ERROR_NombreVacio: {
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_AG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
+		case SAG_InsertarAgregacion_ERROR_NombreDeYaExiste: {
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEAT_AG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
+		case SAG_InsertarAgregacion_ERROR_DAO:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.AGGREGATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
+		case SAG_RenombrarAgregacion_ERROR_NombreVacio:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
+		case SAG_RenombrarAgregacion_HECHO:{
+			setCambios(true);
+			Vector v = (Vector) datos;
+			TransferAgregacion tr = (TransferAgregacion) v.get(0);
+			v.get(1);
+			v.get(2);
+			
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarAgregacion, tr);
+			break;
+		}
+		}
+	}
 	
 	// Mensajes que mandan los Servicios de Relaciones al Controlador
 	public void mensajeDesde_SR(TC mensaje, Object datos){
@@ -4210,6 +4264,13 @@ public class Controlador {
 	}
 	public void setTheServiciosEntidades(ServiciosEntidades theServiciosEntidades) {
 		this.theServiciosEntidades = theServiciosEntidades;
+	}
+	public ServiciosAgregaciones getTheServiciosAgregaciones() {
+		return theServiciosAgregaciones;
+	}
+
+	public void setTheServiciosAgregaciones(ServiciosAgregaciones theServiciosAgregaciones) {
+		this.theServiciosAgregaciones = theServiciosAgregaciones;
 	}
 	public ServiciosRelaciones getTheServiciosRelaciones() {
 		return theServiciosRelaciones;

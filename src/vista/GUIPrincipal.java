@@ -64,6 +64,7 @@ import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.TipoDominio;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferConexion;
 import modelo.transfers.TransferDominio;
@@ -688,6 +689,11 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 			TransferRelacion tr = (TransferRelacion) datos;
 			panelDiseno.ModificaValorInterno(tr);
 			break;	
+		}
+		case Controlador_RenombrarAgregacion:{
+			TransferAgregacion tr = (TransferAgregacion) datos;
+			panelDiseno.ModificaValorInterno(tr);
+			break;
 		}
 		case Controlador_DebilitarRelacion:{
 			TransferRelacion tr = (TransferRelacion) datos;
