@@ -49,6 +49,8 @@ public class ServiciosRelaciones {
 	 * Si el nombre ya existe -> SR_InsertarRelacion_ERROR_NombreDeRelacionYaExiste
 	 * Si al usar el DAORelaciones se produce un error -> SR_InsertarRelacion_ERROR_DAO
 	 */
+	
+	//hay que controlar que no exista el nombre de una agregacion
 	public void anadirRelacion(TransferRelacion tr){
 		if (tr.getNombre().isEmpty()){
 			controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio, null);
@@ -156,6 +158,8 @@ public class ServiciosRelaciones {
 			controlador.mensajeDesde_SR(TC.SR_EliminarRelacionNormal_HECHO, tr);
 		}
 	}
+	
+	
 	
 	public void renombrarRelacion(TransferRelacion tr, String nuevoNombre){
 		Vector<Object> v = new Vector<Object>();
@@ -328,6 +332,32 @@ public class ServiciosRelaciones {
 		}
 		return entidad;
 	}
+	
+	public void getSubesquema(TransferRelacion tr, Vector rel) {
+		if(!rel.contains(tr.getIdRelacion())) {//si  está en el vector que llevamos hasta ahora aqui se acaba esta rama
+			rel.add(tr.getIdRelacion()); //si no, se añade y exploramos las entidades que tiene para ver sus relaciones
+			Vector<EntidadYAridad> entidadesRelacionadas = tr.getListaEntidadesYAridades();
+			ServiciosEntidades serEn = new ServiciosEntidades();
+			serEn.setControlador(controlador);
+			Vector<TransferEntidad> entidades = serEn.ListaDeEntidadesNOVoid();
+			Vector<TransferRelacion> relaciones = this.ListaDeRelacionesNoVoid();
+			for(int i = 0; i < entidadesRelacionadas.size(); ++i) {//recorremos entidades que participan en la relacion que estamos estudiando
+				for(int j = 0; j < entidades.size(); ++j) {//para cada una comparamos con las entidades del DAO para coger su transfer
+					if(entidades.get(j).getIdEntidad() == entidadesRelacionadas.get(i).getEntidad()) {
+						Vector<String> relacionesDeEntidad = entidades.get(j).getListaRelaciones();//sacamos las relaciones en que participa
+						for(int k = 0; k < relacionesDeEntidad.size(); ++k) {//las recorremos
+							for(int h = 0; h < relaciones.size(); ++h) {//comparamos conlas relaciones del DAO para coger su transfer
+								if(Integer.valueOf(relacionesDeEntidad.get(k)) == relaciones.get(h).getIdRelacion() && relaciones.get(h).getIdRelacion() != tr.getIdRelacion()) { //Si la relacion no es la estudiada
+									getSubesquema(relaciones.get(h),rel);//para cada relacion en que participen las entidades de la relacion que estamos estudiando repetimos el proceso recursivamente
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	/*
 	 * Anadir un atributo a una relacion
 	 * -> en v viene la relacion (pos 0) y el atributo (pos 1)
@@ -375,6 +405,8 @@ public class ServiciosRelaciones {
 		// Si todo ha ido bien devolvemos al controlador la relacion modificada y el nuevo atributo
 		this.controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_HECHO, v); 
 	}
+	
+	
 	
 	public void anadirRestriccion(Vector v){
 		TransferRelacion tr = (TransferRelacion) v.get(0);

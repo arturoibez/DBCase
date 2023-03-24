@@ -653,11 +653,19 @@ public class Lenguaje {
 	public static final int MENU_FISICODESC = 5064;
 	public static final int MENU_DOMINIOSDESC = 5065;
 	public static final int MENU_FISICODESC2 = 5066;
+	public static final int ADD_AGREG = 5067;
 	//Zoom
-	public static final int ZOOM_HEADER = 5067;
-	public static final int ACEPTAR = 5068;
+	public static final int ZOOM_HEADER = 5100;
+	public static final int ACEPTAR = 5101;
 	//Test cases
-	public static final int OPEN_CASOS = 5069;
+	public static final int OPEN_CASOS = 5200;
+	//Agregaciones
+	public static final int CONFIRM_AGREG = 5300;
+	public static final int EMPTY_AG_NAME = 5301;
+	public static final int REPEAT_AG_NAME = 5302;
+	public static final int AGGREGATIONS_FILE_ERROR = 5303;
+	public static final int EMPTY_AGREG_NAME = 5304;
+	public static final int INT_NOM_AGREG = 5305;
 	
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
@@ -882,6 +890,7 @@ public class Lenguaje {
 		case EMPTY_DOM_NAME: texto = _textos.get("emptyDomName"); break;//El nombre del dominio es vacío.
 		case EMPTY_ENT_NAME: texto = _textos.get("emptyEntName"); break;//El nombre de la entidad es vacío.
 		case EMPTY_REL_NAME: texto = _textos.get("emptyRelName"); break;//El nombre de la relación es vacío.
+		case EMPTY_AGREG_NAME: texto = _textos.get("emptyAgregName"); break;
 		case EMPTY_SUBATTR_NAME: texto = _textos.get("emptySubattribName"); break;//El nombre del subatributo es vacío.
 		case EMPTY_TYPE_NAME: texto = _textos.get("emptyTypeName"); break;//El nuevo tipo es vacío.
 		case EMPTY_VALUES: texto = _textos.get("emptyValues"); break;//El campo 'valores' es vacío.
@@ -1023,6 +1032,7 @@ public class Lenguaje {
 		case SELECT_STRONG_ENTITY: texto = _textos.get("selectStrongEntity");break;
 		case WRITE_RELATION_WEAK: texto = _textos.get("writeRelationWeak");break;
 		case CREATE_STRONG_ENTITY: texto = _textos.get("createStrongEntity");break;
+		case ADD_AGREG: texto = _textos.get("addAgreg");break;
 		
 		//GUI_InsertarRelacion
 		case INSERT_RELATION: texto = _textos.get("insertNewRelation"); break;
@@ -1403,6 +1413,11 @@ public class Lenguaje {
 		case ACEPTAR: texto=_textos.get("aceptar");break;
 		case OPEN_CASOS: texto=_textos.get("casosPrueba");break;
 		case RECENT_FILES: texto=_textos.get("recentfiles");break;
+		case CONFIRM_AGREG: texto=_textos.get("confirm_agreg");break;
+		case EMPTY_AG_NAME: texto=_textos.get("empty_ag_name");break;
+		case REPEAT_AG_NAME: texto=_textos.get("repeat_ag_name");break;
+		case AGGREGATIONS_FILE_ERROR: texto=_textos.get("agg_file_error");break;
+		case INT_NOM_AGREG: texto=_textos.get("int_nom_agreg");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

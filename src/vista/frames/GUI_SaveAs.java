@@ -182,12 +182,8 @@ public class GUI_SaveAs extends Parent_GUI{
 		if (controlador.getFileguardar().exists()) {
 			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
 			this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, controlador.getFileguardar());
-<<<<<<< HEAD
-		}	
-=======
 		}
 			
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 	}
 	
 	private void guardarComo(){

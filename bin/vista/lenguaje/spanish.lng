@@ -113,6 +113,7 @@ emptyDomName=El nombre del dominio es vacÃ­o.
 emptyDiagram=El diagrama estÃ¡ vacÃ­o.
 emptyEntName=El nombre de la entidad es vacÃ­o.
 emptyRelName=El nombre de la relaciÃ³n es vacÃ­o.
+emptyAgregName=El nombre de la agregación es vacÃ­o.
 emptySubattribName=El nombre del subatributo es vacÃ­o.
 emptyTypeName=El nuevo tipo es vacÃ­o.
 emptyValues=El campo 'valores' es vacÃ­o.
@@ -614,12 +615,13 @@ menuFisicoDesc2=Incluye tambiÃ©n la opciÃ³n de jecutar scripts reales eligie
 menuDominiosDesc=Permite crear nuevos dominios.
 zoomHeader=¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
-<<<<<<< HEAD
-casosPrueba=Abrir Ejemplos
-recentfiles=Archivos recientes
-=======
 casosPrueba=Abrir casos de prueba
 zoomHeader=Â¿Deseas cambiar el valor del zoom?
 aceptar=Aceptar
 recentfiles=Archivos recientes
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
+addAgreg=Añadir agregación
+confirm_agreg=Se añadirá a una nueva agregación todo el subesquema, ¿desea continuar?
+empty_ag_name=Nombre de agregación vacío
+repeat_ag_name=Ese nombre ya existe
+agg_file_error=Se ha producido un error en el acceso al fichero de relaciones.
+int_nom_agreg =Introduce el nombre de la agregación.

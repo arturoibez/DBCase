@@ -138,6 +138,13 @@ public enum TC {
 	//Reporte de incidencias
 	GUIReport_ReportarIncidencia,
 	GUIReport_EnviarMailIncidencia,
+	
+	
+	
+	//agregaciones
+	GUIInsertarAgregacion,
+	
+	
 	//---------------------------------------------------------------------------------
 	// Mensajes desde el Panel de Diseño
 	//---------------------------------------------------------------------------------
@@ -186,6 +193,10 @@ public enum TC {
 	PanelDiseno_Click_EditarCardinalidadEntidad,
 	PanelDiseno_Click_AnadirRestriccionARelacion,
 	PanelDiseno_Click_TablaUniqueARelacion,
+	
+	//Para todos
+	PanelDiseno_Click_InsertarAgregacion,
+	
 	// Dominios
 	PanelDiseno_Click_RenombrarDominio,
 	PanelDiseno_Click_EliminarDominio,
@@ -304,6 +315,18 @@ public enum TC {
 	SA_AnadirRestriccionAAtributo_HECHO,
 	SA_QuitarRestriccionAAtributo_HECHO,
 	SA_setRestriccionesAAtributo_HECHO,
+	
+	
+	//--------------------------------------------------------------------------------
+	// Mensajes desde los servicios de Agregaciones
+	SAG_InsertarAgregacion_ERROR_NombreVacio,
+	SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,
+	SAG_InsertarAgregacion_ERROR_DAO,
+	SAG_RenombrarAgregacion_ERROR_NombreVacio,
+	SAG_RenombrarAgregacion_HECHO,
+	
+	//esto no va aqui
+	Controlador_RenombrarAgregacion,
 	
 	//---------------------------------------------------------------------------------
 	// Mensajes desde los Servicios de Relaciones
@@ -523,9 +546,4 @@ public enum TC {
 	GUI_Principal_Cuadricula,
 	GUI_Principal_ModoSoporte,
 	GUI_Principal_IniciaFrames,
-	
-	//esto no va aqui
-	GUI_Principal_Click_Submenu_Recientes,
-	GUI_WorkSpace_Recent,
-	
 }

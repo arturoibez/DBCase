@@ -1,10 +1,7 @@
 package vista.frames;
 
 import java.awt.BorderLayout;
-<<<<<<< HEAD
 import java.awt.Color;
-=======
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -34,11 +31,7 @@ public class GUI_Recientes extends Parent_GUI{
 	
 	public GUI_Recientes(ArrayList<File> files, Controlador c) {
 		
-<<<<<<< HEAD
 		recientes = files;
-=======
-		recientes = files; 
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 		controlador = c;
 		
 		this.setTitle(Lenguaje.text(Lenguaje.DBCASE));
@@ -72,10 +65,7 @@ public class GUI_Recientes extends Parent_GUI{
 	
 	public void initCombo() {
 		combo = new JComboBox<String>();
-<<<<<<< HEAD
 		combo.setForeground(theme.fontColor());
-=======
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
 		combo.setFont(theme.font());
 		combo.setVisible(true);
 		combo.setBounds(12, 120, 521, 40);
@@ -101,13 +91,10 @@ public class GUI_Recientes extends Parent_GUI{
 		if (!ruta.endsWith(".xml")) ruta = ruta+".xml";
 	
 		controlador.setFileguardar(fich);
+		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, fich);
 		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir, ruta);
 		this.dispose();
 		
 	}
-	
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810

@@ -605,10 +605,11 @@ menuFisicoDesc2=It also has the option of executing real scripts by choosing fro
 menuDominiosDesc=It allows to create new domains.
 zoomHeader=Do you want to change the zoom value?
 aceptar=Accept
-<<<<<<< HEAD
 casosPrueba=Open Examples
 recentfiles=Recent files
-=======
-casosPrueba=Open test examples
-recentfiles=Recent files
->>>>>>> fa865d7a4a8e703c24dd1a84992d1136cfa20810
+addAgreg=Add aggregation
+confirm_agreg=All this subschema will create a new aggregation, confirm to continue
+empty_ag_name=Aggregation name is empty
+repeat_ag_name=That name already exists
+agg_file_error=An error has occurred in the relations file access.
+int_nom_agreg=Introduce aggregation's name.
