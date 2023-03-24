@@ -247,6 +247,7 @@ public class ServiciosRelaciones {
 			if(tr.getTipo().equals("Debil")) {
 				Vector <EntidadYAridad> lista_entidadesYAridades=tr.getListaEntidadesYAridades();
 				for(int j=0;j<lista_entidadesYAridades.size();++j) {
+					int ent = lista_entidadesYAridades.get(j).getEntidad();
 					if(lista_entidades.get(lista_entidadesYAridades.get(j).getEntidad()).isDebil()) {
 						tieneEntidadesDebiles=true;
 					}

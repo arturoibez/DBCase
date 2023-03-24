@@ -24,6 +24,7 @@ public class TransferAtributo extends Transfer{
 	private Vector listaRestricciones;
 	private Point2D posicion;
 	private Controlador c;
+	private int pegado = 0;
 	
 	public TransferAtributo(Controlador c) {
 		this.c = c;
@@ -113,10 +114,16 @@ public class TransferAtributo extends Transfer{
 	public boolean isMultivalorado() {
 		return multivalorado;
 	}
+	public boolean getMultivalorado() {
+		return multivalorado;
+	}
 	public void setMultivalorado(boolean multivalorado) {
 		this.multivalorado = multivalorado;
 	}
 	public boolean isClavePrimaria() {
+		return ClavePrimaria;
+	}
+	public boolean getClavePrimaria() {
 		return ClavePrimaria;
 	}
 	public void setClavePrimaria(boolean clavePrimaria) {
@@ -185,4 +192,14 @@ public class TransferAtributo extends Transfer{
 		figura = new Ellipse2D.Double(-anchura,-altura,anchura * 2,altura*2);
 		return figura;
 	}
+	
+	public int getPegado() {
+		return this.pegado;
+	}
+	
+	public void setPegado(int p) {
+		this.pegado = p;
+	}
+	
+	
 }

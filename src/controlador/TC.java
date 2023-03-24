@@ -30,6 +30,7 @@ public enum TC {
 	GUI_Principal_Zoom_Aceptar,
 	GUI_Principal_Zoom_Menos,
 	GUI_Principal_RESET,
+	GUI_Principal_DESHACER,
 	// Click en la barra de menus y submenus
 	GUI_Principal_Click_Submenu_Salir,
 	GUI_Principal_Click_Imprimir,
@@ -154,6 +155,8 @@ public enum TC {
 	PanelDiseno_Click_InsertarRelacionNormal,
 	PanelDiseno_Click_InsertarRelacionIsA,
 	PanelDiseno_Click_CrearDominio,
+	PanelDiseno_Click_Pegar,
+	PanelDiseno_Click_Copiar,
 	// Entidades
 	PanelDiseno_Click_RenombrarEntidad,
 	PanelDiseno_Click_DebilitarEntidad,

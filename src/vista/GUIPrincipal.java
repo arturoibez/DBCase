@@ -1828,6 +1828,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	public ReportPanel getModeloText() {
 		return modeloText;
 	}
+
 	
 	public ReportPanel getCodigoText() {
 		return codigoText;

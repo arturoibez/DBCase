@@ -613,3 +613,5 @@ empty_ag_name=Aggregation name is empty
 repeat_ag_name=That name already exists
 agg_file_error=An error has occurred in the relations file access.
 int_nom_agreg=Introduce aggregation's name.
+copiar=Copy
+pegar=Paste

@@ -18,6 +18,7 @@ public class TransferEntidad extends Transfer{
 	private int volumen;
 	private int frecuencia;
 	private int offsetAttr=0;
+	private int pegado = 0;
 	
 	public TransferEntidad clonar(){
 		TransferEntidad clon_te = new TransferEntidad();
@@ -174,5 +175,12 @@ public class TransferEntidad extends Transfer{
 		figura = new RoundRectangle2D.Double(-anchura,-25,anchura * 2,50,8,8);
 		return figura;
 	}
-
+	
+	public int getPegado() {
+		return this.pegado;
+	}
+	
+	public void setPegado(int p) {
+		this.pegado = p;
+	}
 }
