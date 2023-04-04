@@ -31,6 +31,9 @@ public enum TC {
 	GUI_Principal_Zoom_Menos,
 	GUI_Principal_RESET,
 	GUI_Principal_DESHACER,
+	GUI_Principal_DESHACER2,
+	GUI_Principal_REHACER,
+	GUI_WorkSpace_Click_Abrir_Deshacer,
 	// Click en la barra de menus y submenus
 	GUI_Principal_Click_Submenu_Salir,
 	GUI_Principal_Click_Imprimir,

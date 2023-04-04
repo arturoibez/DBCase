@@ -449,11 +449,19 @@ public class ServiciosEntidades {
 		Vector uniquesCopia= new Vector();; 
 		boolean encontrado=false;
 		int i=0;
-		while(i<uniques.size()){
+		
+		/*while(i<uniques.size()){
 			if(((TransferAtributo) uniques.get(i)).getNombre().equals(ta.getNombre())) encontrado=true;
 			else uniquesCopia.add(uniques.get(i));			
 			i++;
+		}*/
+		
+		while(i<uniques.size()){
+			if((uniques.get(i)).equals(ta.getNombre())) encontrado=true;
+			else uniquesCopia.add(uniques.get(i));			
+			i++;
 		}
+		
 		if(!encontrado)
 			uniquesCopia.add(ta.getNombre());
 		
