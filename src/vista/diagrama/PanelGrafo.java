@@ -526,13 +526,17 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			break;
 			
 		case 67: //CTR C
-			this.clickDerecho.copiar();
+			if (e.isControlDown()) {
+				this.clickDerecho.copiar();
+			}
 			break;	
 			
 		case 86: //CTR V
 			Point2D p = new Point2D.Double(coords[0],coords[1]);
-			this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Pegar, p);
-			this.aumentaCoords();
+			if (e.isControlDown()) {
+				this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Pegar, p);
+				this.aumentaCoords();
+			}
 			break;
 			
 		case 83:// CTRL S
@@ -541,11 +545,13 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			break;
 			
 		case 89: //CTR Y
-			this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+			if (e.isControlDown())
+				this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
 			break;	
 			
 		case 90: //CTR Z
-			this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+			if (e.isControlDown())
+				this.controlador.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
 			break;
 			
 		case 32:// Space

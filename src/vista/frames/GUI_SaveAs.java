@@ -199,6 +199,7 @@ public class GUI_SaveAs extends Parent_GUI{
 		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, f);
 		controlador.setFileguardar(f);
 	}
+	
 			
 	/*GETTERS & SETTERS*/
 	public Controlador getControlador() {
@@ -207,6 +208,10 @@ public class GUI_SaveAs extends Parent_GUI{
 
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
+	}
+	
+	public MyFileChooser getJFC() {
+		return this.jfc;
 	}
 
 	@SuppressWarnings("static-access")

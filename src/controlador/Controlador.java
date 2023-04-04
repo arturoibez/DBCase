@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -187,6 +188,10 @@ public class Controlador {
 	
 	private Transfer copiado;
 	
+	private long tiempoGuardado = System.currentTimeMillis()/1000;//ultima vez que se guardo el documento en milisegudos
+	
+	private int contFicherosDeshacer = 0;
+	
 	public Controlador() {
 		iniciaFrames();
 		cambios = false;
@@ -292,6 +297,22 @@ public class Controlador {
         		// Establecemos la base de datos por defecto
         		if (conf.existeFichero())
         			controlador.getTheGUIPrincipal().cambiarConexion(conf.obtenGestorBBDD());
+        		
+        		if (ultimo.exists()){
+        			//Almacenamos nuestro primer fichero en la carpeta usada para la tarea deshacer
+           		 	File directorio = new File(System.getProperty("user.dir")+"/deshacer");
+           		 	if (!directorio.exists()) {
+           		 		if (directorio.mkdirs()) {
+           		 			// System.out.println("Directorio creado");
+           		 		} 
+           		 		else {
+           		 			System.out.println("Error al crear directorio");
+           		 		}
+           		 	}
+           		 	controlador.guardarDeshacer();
+        		}
+        		
+        		
             }
         });
 	}
@@ -438,6 +459,23 @@ public class Controlador {
 			break;
 		}
 		case GUI_WorkSpace_Click_Abrir:{
+			this.contFicherosDeshacer = 0;
+			String abrirPath =(String)datos;
+			String tempPath =this.filetemp.getAbsolutePath();
+			FileCopy(abrirPath, tempPath);
+			SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+					getTheServiciosSistema().reset();
+					theGUIPrincipal.loadInfo();
+					getTheGUIPrincipal().reiniciar();
+	        }});
+			setCambios(false);
+			this.guardarDeshacer();
+			break;
+		}
+		
+		case GUI_WorkSpace_Click_Abrir_Deshacer:{//tenemos que diferencarsi abrimos un nuevo proyecto o el de deshacer
 			String abrirPath =(String)datos;
 			String tempPath =this.filetemp.getAbsolutePath();
 			FileCopy(abrirPath, tempPath);
@@ -458,6 +496,7 @@ public class Controlador {
 			FileCopy(tempPath, guardarPath);
 			this.getTheGUIWorkSpace().setInactiva();
 			setCambios(false);
+			this.tiempoGuardado = System.currentTimeMillis()/1000;
 			break;
 		}
 		case GUI_WorkSpace_ERROR_CreacionFicherosXML:{
@@ -472,7 +511,11 @@ public class Controlador {
 	// Mensajes que manda el Panel de Diseño al Controlador
 	public void mensajeDesde_PanelDiseno(TC mensaje, Object datos){
 		
-		
+		 long tiempoActual = System.currentTimeMillis()/1000;
+		 long ti = (tiempoActual - this.tiempoGuardado);
+		 //System.out.println(ti);// lo que ha transcurrido en segundos desde la ultima ve que se guardo
+		 if (cambios && ti > 1800) // si ha pasado mas de media hora
+			 this.guardarBackup();
 		
 		switch(mensaje){
 		case PanelDiseno_Click_InsertarEntidad:{
@@ -1547,10 +1590,32 @@ public class Controlador {
 			report.setActiva();
 			break;
 		}
-		case GUI_Principal_DESHACER:{
+		
+		/*case GUI_Principal_DESHACER:{
 			funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
 			break;
+		}*/
+		
+		case GUI_Principal_DESHACER2:{
+			String str = fileguardar.getPath().replace(".xml","");
+		    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml"; 
+		    if(this.contFicherosDeshacer > 1) 
+		    	this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
+		    else return;
+		    this.contFicherosDeshacer = this.contFicherosDeshacer-1;
+		    setCambios(true);
+		    break;
 		}
+		
+		case GUI_Principal_REHACER:{
+			String str = fileguardar.getPath().replace(".xml","");
+		    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml"; 
+		    this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
+		    ++this.contFicherosDeshacer;
+		    setCambios(true);
+		    break;
+		}
+		
 		case GUI_Principal_Vista1:{
 			this.getTheGUIPrincipal().modoProgramador();break;
 		}
@@ -1882,6 +1947,7 @@ public class Controlador {
 			TransferConexion tc = (TransferConexion)datos;
 			this.getTheGuiSeleccionarConexion().setConexion(tc);
 			this.getTheGuiSeleccionarConexion().setActiva();
+			break;
 		}
 		case GUI_Principal_Click_SubmenuAnadirEntidad:{
 			Point2D punto = (Point2D) datos;
@@ -2496,9 +2562,12 @@ public class Controlador {
 	// Mensajes que mandan los Servicios de Entidades al Controlador
 	public void mensajeDesde_SE(TC mensaje, Object datos){
 		
+		
+		
 		if(mensaje == TC.SE_InsertarEntidad_HECHO || mensaje == TC.SE_RenombrarEntidad_HECHO || mensaje == TC.SE_AnadirAtributoAEntidad_HECHO || mensaje == TC.SE_EliminarEntidad_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
+			this.guardarDeshacer();
 		}
 		
 		
@@ -2827,9 +2896,12 @@ public class Controlador {
 	// Mensajes que mandan los Servicios de Dominios al Controlador
 	public void mensajeDesde_SD(TC mensaje, Object datos){
 		
+		
+		
 		if(mensaje == TC.SD_InsertarDominio_HECHO || mensaje == TC.SD_RenombrarDominio_HECHO || mensaje == TC.SD_EliminarDominio_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
+			this.guardarDeshacer();
 		}
 		
 		
@@ -3011,7 +3083,9 @@ public class Controlador {
 		if(mensaje == TC.SA_EliminarAtributo_HECHO || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
+			this.guardarDeshacer();
 		}
+		
 		
 		
 		switch(mensaje){
@@ -3365,7 +3439,10 @@ public class Controlador {
 		if(mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || mensaje == TC.SR_EliminarRelacionNormal_HECHO || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
+			this.guardarDeshacer();
 		}
+		
+		
 		
 		
 		switch(mensaje){
@@ -4026,6 +4103,28 @@ public class Controlador {
 	}
 
 	//Utilidades
+	
+	private void guardarBackup() {
+		String ruta = "";
+		if (fileguardar != null && fileguardar.exists()) {
+			ruta = fileguardar.getPath().replace(".xml","") + "Backup.xml";
+		}
+		else {
+			String str = this.filetemp.getAbsolutePath();
+			ruta = str.substring(0, str.length() - 27) + "LastProyectBackup.xml";
+		}
+		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
+		//File f = new File(ruta);
+		//this.setFileguardar(f);
+	}
+	
+	private void guardarDeshacer() {
+		String str = fileguardar.getPath().replace(".xml","");
+	    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml";
+		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
+		++this.contFicherosDeshacer;
+	}
+	
 	private static void quicksort(Vector<String> a) {
         quicksort(a, 0, a.size() - 1);
     }
@@ -4096,7 +4195,18 @@ public class Controlador {
     
     private void salir() {
     	filetemp.delete();
+    	eliminarCarpetaDeshacer();
 		System.exit(0);
+    }
+    
+    private void eliminarCarpetaDeshacer(){
+    	File directory = new File(System.getProperty("user.dir")+"/deshacer");
+    	 for (File file: Objects.requireNonNull(directory.listFiles())) {
+             if (!file.isDirectory()) {
+                 file.delete();
+             }
+         }
+    	 directory.delete();
     }
     
     private void ActualizaArbol(Transfer t){
@@ -4459,7 +4569,7 @@ public class Controlador {
 	}
 	
 	
-	public void funcionDeshacer(TC mensaje, Object datos) {
+	/*public void funcionDeshacer(TC mensaje, Object datos) {
 		switch (mensaje) {
 			case SE_InsertarEntidad_HECHO: {
 				Vector<Object> v = new Vector<Object>();
@@ -4523,19 +4633,7 @@ public class Controlador {
 				break;
 			}
 			
-			/*case SE_MoverPosicionEntidad_HECHO:{ //ni zorra de por que no funciona
-				TransferEntidad te = (TransferEntidad) datos;
-				Point2D pos = te.getPosicion();
-				TransferEntidad teAux = new TransferEntidad();
-				/*for (int i = 0; i < this.listaEntidades.size(); ++i) {
-					if(te.getNombre() == this.listaEntidades.get(i).getNombre()) {
-						pos = this.listaEntidades.get(i).getPosicion();
-					}
-				}
-				te.setPosicion(this.posAux);
-				this.mensajeDesde_PanelDiseno(TC.PanelDiseno_MoverEntidad, te);
-				this.getTheGUIPrincipal().getPanelDiseno().repaint();
-			}*/
+			
 			
 			case SA_EliminarAtributo_HECHO:{
 				Vector<Object> v = new Vector<Object>();
@@ -4566,7 +4664,7 @@ public class Controlador {
 						}
 						
 					}
-				}*/
+				}
 				
 				break;
 			}
@@ -4586,7 +4684,7 @@ public class Controlador {
 				/*else {
 					TransferAtributo ta = (TransferAtributo) v2.get(1);
 					mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ta);
-				}*/
+				}
 				
 			}
 			
@@ -4614,7 +4712,7 @@ public class Controlador {
 				}
 				/*if(ta.getUnique() != this.antiguoUniqueAtribuo){
 					mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ta);
-				}*/
+				}
 				break;
 			}
 			
@@ -4879,5 +4977,6 @@ public class Controlador {
 			default: break;
 		}
 	}
+	*/
 }
 

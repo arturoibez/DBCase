@@ -936,6 +936,7 @@ public class MenuDesplegable extends JPopupMenu {
 		v.add(t);
 		v.add(nombre);
 		controlador.mensajeDesde_GUI(TC.GUIInsertarAgregacion, v);
+	}
 	
 	public Point2D getPunto() {
 		return this.punto;

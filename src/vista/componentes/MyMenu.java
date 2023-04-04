@@ -855,12 +855,13 @@ public class MyMenu extends JMenuBar{
 			add(deshacer);
 			deshacer.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+					//c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
 				}
 			});
 			
 			//Boton rehacer
-			/*rehacer=new JButton();
+			rehacer=new JButton();
 			rehacer.setPreferredSize(d);
 			try {
 			    Image img = ImageIO.read(getClass().getResource("/vista/imagenes/redoIcon.png"));
@@ -868,8 +869,14 @@ public class MyMenu extends JMenuBar{
 			  } catch (Exception ex) {
 			    System.out.println(ex);
 			  }
-			deshacer.setForeground(theme.fontColor());
-			add(rehacer);*/
+			rehacer.setForeground(theme.fontColor());
+			add(rehacer);
+			rehacer.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
+					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
+				}
+			});
 			
 			//Boton reset
 			/*reset=new JButton();
