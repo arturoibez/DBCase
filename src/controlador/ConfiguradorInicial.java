@@ -65,7 +65,6 @@ public class ConfiguradorInicial{
 	//Archivos recientes
 	protected ArrayList<File> _recientes;
 
-
 	// --- --- --- CONSTRUCTORES --- --- ---
 	/**
 	 * Construye un configurador inicial vacío
@@ -91,7 +90,9 @@ public class ConfiguradorInicial{
 	 * @param gestorBBDD Gestor de bases de datos por defecto
 	 * @param ultimoProy Último proyecto abierto
 	 */
-	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme, int modoVista, boolean nullAttr, int zoom){
+	public ConfiguradorInicial(String lenguaje, String gestorBBDD, String ultimoProy, String theme,
+			int modoVista, boolean nullAttr, int zoom){
+		
 		_modoVista = modoVista;
 		_tema = theme;
 		_lenguaje = lenguaje;
@@ -109,6 +110,7 @@ public class ConfiguradorInicial{
 			_conexiones = new Hashtable<String, TransferConexion>();
 			_conexiones.clear();
 		}
+		//?_recientes = new ArrayList<File>();
 	}
 	
 	// --- --- --- METODOS --- --- ---
@@ -150,7 +152,7 @@ public class ConfiguradorInicial{
 			}
 			out.write("nullAttr=\"" + _nullAttr + "\"");
 			out.write(" > \n");
-			
+						
 			// Conexiones
 			Enumeration<String> keys = _conexiones.keys();
 			while (keys.hasMoreElements()){
@@ -204,7 +206,6 @@ public class ConfiguradorInicial{
 			_modoVista = Integer.parseInt(atributos.getNamedItem("modoVista").getNodeValue());
 			_nullAttr = Boolean.parseBoolean(atributos.getNamedItem("nullAttr").getNodeValue());
 			_zoom = Integer.parseInt(atributos.getNamedItem("zoom").getNodeValue());
-			
 			//Obtener recientes
 			boolean ya = false;
 			for(int i = 0; i < 10 && !ya; ++i) {
@@ -294,13 +295,12 @@ public class ConfiguradorInicial{
 	public TransferConexion obtenConexion(String nombreConexion){
 		return _conexiones.get(nombreConexion);
 	}
+	public ArrayList<File> darRecientes(){
+		return _recientes;
+	}
 	
 	public void ponLenguaje(String lenguaje){
 		_lenguaje = lenguaje;
-	}
-	
-	public ArrayList<File> darRecientes(){
-		return _recientes;
 	}
 	
 	public void ponZoom(int zoom){
@@ -326,7 +326,6 @@ public class ConfiguradorInicial{
 	public void ponConexiones(Hashtable<String, TransferConexion> conexiones){
 		_conexiones = conexiones;
 	}
-	
 	public void ponRecientes(ArrayList<File> re) {
 		_recientes = re;
 	}

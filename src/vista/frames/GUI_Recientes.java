@@ -91,9 +91,10 @@ public class GUI_Recientes extends Parent_GUI{
 		if (!ruta.endsWith(".xml")) ruta = ruta+".xml";
 	
 		controlador.setFileguardar(fich);
+		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Recent, fich);
 		this.controlador.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir, ruta);
 		this.dispose();
 		
 	}
-	
+
 }

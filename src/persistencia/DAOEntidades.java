@@ -76,6 +76,14 @@ public class DAOEntidades {
 			Atributo.appendChild(doc.createTextNode(tc.getListaAtributos().elementAt(cont).toString()));
 			raizListaAtributos.appendChild(Atributo);
 		}
+		//relaciones en las que participa
+		Element raizListaRelaciones = doc.createElement("RelatnList");
+		raiz.appendChild(raizListaRelaciones);
+		for (int cont = 0; cont <tc.getListaRelaciones().size(); cont++) {
+			Element Relacion = doc.createElement("Relatn");
+			Relacion.appendChild(doc.createTextNode(tc.getListaRelaciones().elementAt(cont).toString()));
+			raizListaRelaciones.appendChild(Relacion);
+		}
 		// ListaClavesPrimarias
 		Element raizListaClavesPrimarias = doc.createElement("PrimaryKeyList");
 		raiz.appendChild(raizListaClavesPrimarias);
@@ -160,7 +168,23 @@ public class DAOEntidades {
 					Atributo.appendChild(doc.createTextNode(tc.getListaAtributos().elementAt(cont).toString()));
 					listaC.appendChild(Atributo);			
 			}
+			//-----------------
+			Node listaRel=dameNodoPedidoDeEntidad(EntidadBuscado,"RelatnList");
+			int w=0;
+			Node no;
+			while (w<listaRel.getChildNodes().getLength()){
+				no=this.dameNodoPedidoDeEntidad(listaRel,"Relatn");
+				if (no!=null)listaRel.removeChild(no);
+				w++;
+			}
 			
+			for (int cont = 0; cont <tc.getListaRelaciones().size(); cont++) {
+					Element rel = doc.createElement("Relatn");
+					rel.appendChild(doc.createTextNode(tc.getListaRelaciones().elementAt(cont).toString()));
+					listaRel.appendChild(rel);			
+			}
+			
+			//----------
 			
 			Node listaV=dameNodoPedidoDeEntidad(EntidadBuscado,"PrimaryKeyList");
 			int j=0;
@@ -284,6 +308,7 @@ public class DAOEntidades {
 		Vector listaV = nodoListaAObjetoLista(dameNodoPedidoDeEntidad(nodo,"PrimaryKeyList"), "PrimaryKey");
 		Vector listaR = nodoListaAObjetoLista(dameNodoPedidoDeEntidad(nodo,"AssertionList"),"Assertion");
 		Vector listaU = nodoListaAObjetoLista(dameNodoPedidoDeEntidad(nodo,"UniqueList"),"Uniques");
+		Vector listaRel = nodoListaAObjetoLista(dameNodoPedidoDeEntidad(nodo,"RelatnList"),"Relatn");
 		
 		Point2D posicion=this.damePunto(dameValorDelElemento(dameNodoPedidoDeEntidad(nodo,"Position")));
 		
@@ -300,12 +325,12 @@ public class DAOEntidades {
 		transfer.setListaClavesPrimarias(listaV);
 		transfer.setListaRestricciones(listaR);
 		transfer.setListaUniques(listaU);
+		transfer.setListaRelaciones(listaRel);
 		// Lo devolvemos
 		return transfer;
 	}
 
 	private Vector nodoListaAObjetoLista(Node nodo,String tipoLista){
-		//tipoLista puede ser : Atributo y clavePrimaria 
 		//Resultado que devolveremos
 		Vector<String> lista = new Vector<String>();
 		// Sacamos la lista de hijos

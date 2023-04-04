@@ -226,6 +226,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			te.setNombre(this.cajaNombre.getText());
 			te.setDebil(this.CasillaEsDebil.isSelected());
 			te.setListaAtributos(new Vector());
+			te.setListaRelaciones(new Vector());
 			te.setListaClavesPrimarias(new Vector());
 			te.setListaRestricciones(new Vector());
 			te.setListaUniques(new Vector());
@@ -244,6 +245,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 				te.setNombre(this.cajaNombre.getText());
 				te.setDebil(this.CasillaEsDebil.isSelected());
 				te.setListaAtributos(new Vector());
+				te.setListaRelaciones(new Vector());
 				te.setListaClavesPrimarias(new Vector());
 				te.setListaRestricciones(new Vector());
 				te.setListaUniques(new Vector());
@@ -287,6 +289,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			te.setNombre(this.cajaNombre.getText());
 			te.setDebil(this.CasillaEsDebil.isSelected());
 			te.setListaAtributos(new Vector());
+			te.setListaRelaciones(new Vector());
 			te.setListaClavesPrimarias(new Vector());
 			te.setListaRestricciones(new Vector());
 			te.setListaUniques(new Vector());

@@ -13,9 +13,9 @@ public class ArchivosRecientes {
 		if(recientes.contains(f)) {
 			recientes.remove(f);
 		}
-		recientes.add(0,f); //lo aÃ±ade al principio
+		recientes.add(0,f); //lo añade al principio
 		if(recientes.size() > max_size) {
-			recientes.remove(recientes.size()-1);
+			recientes.remove(recientes.size()-1);//elimina el que hace mas tiempo que no se abre
 		}
 	}
 	
@@ -23,7 +23,7 @@ public class ArchivosRecientes {
 		return recientes;
 	}
 	
-	public void recibeRecientes( ArrayList<File> v) {
+	public void recibeRecientes( ArrayList<File>v) {
 		recientes = v;
 	}
 	

@@ -1,16 +1,28 @@
 package vista.diagrama;
 
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
+
 import controlador.Controlador;
 import controlador.TC;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -19,6 +31,7 @@ import modelo.transfers.Transfer;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import vista.imagenes.ImagePath;
 import vista.lenguaje.Lenguaje;
 import vista.tema.Theme;
 
@@ -212,6 +225,22 @@ public class MenuDesplegable extends JPopupMenu {
 			});
 			this.add(j6);
 			
+			/*this.add(new JSeparator());  muy probablemente solo se a�adira agreg en relaciones
+			
+			JMenuItem j7 = new JMenuItem(Lenguaje.text(Lenguaje.ADD_AGREG));
+			j7.setFont(theme.font());
+			j7.setForeground(theme.fontColor());
+			j7.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+					TransferEntidad elemento = (TransferEntidad) menu.nodo;
+					TransferEntidad clon = elemento.clonar();
+					Gui_Agreg(clon);
+				}
+			});
+			this.add(j7);*/
+			
+
 			//copiar Entidad
 			JMenuItem j7 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
 			j7.setFont(theme.font());
@@ -225,6 +254,7 @@ public class MenuDesplegable extends JPopupMenu {
 			}
 			});
 			this.add(j7);
+
 		}
 
 		if (nodo instanceof TransferAtributo) { // Si es atributo
@@ -632,6 +662,7 @@ public class MenuDesplegable extends JPopupMenu {
 				});
 				this.add(j1);
 
+				
 				// Eliminar la relacion
 				// Si sólo está seleccionada la relacion..
 				PickedState<Transfer> p = vv.getPickedVertexState();
@@ -708,6 +739,21 @@ public class MenuDesplegable extends JPopupMenu {
 				});
 				this.add(j11);
 			} // else
+			
+			this.add(new JSeparator());
+			
+			JMenuItem j10 = new JMenuItem(Lenguaje.text(Lenguaje.ADD_AGREG));
+			j10.setFont(theme.font());
+			j10.setForeground(theme.fontColor());
+			j10.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+					TransferRelacion elemento = (TransferRelacion) menu.nodo;
+					TransferRelacion clon = elemento.clonar();
+					Gui_Agreg(clon);
+				}
+			});
+			this.add(j10);
 		}
 
 	}
@@ -780,8 +826,119 @@ public class MenuDesplegable extends JPopupMenu {
 	protected void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
+
+	private void Gui_Agreg(Transfer t) {
+		JDialog pane = new JDialog();
+		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+		pane.setResizable(false);
+		pane.setModal(true);
+		pane.setTitle(Lenguaje.text(Lenguaje.WARNING));
+		pane.setSize(700, 200);
+		pane.setAlwaysOnTop(false);
+		pane.setLocationRelativeTo(null);
+		pane.setLayout(null);
+		
+		JLabel texto = new JLabel(Lenguaje.text(Lenguaje.CONFIRM_AGREG)); //mensaje aviso se creara agreg
+		pane.add(texto);
+		texto.setBounds(10, -10, 700, 100);
+		
+		JButton confirm = new JButton(Lenguaje.text(Lenguaje.ACCEPT));
+		confirm.setBounds(10, 90, 60, 60);
+		pane.add(confirm);
+		confirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pane.dispose();
+				Gui_Confirm(t);
+			}
+		});
+		
+		JButton cancel = new JButton(Lenguaje.text(Lenguaje.CANCEL));
+		pane.add(cancel);
+		cancel.setBounds(570,90,120,60);
+		cancel.setBackground(Color.red);
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pane.dispose();
+			}
+			
+		});
+		
+		pane.setVisible(true);
+		
+		
+	}
+	
+	private void Gui_Confirm(Transfer t) {
+		JDialog pane = new JDialog();
+		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+		pane.setResizable(false);
+		pane.setModal(true);
+		pane.setTitle(Lenguaje.text(Lenguaje.INT_NOM_AGREG));
+		pane.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(ImagePath.LOGODBDT)).getImage());
+		pane.setSize(700, 200);
+		pane.setAlwaysOnTop(false);
+		pane.setLocationRelativeTo(null);
+		pane.setLayout(null);
+		
+		JTextField cajaNombre = new JTextField();
+		cajaNombre.setFont(theme.font());
+		cajaNombre.setBounds(100,10, 232, 30);
+		cajaNombre.setForeground(theme.labelFontColorDark());
+		cajaNombre.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==10){botonInsertarActionPerformed(t,cajaNombre.getText());pane.dispose();}
+				else if(e.getKeyCode()==27){pane.dispose();}
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {}
+		});
+		{
+			JButton botonInsertar = new JButton();
+			botonInsertar.setFont(theme.font());
+			botonInsertar.setText(Lenguaje.text(Lenguaje.INSERT));
+			botonInsertar.setBounds(200,100, Lenguaje.text(Lenguaje.INSERT).length()>8 ? 110+Lenguaje.text(Lenguaje.INSERT).length()*4: Lenguaje.text(Lenguaje.INSERT).length()<4 ?60:110, 30);
+			pane.add(botonInsertar);
+			botonInsertar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					botonInsertarActionPerformed(t,cajaNombre.getText());
+					pane.dispose();
+				}
+			});
+			botonInsertar.addKeyListener(new KeyListener() {
+				public void keyPressed(KeyEvent e) {
+					if(e.getKeyCode()==10){botonInsertarActionPerformed(t,cajaNombre.getText());pane.dispose();}
+					else if(e.getKeyCode()==27){pane.dispose();}
+				}
+				public void keyReleased(KeyEvent e) {}
+				public void keyTyped(KeyEvent e) {}
+			});
+			botonInsertar.setMnemonic(Lenguaje.text(Lenguaje.INSERT).charAt(0));
+		}
+		pane.add(cajaNombre);
+		
+		{
+			JLabel explicacion = new JLabel();
+			pane.add(explicacion);
+			explicacion.setText(Lenguaje.text(Lenguaje.NAME));
+			explicacion.setOpaque(false);
+			explicacion.setBounds(25, 10, 67, 25);
+			explicacion.setFont(theme.font());
+			explicacion.setFocusable(false);
+			explicacion.setAlignmentX(0.0f);
+		}
+		
+		pane.setVisible(true);
+
+	}
+	
+	private void botonInsertarActionPerformed(Transfer t, String nombre) {
+		Vector<Object> v = new Vector<Object>();
+		v.add(t);
+		v.add(nombre);
+		controlador.mensajeDesde_GUI(TC.GUIInsertarAgregacion, v);
 	
 	public Point2D getPunto() {
 		return this.punto;
+
 	}
 }

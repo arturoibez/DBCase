@@ -26,6 +26,13 @@ public class ServiciosEntidades {
 		controlador.mensajeDesde_SE(TC.SE_ListarEntidades_HECHO, lista_entidades);
 	}
 	
+	//Devuelve actualizada la lista de entidades
+		public Vector <TransferEntidad> ListaDeEntidadesNOVoid(){
+			DAOEntidades dao = new DAOEntidades(this.controlador.getPath());
+			Vector <TransferEntidad> lista_entidades = dao.ListaDeEntidades();
+			return lista_entidades;
+		}
+	
 	/* Anadir Entidad
 	 * Parametros: un TransferEntidad que contiene el nombre de la nueva entidad y la posicion donde debe ir dibujado.
 	 * Devuelve: La entidad en un TransferEntidad y el mensaje -> SE_InsertarEntidad_HECHO
@@ -34,6 +41,8 @@ public class ServiciosEntidades {
 	 * Si el nombre ya existe -> SE_InsertarEntidad_ERROR_NombreDeEntidadYaExiste
 	 * Si al usar el DAOEntidades se produce un error -> SE_InsertarEntidad_ERROR_DAO
 	 */
+	
+	//hay que controlar que no exista el nombre de una agregacion
 	public void anadirEntidad(TransferEntidad te,Stack<Document>pilaDeshacer){
 		if (te.getNombre().isEmpty()){
 			controlador.mensajeDesde_SE(TC.SE_InsertarEntidad_ERROR_NombreDeEntidadEsVacio, null);
@@ -178,6 +187,20 @@ public class ServiciosEntidades {
 				return listaentidades.get(j).isDebil();
 		}
 		return false;
+	}
+	
+	
+	public void anadirRelacionAEntidad(Vector v) {
+		// TODO Auto-generated method stub
+		//la relacion es el primer elemento del vector y la entidad el siguiente
+		TransferRelacion tr = (TransferRelacion)v.get(0);
+		TransferEntidad te = (TransferEntidad) v.get(1);
+		te.getListaRelaciones().add(tr.getIdRelacion());
+		DAOEntidades daoEntidades = new DAOEntidades(this.controlador.getPath());
+		if (!daoEntidades.modificarEntidad(te)){
+			this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_DAOEntidades, v); //el mensaje de error es el mismo
+			return;
+		}
 	}
 	
 
@@ -575,4 +598,6 @@ public class ServiciosEntidades {
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
+
+	
 }

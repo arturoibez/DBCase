@@ -174,19 +174,19 @@ public class MyMenu extends JMenuBar{
 			ImageIcon abrirCasos = new ImageIcon();
 			try {
 				abrirCasos.setImage(ImageIO.read(getClass().getResource("/vista/imagenes/AbrirCasos.PNG")));
-			} catch (IOException e1) {
+      } catch (IOException e1) {
 				// TODO Auto-generated catch block
 				System.out.println(e1);
 			}
-			submenuAbrirCasos.setIcon(abrirCasos);
+      submenuAbrirCasos.setIcon(abrirCasos);
 			submenuAbrirCasos.setText(Lenguaje.text(Lenguaje.OPEN_CASOS)+"...");
 			//submenuAbrir.setMnemonic(Lenguaje.text(Lenguaje.OPEN).charAt(0));
 			submenuAbrirCasos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Abrir_Casos, null);
-				}
+        }
 			});
-			
+      
 			//File/openRecentFiles
 			submenuAbrirRecentFiles = new JMenuItem(); 
 			submenuAbrirRecentFiles.setForeground(theme.fontColor());
@@ -207,6 +207,8 @@ public class MyMenu extends JMenuBar{
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Recientes, null);
 				}
 			});
+			
+			
 			
 			//File/separator
 			menuSistema.add(new JSeparator());

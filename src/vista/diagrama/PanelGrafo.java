@@ -53,6 +53,7 @@ import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedState;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
@@ -85,6 +86,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	protected Map<Integer, TransferEntidad> entidades;
 	protected Map<Integer, TransferAtributo> atributos;
 	protected Map<Integer, TransferRelacion> relaciones;
+	protected Map<Integer, TransferAgregacion> agregaciones;
 	// guarda los elementos que formaran tablas
 	protected ArrayList<Transfer> tablas;
 	private final MenuDesplegable clickDerecho;
@@ -753,6 +755,23 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 				for (Iterator<EntidadYAridad> it3 = antigua.getListaEntidadesYAridades().iterator(); it3.hasNext();) {
 					EntidadYAridad data = it3.next();
 					graph.addEdge(data, antigua, this.entidades.get(data.getEntidad()));
+				}
+			}
+			vv.repaint(); // Se redibuja todo el grafo actualizado
+			return antigua;
+		}
+		// Si es agregacion se actualiza
+		if (object instanceof TransferAgregacion) {
+			TransferAgregacion agreg = (TransferAgregacion) object;
+			TransferAgregacion antigua = agregaciones.get(agreg.getIdAgregacion());
+			antigua.CopiarAgregacion(agreg);
+			if (!antigua.getListaAtributos().isEmpty()) {
+				// Añado sus atributos
+				for (Iterator<String> it2 = antigua.getListaAtributos().iterator(); it2.hasNext();) {
+					Integer id = Integer.parseInt(it2.next());
+					if (!graph.areNeighbors(antigua, this.atributos.get(id))) { // Añade aristas que no existiesen
+						graph.addEdge(new Double(Math.random()), antigua, this.atributos.get(id));
+					}
 				}
 			}
 			vv.repaint(); // Se redibuja todo el grafo actualizado
