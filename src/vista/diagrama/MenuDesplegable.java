@@ -775,54 +775,69 @@ public class MenuDesplegable extends JPopupMenu {
 			int cont = 0; //contador para identificar eliminaciones de entidades/relaciones debiles
 			//si se elimina una entidad debil se elimina automaticamente la relacion debil y viceversa
 			//entonces si ambas estaban seleccionadas da error
+			int cont2 = 0;
 			for (Transfer t : ps.getPicked()) {
-			Vector<Object> v = new Vector<Object>();
-			v.add(t);
-			v.add(respuesta == 1);
-			if (t instanceof TransferEntidad) {
-				vta = ((TransferEntidad) t).getListaAtributos();
-				if (((TransferEntidad) t).isDebil()){
-					// si es debil y el contador es 0, es decir, aun no se ha eliminado su relacion debil, se elimina
-					if (cont==0) {
-						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
-						cont = 1;//aumentamos el contador para indicar a la relacion debil que no debe ser eliminada
-					}
-					else {
-						//si el contador es 1, reiniciamos el contdor, por si se han seleccionado otras
-						//entidades/relaciones debiles, y no eliminamos la entidad, pues se elimino con la relacion
-						cont = 0;
-					}
-						
-				}
-				else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
-			}
-			if (t instanceof TransferAtributo)
-				if (!vta.contains(t)) controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAtributo, v);
-			if (t instanceof TransferRelacion) {
-				vta = ((TransferRelacion) t).getListaAtributos();
-				if (((TransferRelacion) t).getTipo().equals("IsA"))
-					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionIsA, v);
-				else {
-					if (((TransferRelacion) t).getTipo().equals("Debil")){
-						// si es debil y el contador es 0, es decir, aun no se ha eliminado su entidad debil, se elimina
+				Vector<Object> v = new Vector<Object>();
+				v.add(t);
+				v.add(respuesta == 1);
+				if (cont2==0)v.add(0);
+				else v.add(1);
+				if (t instanceof TransferEntidad) {
+					vta = ((TransferEntidad) t).getListaAtributos();
+					if (((TransferEntidad) t).isDebil()){
+						// si es debil y el contador es 0, es decir, aun no se ha eliminado su relacion debil, se elimina
 						if (cont==0) {
-							controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
-							cont = 1;//aumentamos el contador para indicar a la entidad debil que no debe ser eliminada
+							controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
+							cont = 1;//aumentamos el contador para indicar a la relacion debil que no debe ser eliminada
 						}
 						else {
 							//si el contador es 1, reiniciamos el contdor, por si se han seleccionado otras
 							//entidades/relaciones debiles, y no eliminamos la entidad, pues se elimino con la relacion
 							cont = 0;
 						}
-							
+						
 					}
-					else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+					
+					else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
 				}
+				if (t instanceof TransferAtributo) {
+					TransferAtributo ta = (TransferAtributo) t;
+					if (!contiene(vta, ta.getIdAtributo())) 
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAtributo, v);
+				}	
+				if (t instanceof TransferRelacion) {
+					vta = ((TransferRelacion) t).getListaAtributos();
+					if (((TransferRelacion) t).getTipo().equals("IsA"))
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionIsA, v);
+					else {
+						if (((TransferRelacion) t).getTipo().equals("Debil")){
+							// si es debil y el contador es 0, es decir, aun no se ha eliminado su entidad debil, se elimina
+							if (cont==0) {
+								controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+								cont = 1;//aumentamos el contador para indicar a la entidad debil que no debe ser eliminada
+							}
+							else {
+								//si el contador es 1, reiniciamos el contador, por si se han seleccionado otras
+								//entidades/relaciones debiles, y no eliminamos la entidad, pues se elimino con la relacion
+								cont = 0;
+							}
+							
+						}
+						else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+					}
 				
+				}
+				cont2++;
 			}
-				
 		}
 	}
+	
+	private boolean contiene (Vector lista, int idAtributo) {
+		boolean r = false;
+		for(int i=0; i<lista.size(); ++i) {
+			if (lista.get(i).toString() == Integer.toString(idAtributo))r=true;
+		}
+		return r;
 	}
 	
 	protected void copiar() {

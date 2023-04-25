@@ -99,10 +99,11 @@ public class ServiciosAtributos {
 	 * Si se produce un error al usar el DAOAtributos ->  SA_EliminarAtributo_ERROR_DAOAtributos
 	 * Hay que comprobar primero que el atributo que viene en el transfer exista con un consultar
 	 */
-	public void eliminarAtributo (TransferAtributo ta){
+	public void eliminarAtributo (TransferAtributo ta, int vieneDeOtro){//si el entero es 1 viene de eliminar entidad o relacion
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
 		TransferAtributo aux = ta;
 		ta = daoAtributos.consultarAtributo(ta);
+		if (ta == null) return;
 		ta.setClavePrimaria(aux.getClavePrimaria());
 		ta.setCompuesto(aux.getCompuesto());
 		ta.setDominio(aux.getDominio());
@@ -137,9 +138,11 @@ public class ServiciosAtributos {
 					}
 				}
 					
-				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
+				Vector<Object> vectorAtributoYElemMod = new Vector<Object>();
 				vectorAtributoYElemMod.add(ta);
 				vectorAtributoYElemMod.add(elem_mod);
+				if (vectorAtributoYElemMod.size() == 2) vectorAtributoYElemMod.add(vieneDeOtro);
+				else vectorAtributoYElemMod.set(2, vieneDeOtro);
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_HECHO, vectorAtributoYElemMod);
 			}
 		}
@@ -158,7 +161,7 @@ public class ServiciosAtributos {
 				int idAtributoHijo = Integer.parseInt((String) lista_idSubatributos.get(cont));
 				TransferAtributo ta_hijo = new TransferAtributo(controlador);
 				ta_hijo.setIdAtributo(idAtributoHijo);
-				this.eliminarAtributo(ta_hijo);
+				this.eliminarAtributo(ta_hijo, 1);
 				cont++;
 			}
 			// Ya estan eliminados todos sus subatributos. Ponemos compuesto a falso y eliminamos
@@ -169,9 +172,11 @@ public class ServiciosAtributos {
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_ERROR_DAOAtributos, ta);
 			else{
 				Transfer elem_mod = this.eliminaRefererenciasAlAtributo(ta);
-				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
+				Vector<Object> vectorAtributoYElemMod = new Vector<Object>();
 				vectorAtributoYElemMod.add(ta);
 				vectorAtributoYElemMod.add(elem_mod);
+				if (vectorAtributoYElemMod.size() == 2) vectorAtributoYElemMod.add(vieneDeOtro);
+				else vectorAtributoYElemMod.set(2, vieneDeOtro);
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_HECHO, vectorAtributoYElemMod);
 			}
 		}

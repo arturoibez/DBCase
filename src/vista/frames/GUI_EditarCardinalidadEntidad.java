@@ -147,11 +147,13 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 					buttonMaxN.setSelected(true);
 				}
 			}
-			if(eya.getMarcadaConMinMax()) {
-				cajaInicio.setText(v.get(0));
-				cajaFinal.setText(v.get(1));
+			if(eya.getMarcadaConMinMax()) {		
 				buttonMinMax.setSelected(true);
 			}
+			
+			cajaInicio.setText(v.get(0));
+			cajaFinal.setText(v.get(1));
+			
 			if(eya.getMarcadaConParticipacion()) {
 				System.out.println(eya.getPrincipioRango());
 				if(eya.getPrincipioRango()==0) {

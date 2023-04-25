@@ -1261,6 +1261,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 							Vector<Object> v = new Vector<Object>();
 							v.add(clon_entidad);
 							v.add(true);
+							v.add(0);
 							c.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad,v);
 						}	
 				});

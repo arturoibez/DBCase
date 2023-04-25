@@ -311,6 +311,13 @@ public class Controlador {
            		 			System.out.println("Error al crear directorio");
            		 		}
            		 	}
+           		 	else {
+           		 		for (File file: Objects.requireNonNull(directorio.listFiles())) {
+           		 			if (!file.isDirectory()) {
+           		 				file.delete();
+        		 			}
+        		 		}
+        		 	}
            		 	controlador.guardarDeshacer();
         		}
         		
@@ -325,6 +332,13 @@ public class Controlador {
            		 		} 
            		 		else {
            		 			System.out.println("Error al crear directorio");
+           		 		}
+           		 	}
+           		 	else {
+           		 		for (File file: Objects.requireNonNull(directorio.listFiles())) {
+           		 			if (!file.isDirectory()) {
+           		 				file.delete();
+           		 			}
            		 		}
            		 	}
            		 	controlador.guardarDeshacer();
@@ -620,6 +634,7 @@ public class Controlador {
 			TransferEntidad te = (TransferEntidad) v.get(0);
 			this.auxTransferAtributos = te.getListaAtributos();
 			boolean preguntar =  (Boolean) v.get(1);
+			int intAux = (int) v.get(2);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
 			if(preguntar == true){
@@ -643,7 +658,7 @@ public class Controlador {
 				while (lista_atributos != null && conta < lista_atributos.size()){
 					String idAtributo = (String) lista_atributos.get(conta);
 					ta.setIdAtributo(Integer.valueOf(idAtributo));
-					this.getTheServiciosAtributos().eliminarAtributo(ta);				
+					this.getTheServiciosAtributos().eliminarAtributo(ta, 1);				
 					conta++;
 				}
 				//Si la entidad es débil eliminamos la relación débil asociada
@@ -664,7 +679,7 @@ public class Controlador {
 								idEntidad = eya.getEntidad();
 								if(te.getIdEntidad()== idEntidad){
 									tr.setIdRelacion(lista_rel.get(cont).getIdRelacion());
-									this.getTheServiciosRelaciones().eliminarRelacionNormal(tr);
+									this.getTheServiciosRelaciones().eliminarRelacionNormal(tr, 1);
 									encontrado=true;
 								}
 								aux++;
@@ -675,7 +690,7 @@ public class Controlador {
 					}
 				}
 				// Eliminamos la entidad
-				this.getTheServiciosEntidades().eliminarEntidad(te);
+				this.getTheServiciosEntidades().eliminarEntidad(te, intAux);
 			}
 			break;
 		}
@@ -729,6 +744,7 @@ public class Controlador {
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferAtributo ta = (TransferAtributo) v.get(0);
 			this.antiguosSubatributos = ta.getListaComponentes();
+			int intAux = (int) v.get(2);
 			boolean preguntar =  (Boolean) v.get(1);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
@@ -749,7 +765,7 @@ public class Controlador {
 				TransferAtributo clon_atributo2 = ta.clonar();
 				this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarReferenciasUniqueAtributo,clon_atributo2);
 				TransferAtributo clon_atributo3 = ta.clonar();
-				this.getTheServiciosAtributos().eliminarAtributo(clon_atributo3);
+				this.getTheServiciosAtributos().eliminarAtributo(clon_atributo3, intAux);
 			}
 			break;
 		}
@@ -845,7 +861,7 @@ public class Controlador {
 					while (cont < lista_atributos.size()){
 						String idAtributo = (String) lista_atributos.get(cont);
 						ta.setIdAtributo(Integer.valueOf(idAtributo));
-						this.getTheServiciosAtributos().eliminarAtributo(ta);				
+						this.getTheServiciosAtributos().eliminarAtributo(ta, 1);				
 						cont++;
 					}
 				}
@@ -895,7 +911,7 @@ public class Controlador {
 					while (cont < lista_atributos.size()){
 						String idAtributo = (String) lista_atributos.get(cont);
 						tah.setIdAtributo(Integer.valueOf(idAtributo));
-						this.getTheServiciosAtributos().eliminarAtributo(tah);				
+						this.getTheServiciosAtributos().eliminarAtributo(tah, 1);				
 						cont++;
 					}
 					// Modificamos el atributo
@@ -1195,7 +1211,7 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionNormal:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-			
+			int intAux = (int) v.get(2);
 			Vector vtaAux = tr.getListaAtributos();
 			Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 			Vector<EntidadYAridad> veya = tr.getListaEntidadesYAridades();
@@ -1247,7 +1263,7 @@ public class Controlador {
 				while (conta < lista_atributos.size()){
 					String idAtributo = (String) lista_atributos.get(conta);
 					ta.setIdAtributo(Integer.valueOf(idAtributo));
-					this.getTheServiciosAtributos().eliminarAtributo(ta);				
+					this.getTheServiciosAtributos().eliminarAtributo(ta, 1);				
 					conta++;
 				}
 				//Se elimina también la entidad débil asociada
@@ -1260,7 +1276,7 @@ public class Controlador {
 						int idEntidad = eya.getEntidad();
 						te.setIdEntidad(idEntidad);	
 						//Tengo que rellenar los atributos de te
-						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades());
+						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades()); //falla aqui
 						boolean encontrado= false;
 						int i=0;
 						if (auxiliar != null) {
@@ -1279,13 +1295,15 @@ public class Controlador {
 							Vector<Object> vAux = new Vector<Object>();
 							vAux.add(te);
 							vAux.add(false);
+							if(vAux.size()==2) vAux.add(1);
+							else vAux.set(2, 1);
 							this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad,vAux);
 						}
 						cont++;							
 					}
 				}
 				// Eliminamos la relacion
-				this.getTheServiciosRelaciones().eliminarRelacionNormal(tr);
+				this.getTheServiciosRelaciones().eliminarRelacionNormal(tr,intAux);
 			}
 			break;
 		}
@@ -2619,10 +2637,14 @@ public class Controlador {
 
 	// Mensajes que mandan los Servicios de Entidades al Controlador
 	public void mensajeDesde_SE(TC mensaje, Object datos){
+		int intAux = 2;
+		if (mensaje == TC.SE_EliminarEntidad_HECHO) {
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
+			intAux = (int) aux.get(2);
+		}
 		
 		
-		
-		if(mensaje == TC.SE_MoverPosicionEntidad_HECHO || mensaje == TC.SE_InsertarEntidad_HECHO || mensaje == TC.SE_RenombrarEntidad_HECHO || mensaje == TC.SE_AnadirAtributoAEntidad_HECHO || mensaje == TC.SE_EliminarEntidad_HECHO) {
+		if(mensaje == TC.SE_MoverPosicionEntidad_HECHO || mensaje == TC.SE_InsertarEntidad_HECHO || mensaje == TC.SE_RenombrarEntidad_HECHO || mensaje == TC.SE_AnadirAtributoAEntidad_HECHO || (mensaje == TC.SE_EliminarEntidad_HECHO && intAux == 0)) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
@@ -3137,8 +3159,13 @@ public class Controlador {
 	
 	// Mensajes que mandan los Servicios de Atributos al Controlador
 	public void mensajeDesde_SA(TC mensaje, Object datos){
+		int intAux = 2;
+		if (mensaje == TC.SA_EliminarAtributo_HECHO) {
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			intAux = (int) aux.get(2);
+		}
 		
-		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || mensaje == TC.SA_EliminarAtributo_HECHO || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
+		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
@@ -3500,8 +3527,13 @@ public class Controlador {
 	
 	// Mensajes que mandan los Servicios de Relaciones al Controlador
 	public void mensajeDesde_SR(TC mensaje, Object datos){
-	
-		if(mensaje == TC.SR_MoverPosicionRelacion_HECHO || mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || mensaje == TC.SR_EliminarRelacionNormal_HECHO || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
+		int intAux = 2;
+		if (mensaje == TC.SR_EliminarRelacionNormal_HECHO) {
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
+			intAux = (int) aux.get(1);
+		}
+			
+		if(mensaje == TC.SR_MoverPosicionRelacion_HECHO || mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || (mensaje == TC.SR_EliminarRelacionNormal_HECHO && intAux == 0) || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
@@ -3894,7 +3926,8 @@ public class Controlador {
 			
 			
 			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
+			Vector<Object> v = (Vector<Object>) datos;
+			TransferRelacion tr = (TransferRelacion) v.get(0);
 			
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacionNormal, tr);
 			ActualizaArbol(null);
