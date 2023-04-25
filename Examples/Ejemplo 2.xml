@@ -92,7 +92,7 @@
             <ComponentList/>
             <Multivalued>false</Multivalued>
             <AssertionList/>
-            <Position>279,90</Position>
+            <Position>362,176</Position>
         </Attribute>
         <Attribute AttributeId="3">
             <Name>numSerie</Name>

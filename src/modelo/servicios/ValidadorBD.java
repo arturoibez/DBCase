@@ -106,10 +106,17 @@ public class ValidadorBD extends GeneradorEsquema{
 		//comprueba que una entidad tenga atributos con nombres distintos.
 		Vector<TransferAtributo> ats = dameAtributosEnTransfer(te.getListaAtributos());
 		Vector<int[]> resultados =entidadPerteneceAisA(te);
-		if (ats.size() < 1 && resultados.elementAt(0)[1] != 1){
+		if(resultados.size() > 0) {
+			if (ats.size() < 1 && resultados.elementAt(0)[1] != 1){
+				error(te,Lenguaje.text(Lenguaje.NO_ATTRIB));
+				return false;
+			}
+		}
+		else if (ats.size() < 1) {
 			error(te,Lenguaje.text(Lenguaje.NO_ATTRIB));
 			return false;
 		}
+
 		TransferAtributo ti, tj;
 		int i=0,j=1;
 		boolean valido=true;
