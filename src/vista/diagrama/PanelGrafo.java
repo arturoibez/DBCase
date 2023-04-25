@@ -99,7 +99,8 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	private int[] coords;
 	private int diagramWidth;
 
-	public PanelGrafo(Vector<TransferEntidad> entidades, Vector<TransferAtributo> atributos, Vector<TransferRelacion> relaciones) {
+	public PanelGrafo(Vector<TransferEntidad> entidades, Vector<TransferAtributo> atributos,
+			Vector<TransferRelacion> relaciones, Vector<TransferAgregacion> agregaciones) {
 		coords = new int[2];
 		coords[0]=400;
 		coords[1]=50;
@@ -108,8 +109,8 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		graph = new UndirectedSparseMultigraph<Transfer, Object>();
 		// Inicializa el layout, el visualizador y el renderer
 		layout = new GrafoLayout<Transfer, Object>(graph);
-		// Inserta las entidades, atributos, relaciones al grafo
-		this.generaTablasNodos(entidades, atributos, relaciones);
+		// Inserta las entidades, atributos, relaciones, agregaciones al grafo
+		this.generaTablasNodos(entidades, atributos, relaciones, agregaciones);
 		Collection<TransferEntidad> entities = this.entidades.values();
 		for (Iterator<TransferEntidad> it = entities.iterator(); it.hasNext();) {
 			TransferEntidad entidad = it.next();
@@ -488,10 +489,11 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	}
 	
 	private void generaTablasNodos(Vector<TransferEntidad> entidades, Vector<TransferAtributo> atributos,
-			Vector<TransferRelacion> relaciones) {
+			Vector<TransferRelacion> relaciones, Vector<TransferAgregacion> agregaciones) {
 		this.entidades = new HashMap<Integer, TransferEntidad>();
 		this.atributos = new HashMap<Integer, TransferAtributo>();
 		this.relaciones = new HashMap<Integer, TransferRelacion>();
+		this.agregaciones = new HashMap<Integer, TransferAgregacion>();
 		// Inserta las entidades con su id como clave
 		for (Iterator<TransferEntidad> it = entidades.iterator(); it.hasNext();) {
 			TransferEntidad entidad = it.next();
@@ -507,6 +509,12 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			TransferRelacion relacion = it.next();
 			this.relaciones.put(relacion.getIdRelacion(), relacion);
 		}
+		// Inserta las agregaciones con su id como clave
+		for (Iterator<TransferAgregacion> it = agregaciones.iterator(); it.hasNext();) {
+			TransferAgregacion agregacion = it.next();
+			this.agregaciones.put(agregacion.getIdAgregacion(), agregacion);
+		}
+		
 		creaArrayTablas();
 	}
 
@@ -594,6 +602,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		for (HashMap.Entry<Integer, TransferRelacion> rel : this.relaciones.entrySet())
 			if (!rel.getValue().isIsA()) tablas.add(rel.getValue());
 		tablas.addAll(listaMultivalorados().values());
+		tablas.addAll(agregaciones.values());
 	}
 
 	public void refreshTables(TableModelEvent datos) {
@@ -651,6 +660,18 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 		DefaultMutableTreeNode arbolEntidades = new DefaultMutableTreeNode(Lenguaje.text(Lenguaje.ENTITIES));
 		DefaultMutableTreeNode arbolRelaciones = new DefaultMutableTreeNode(Lenguaje.text(Lenguaje.RELATIONS));
+		DefaultMutableTreeNode arbolAgregaciones = new DefaultMutableTreeNode(Lenguaje.text(Lenguaje.AGGREGATIONS));
+		
+		for (HashMap.Entry<Integer,TransferAgregacion> agg: this.agregaciones.entrySet()) {
+			DefaultMutableTreeNode nodoAgregacion = new DefaultMutableTreeNode(agg.getValue());
+			Vector lista = agg.getValue().getListaRelaciones();
+			for (int j = 0; j < lista.size(); j++) {
+				TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista.get(j))); 
+				nodoAgregacion.add(new DefaultMutableTreeNode(rel));
+			}
+			arbolAgregaciones.add(nodoAgregacion);
+		}
+		
 		for (HashMap.Entry<Integer, TransferEntidad> ent : this.entidades.entrySet()) {
 			DefaultMutableTreeNode nodoEntidad = new DefaultMutableTreeNode(ent.getValue());
 			Vector lista = (ent.getValue().getListaAtributos());
@@ -683,6 +704,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		}
 		root.add(arbolEntidades);
 		root.add(arbolRelaciones);
+		root.add(arbolAgregaciones);
 		arbolInformacion = new JTree(root);
 		arbolInformacion.setRootVisible(false);
 		for (int i = 0; i < arbolInformacion.getRowCount(); i++)
@@ -769,12 +791,9 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 				// Añado sus atributos
 				for (Iterator<String> it2 = antigua.getListaAtributos().iterator(); it2.hasNext();) {
 					Integer id = Integer.parseInt(it2.next());
-					if (!graph.areNeighbors(antigua, this.atributos.get(id))) { // Añade aristas que no existiesen
-						graph.addEdge(new Double(Math.random()), antigua, this.atributos.get(id));
-					}
 				}
 			}
-			vv.repaint(); // Se redibuja todo el grafo actualizado
+			//vv.repaint(); // Se redibuja todo el grafo actualizado
 			return antigua;
 		}
 		return null;
@@ -832,6 +851,10 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			TransferRelacion relacion = (TransferRelacion) arg0;
 			relaciones.put(relacion.getIdRelacion(), relacion);
 			layout.anadeVertice(relacion);
+		}
+		if (arg0 instanceof TransferAgregacion) {
+			TransferAgregacion agregacion = (TransferAgregacion) arg0;
+			agregaciones.put(agregacion.getIdAgregacion(), agregacion);
 		}
 		creaArrayTablas();
 		vv.repaint();

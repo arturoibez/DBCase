@@ -131,7 +131,7 @@ public class MenuDesplegable extends JPopupMenu {
 			
 			return;
 		}
-		
+		else {
 		// Se ha pinchado sobre un nodo
 		this.nodo = nodo;
 		if (nodo instanceof TransferEntidad) { // Si es entidad
@@ -254,8 +254,9 @@ public class MenuDesplegable extends JPopupMenu {
 			}
 			});
 			this.add(j7);
-
+		
 		}
+	}
 
 		if (nodo instanceof TransferAtributo) { // Si es atributo
 			// Editar el dominio del atributo
@@ -757,6 +758,7 @@ public class MenuDesplegable extends JPopupMenu {
 		}
 
 	}
+
 	
 	protected void suprimir() {
 		PickedState<Transfer> p = vv.getPickedVertexState();
@@ -940,6 +942,5 @@ public class MenuDesplegable extends JPopupMenu {
 	
 	public Point2D getPunto() {
 		return this.punto;
-
 	}
 }

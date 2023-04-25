@@ -17,6 +17,32 @@ public class TransferAgregacion extends Transfer{
 	private int frecuencia;//?
 	private int offsetAttr=0;//?
 	
+	public void CopiarAgregacion(TransferAgregacion agreg) {
+		// TODO Auto-generated method stub
+		this.idAgregacion = agreg.idAgregacion;
+		this.nombre = agreg.nombre;
+		this.listaRelaciones = agreg.listaRelaciones;
+		this.listaAtributos = agreg.listaAtributos;
+		this.volumen = agreg.volumen;
+		this.frecuencia = agreg.frecuencia;
+		this.offsetAttr = agreg.offsetAttr;
+		this.posicion = new Point2D.Double(agreg.getPosicion().getX(),agreg.getPosicion().getY());
+	}
+	
+	public TransferAgregacion clonar() {
+		// TODO Auto-generated method stub
+		TransferAgregacion agreg = new TransferAgregacion();
+		agreg.setIdAgregacion(this.idAgregacion);
+		agreg.setNombre(this.nombre);
+		agreg.setListaRelaciones((Vector)this.listaRelaciones.clone());
+		agreg.setListaAtributos((Vector)this.listaAtributos.clone());
+		agreg.setPosicion((Point2D)this.posicion.clone());
+		agreg.setVolumen(this.volumen);
+		agreg.setFrecuencia(this.frecuencia);
+		agreg.setOffsetAttr(this.offsetAttr);
+		return agreg;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -50,7 +76,7 @@ public class TransferAgregacion extends Transfer{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.nombre;
 	}
 	@Override
 	public Shape toShape() {
@@ -60,30 +86,31 @@ public class TransferAgregacion extends Transfer{
 	@Override
 	public int getVolumen() {
 		// TODO Auto-generated method stub
-		return 0;
+		return volumen;
 	}
 	@Override
 	public int getFrecuencia() {
 		// TODO Auto-generated method stub
-		return 0;
+		return frecuencia;
 	}
 	@Override
 	public void setVolumen(int v) {
 		// TODO Auto-generated method stub
+		volumen=v;
 		
 	}
 	@Override
 	public void setFrecuencia(int f) {
 		// TODO Auto-generated method stub
-		
+		frecuencia=f;
 	}
-	public void CopiarAgregacion(TransferAgregacion agreg) {
-		// TODO Auto-generated method stub
-		
+	
+	public int getOffsetAttr() {
+		return offsetAttr;
 	}
-	public TransferAgregacion clonar() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void setOffsetAttr(int o) {
+		offsetAttr=o;
 	}
 	
 }

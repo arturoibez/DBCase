@@ -38,6 +38,7 @@ public class GeneradorEsquema {
 	//aqui se almacenaran las tablas ya creadas, organizadas por el id de la entidad /relacion (clave) y con el objeto tabla como valor.
 	private Hashtable<Integer,Tabla> tablasEntidades=new Hashtable<Integer,Tabla>();
 	private Hashtable<Integer,Tabla> tablasRelaciones=new Hashtable<Integer,Tabla>();
+	private Hashtable<Integer,Tabla> tablasAgregaciones = new Hashtable<Integer,Tabla>();
 	private Vector<Tabla> tablasMultivalorados=new Vector<Tabla>();
 	private Hashtable<Integer,Enumerado> tiposEnumerados = new Hashtable<Integer,Enumerado>();
 	private ValidadorBD validadorBD;
@@ -55,6 +56,11 @@ public class GeneradorEsquema {
 	}
 
 	//metodos de recorrido de los daos para la creacion de las tablas.
+	
+	private void generaTablasAgregaciones() {
+		
+	}
+	
 	private void generaTablasEntidades(){
 		DAOEntidades daoEntidades= new DAOEntidades(controlador.getPath());
 		Vector<TransferEntidad> entidades= daoEntidades.ListaDeEntidades();
@@ -326,6 +332,7 @@ public class GeneradorEsquema {
 	public void reset(){
 		tablasEntidades.clear();
 		tablasRelaciones.clear();
+		tablasAgregaciones.clear();
 		tablasMultivalorados.clear();
 		tiposEnumerados.clear();
 		
@@ -348,6 +355,7 @@ public class GeneradorEsquema {
 		generaTiposEnumerados();
 		generaTablasEntidades();
 		generaTablasRelaciones();
+		generaTablasAgregaciones();
 		//sacamos el codigo de cada una de ellas recorriendo las hashtables e imprimiendo.
 		creaTablas(conexion);
 		creaEnums(conexion);
