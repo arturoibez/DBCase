@@ -21,9 +21,10 @@ public class ServiciosAgregaciones {
 		// Creamos el DAO de agregaciones
 		DAOAgregaciones dao = new DAOAgregaciones(this.controlador.getPath());
 		// Utilizando el DAO obtenemos la lista de agregaciones
-		Vector <TransferAgregacion> lista_relaciones = dao.ListaDeAgregaciones();
+		Vector <TransferAgregacion> lista_agregaciones = dao.ListaDeAgregaciones();
+		controlador.mensajeDesde_AG(TC.SAG_ListarAgregacion_HECHO, lista_agregaciones);
 		// Se lo devolvemos al controlador
-		return lista_relaciones;
+		return lista_agregaciones;
 	}
 	
 	public void anadirAgregacion(TransferAgregacion ta){
@@ -64,7 +65,7 @@ public class ServiciosAgregaciones {
 		if (id==-1)	controlador.mensajeDesde_SR(TC.SAG_InsertarAgregacion_ERROR_DAO,ta);
 		else{
 			ta.setIdAgregacion(id);
-			controlador.mensajeDesde_AG(TC.SR_InsertarRelacion_HECHO, daoAgregaciones.consultarAgregacion(ta));
+			controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_HECHO, daoAgregaciones.consultarAgregacion(ta));
 		}
 	}
 	//public boolean SePuedeAnadirAgregacion(TransferAgregacion te)???

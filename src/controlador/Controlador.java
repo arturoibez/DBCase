@@ -161,6 +161,7 @@ public class Controlador {
 	private static Stack<Document> pilaDeshacer;
 	private Vector<TransferEntidad> listaEntidades;
 	private Vector<TransferRelacion> listaRelaciones;
+	//private Vector<TransferAgregacion> listaAgregaciones; por el momento no parece necesario 
 	private boolean modoSoporte;
 	
 	//Para boton Deshacer solo afecta a acciones con elementos
@@ -1502,6 +1503,10 @@ public class Controlador {
 			this.getTheServiciosRelaciones().ListaDeRelaciones();
 			break;
 		}
+		case GUIPrincipal_ActualizameLaListaDeAgregaciones:{
+			this.getTheServiciosAgregaciones().ListaDeAgregaciones();
+			break;
+		}
 		case GUIPrincipal_ActualizameLaListaDeDominios:{
 			this.getTheServiciosDominios().ListaDeDominios();
 			break;
@@ -1905,7 +1910,7 @@ public class Controlador {
 
 			agreg.setNombre(nombre);
 			Vector relaciones = new Vector();
-			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
+			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);
 			agreg.setListaRelaciones(relaciones);
 			agreg.setListaAtributos(new Vector());
 			
@@ -3346,6 +3351,18 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
 		}
+		case SAG_ListarAgregacion_HECHO:{ // igual hay mas clases en las que hay que cambiar la lista de agregaciones
+			this.getTheGUIPrincipal().setListaAgregaciones((Vector) datos);
+			break;
+		}
+		
+		case SAG_InsertarAgregacion_HECHO:{
+			setCambios(true);
+			//this.getTheGUIInsertarRelacion().setInactiva();
+			TransferAgregacion ta = (TransferAgregacion) datos;
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarAgregacion, ta);
+			break;
+		}
 		case SAG_RenombrarAgregacion_HECHO:{
 			setCambios(true);
 			Vector v = (Vector) datos;
@@ -3356,6 +3373,8 @@ public class Controlador {
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarAgregacion, tr);
 			break;
 		}
+		default:
+			break;
 		}
 	}
 	
@@ -4523,7 +4542,7 @@ public class Controlador {
 				break;
 			}
 			
-			/*case SE_MoverPosicionEntidad_HECHO:{ //ni zorra de por que no funciona
+			/*case SE_MoverPosicionEntidad_HECHO:{ //ni idea de por que no funciona
 				TransferEntidad te = (TransferEntidad) datos;
 				Point2D pos = te.getPosicion();
 				TransferEntidad teAux = new TransferEntidad();
