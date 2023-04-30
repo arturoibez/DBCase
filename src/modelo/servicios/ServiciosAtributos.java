@@ -99,6 +99,7 @@ public class ServiciosAtributos {
 	 * Si se produce un error al usar el DAOAtributos ->  SA_EliminarAtributo_ERROR_DAOAtributos
 	 * Hay que comprobar primero que el atributo que viene en el transfer exista con un consultar
 	 */
+
 	public void eliminarAtributo (TransferAtributo ta, int vieneDeOtro){//si el entero es 1 viene de eliminar entidad o relacion
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
 		TransferAtributo aux = ta;

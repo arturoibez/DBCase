@@ -79,7 +79,7 @@ public class DAOEntidades {
 		//relaciones en las que participa
 		Element raizListaRelaciones = doc.createElement("RelatnList");
 		raiz.appendChild(raizListaRelaciones);
-	
+
 		for (int cont = 0; cont <tc.getListaRelaciones().size(); cont++) {
 			Element Relacion = doc.createElement("Relatn");
 			Relacion.appendChild(doc.createTextNode(tc.getListaRelaciones().elementAt(cont).toString()));

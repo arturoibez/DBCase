@@ -94,6 +94,9 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	private Vector<TransferEntidad> listaEntidades;
 	private Vector<TransferAtributo> listaAtributos;
 	private Vector<TransferRelacion> listaRelaciones;
+
+	private Vector<TransferAgregacion> listaAgregaciones;
+
 	private Vector<TransferDominio> listaDominios;
 	private TablaVolumenes tablaVolumenes;
 	private JPanel panelTablas;
@@ -216,7 +219,8 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ActualizameLaListaDeEntidades, null);
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ActualizameLaListaDeAtributos, null);
 		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ActualizameLaListaDeRelaciones, null);
-		panelDiseno = new PanelGrafo(listaEntidades,listaAtributos,listaRelaciones);
+		c.mensajeDesde_GUIPrincipal(TC.GUIPrincipal_ActualizameLaListaDeAgregaciones, null);
+		panelDiseno = new PanelGrafo(listaEntidades,listaAtributos,listaRelaciones, listaAgregaciones);
 		panelDiseno.setControlador(this.getControlador());
 
 		panelInfo = new JPanel();
@@ -289,6 +293,8 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		Vector<Transfer> listaTransfers = new Vector<Transfer>();
 		listaTransfers.addAll(listaEntidades);
 		listaTransfers.addAll(listaRelaciones);
+		listaTransfers.addAll(listaAgregaciones);
+
 		addTransfersPanel botonesAnadir = new addTransfersPanel(c, listaTransfers);
 		/*Listener del tamano del panel*/
 		panelDiseno.addComponentListener(new ComponentListener() {
@@ -484,7 +490,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	/*
 	 * OYENTES DE TECLADO
 	 * */
-	public void keyPressed( KeyEvent e ) {} 
+	//public void keyPressed( KeyEvent e ) {} 
 	public void keyReleased(KeyEvent arg0) {}
 	public void keyTyped(KeyEvent arg0) {}
 	
@@ -496,6 +502,13 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		case Controlador_InsertarEntidad:{
 			TransferEntidad te = (TransferEntidad) datos;
 			panelDiseno.anadirNodo(te);
+			loadInfo();
+			break;
+		}
+
+		case Controlador_InsertarAgregacion:{
+			TransferAgregacion ta = (TransferAgregacion) datos;
+			panelDiseno.anadirNodo(ta);
 			loadInfo();
 			break;
 		}
@@ -865,6 +878,10 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 
 	public void setListaEntidades(Vector<TransferEntidad> listaEntidades) {
 		this.listaEntidades = listaEntidades;
+	}
+
+	public void setListaAgregaciones(Vector<TransferAgregacion> listaAgregaciones) {
+		this.listaAgregaciones = listaAgregaciones;
 	}
 	
 	public Vector getListaAtributos() {
@@ -1899,8 +1916,28 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
             break;
         }
 	}
-	
+
 	public MyMenu getMyMenu() {
 		return this.barraDeMenus;
 	}
+	
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {			
+		case 83:// CTRL S
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Guardar, null);
+			break;
+			
+		case 89: //CTR Y
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
+			break;	
+			
+		case 90: //CTR Z
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
+			break;
+		}
+	}
+
 }

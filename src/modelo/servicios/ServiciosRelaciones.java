@@ -150,6 +150,7 @@ public class ServiciosRelaciones {
 	/*
 	 *  Eliminar una relación Normal
 	 */
+
 	public void eliminarRelacionNormal(TransferRelacion tr, int vieneDeEntidadDebil){
 		DAORelaciones daoRelaciones = new DAORelaciones(this.controlador.getPath());
 		Vector<Object> v = new Vector<Object>();

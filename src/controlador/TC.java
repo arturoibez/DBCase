@@ -12,6 +12,9 @@ public enum TC {
 	GUIPrincipal_ActualizameLaListaDeEntidades,
 	GUIPrincipal_ActualizameLaListaDeAtributos,
 	GUIPrincipal_ActualizameLaListaDeRelaciones,
+
+	GUIPrincipal_ActualizameLaListaDeAgregaciones,
+
 	GUIPrincipal_ActualizameLaListaDeDominios,
 	//about
 	GUI_Principal_ABOUT,
@@ -70,7 +73,9 @@ public enum TC {
 	GUI_WorkSpace_Recent,
 	GUI_WorkSpace_Click_Abrir,
 	GUI_WorkSpace_Click_Guardar,
+
 	GUI_WorkSpace_Click_GuardarDeshacer,
+
 	GUI_WorkSpace_ClickBotonCancelar,
 	GUI_WorkSpace_ERROR_CreacionFicherosXML,
 	
@@ -331,6 +336,8 @@ public enum TC {
 	SAG_InsertarAgregacion_ERROR_DAO,
 	SAG_RenombrarAgregacion_ERROR_NombreVacio,
 	SAG_RenombrarAgregacion_HECHO,
+	SAG_ListarAgregacion_HECHO,
+	SAG_InsertarAgregacion_HECHO,
 	
 	//esto no va aqui
 	Controlador_RenombrarAgregacion,
@@ -491,6 +498,9 @@ public enum TC {
 	Controlador_AnadirAtributoAEntidad,
 	Controlador_RenombrarAtributo,
 	Controlador_InsertarRelacion,
+
+	Controlador_InsertarAgregacion,
+
 	Controlador_EditarDominioAtributo,
 	Controlador_EditarCompuestoAtributo,
 	Controlador_EditarMultivaloradoAtributo,
