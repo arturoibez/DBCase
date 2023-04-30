@@ -506,10 +506,7 @@ public class Controlador {
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
 				this.guardarDeshacer();
-<<<<<<< HEAD
 				this.tiempoGuardado = System.currentTimeMillis()/1000;
-=======
->>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 				break;
 			}
 			case GUI_WorkSpace_Click_Abrir:{
@@ -527,11 +524,7 @@ public class Controlador {
 		        }});
 				setCambios(false);
 				this.guardarDeshacer();
-<<<<<<< HEAD
 				this.tiempoGuardado = System.currentTimeMillis()/1000;
-=======
-				
->>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 				break;
 			}
 			
@@ -576,7 +569,6 @@ public class Controlador {
 				break;
 			}
 			
-<<<<<<< HEAD
 			case GUI_WorkSpace_Click_Guardar_Backup:{
 				String guardarPath =(String)datos;
 				String tempPath =this.filetemp.getAbsolutePath();
@@ -602,8 +594,6 @@ public class Controlador {
 				break;
 			}
 			
-=======
->>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 			case GUI_WorkSpace_Click_GuardarDeshacer:{
 				String guardarPath =(String)datos;
 				String tempPath =this.filetemp.getAbsolutePath();
@@ -3252,7 +3242,6 @@ public class Controlador {
 			intAux = (int) aux.get(2);
 		}
 		
-<<<<<<< HEAD
 		if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
 			intAux = (int) aux.get(2);
@@ -3265,9 +3254,6 @@ public class Controlador {
 		
 		
 		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || (mensaje == TC.SA_EditarUniqueAtributo_HECHO && intAux== 0) || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO && intAux == 0)) {
-=======
-		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
->>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
