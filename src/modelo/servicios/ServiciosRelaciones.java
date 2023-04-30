@@ -580,7 +580,7 @@ public class ServiciosRelaciones {
 		boolean encontrado=false;
 		int i=0;
 		while(i<uniques.size()){
-			if(((TransferAtributo) uniques.get(i)).getNombre().equals(ta.getNombre())) encontrado=true;
+			if((uniques.get(i)).equals(ta.getNombre())) encontrado=true;
 			else uniquesCopia.add(uniques.get(i));
 			i++;
 		}

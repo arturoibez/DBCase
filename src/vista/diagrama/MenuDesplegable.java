@@ -342,9 +342,10 @@ public class MenuDesplegable extends JPopupMenu {
 						TransferAtributo atributo = (TransferAtributo) menu.nodo;
 						TransferAtributo clon_atributo = atributo.clonar();
 						TransferEntidad clon_entidad = ent.clonar();
-						Vector<Transfer> vector = new Vector<Transfer>();
+						Vector<Object> vector = new Vector<Object>();
 						vector.add(clon_atributo);
 						vector.add(clon_entidad);
+						vector.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,
 								vector);
 					}
@@ -365,7 +366,12 @@ public class MenuDesplegable extends JPopupMenu {
 					TransferAtributo atributo = (TransferAtributo) menu.nodo;
 					TransferAtributo clon_atributo = atributo.clonar();
 					if (notnul) controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarNotNullAtributo,clon_atributo);
-					if (unique) controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo, clon_atributo);
+					if (unique) {
+						Vector<Object> ve = new Vector<Object>();
+						ve.add(clon_atributo);
+						ve.add(0);
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo, clon_atributo);
+					}
 					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarCompuestoAtributo,clon_atributo);
 				}
 			});
@@ -417,8 +423,11 @@ public class MenuDesplegable extends JPopupMenu {
 						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 						TransferAtributo atributo = (TransferAtributo) menu.nodo;
 						TransferAtributo clon_atributo = atributo.clonar();
+						Vector<Object> ve = new Vector<Object>();
+						ve.add(clon_atributo);
+						ve.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,
-								clon_atributo);
+								ve);
 					}
 				});
 				this.add(j3b);

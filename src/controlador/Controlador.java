@@ -506,6 +506,10 @@ public class Controlador {
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
 				this.guardarDeshacer();
+<<<<<<< HEAD
+				this.tiempoGuardado = System.currentTimeMillis()/1000;
+=======
+>>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 				break;
 			}
 			case GUI_WorkSpace_Click_Abrir:{
@@ -523,7 +527,11 @@ public class Controlador {
 		        }});
 				setCambios(false);
 				this.guardarDeshacer();
+<<<<<<< HEAD
+				this.tiempoGuardado = System.currentTimeMillis()/1000;
+=======
 				
+>>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 				break;
 			}
 			
@@ -568,6 +576,34 @@ public class Controlador {
 				break;
 			}
 			
+<<<<<<< HEAD
+			case GUI_WorkSpace_Click_Guardar_Backup:{
+				String guardarPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(tempPath, guardarPath);
+				this.getTheGUIWorkSpace().setInactiva();
+				setCambios(false);
+				//this.tiempoGuardado = System.currentTimeMillis()/1000;
+				if (this.fileguardar.getPath() != (String)datos) {
+					File directory = new File(System.getProperty("user.dir")+"/deshacer");
+					if (directory.exists()) {
+						for (File file: Objects.requireNonNull(directory.listFiles())) {
+				            if (!file.isDirectory()) {
+				                file.delete();
+				            }
+				        }
+					}
+					File temp = new File(guardarPath);
+	    			//this.setFileguardar(temp);
+					//this.contFicherosDeshacer = 0;
+					//this.limiteFicherosDeshacer = 0;
+					//this.guardarDeshacer();
+				}
+				break;
+			}
+			
+=======
+>>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 			case GUI_WorkSpace_Click_GuardarDeshacer:{
 				String guardarPath =(String)datos;
 				String tempPath =this.filetemp.getAbsolutePath();
@@ -771,8 +807,11 @@ public class Controlador {
 			}
 			if (respuesta == 0){
 				if(ta.getUnique()){
+					Vector<Object> ve = new Vector<Object>();
 					TransferAtributo clon_atributo = ta.clonar();
-					this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,clon_atributo);
+					ve.add(clon_atributo);
+					ve.add(1);
+					this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ve);
 				}
 				TransferAtributo clon_atributo2 = ta.clonar();
 				this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarReferenciasUniqueAtributo,clon_atributo2);
@@ -943,8 +982,10 @@ public class Controlador {
 			break;			
 		}
 		case PanelDiseno_Click_EditarUniqueAtributo:{
-			TransferAtributo ta = (TransferAtributo) datos;
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			//hola
+			Vector<Object> ve = (Vector<Object>) datos;
+			TransferAtributo ta = (TransferAtributo) ve.get(0);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, (int) ve.get(1));
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -991,7 +1032,7 @@ public class Controlador {
 		}
 		case PanelDiseno_Click_EliminarReferenciasUniqueAtributo:{
 			TransferAtributo ta = (TransferAtributo) datos;
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 1);
 			
 			//this.getTheServiciosEntidades().ListaDeEntidades();
 			//this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1041,7 +1082,7 @@ public class Controlador {
 			TransferAtributo ta = (TransferAtributo) v1.get(0);
 			String antiguoNombre =(String)v1.get(1);
 			
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1100,7 +1141,7 @@ public class Controlador {
 			break;
 		}
 		case PanelDiseno_Click_EditarClavePrimariaAtributo:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
+			Vector<Object> v = (Vector<Object>) datos;
 			this.getTheServiciosAtributos().editarClavePrimariaAtributo(v);
 			break;
 		}
@@ -1289,6 +1330,7 @@ public class Controlador {
 						te.setIdEntidad(idEntidad);	
 						//Tengo que rellenar los atributos de te
 						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades()); //falla aqui
+						if (auxiliar == null) auxiliar = this.getListaEntidades();
 						boolean encontrado= false;
 						int i=0;
 						if (auxiliar != null) {
@@ -2153,16 +2195,17 @@ public class Controlador {
 			}
 			//Modificamos los valores ClavePrimaria, Compuesto, Unique, NotNull y Multivalorado si es necesario
 			if(encontrado && clavePrimaraSelected!=ta.isClavePrimaria()) {
-				Vector<Transfer> vClavePrimaria= new Vector<Transfer>();
+				Vector<Object> vClavePrimaria= new Vector<Object>();
 				vClavePrimaria.add(ta);
 				vClavePrimaria.add(te);
+				vClavePrimaria.add(0);
 				this.getTheServiciosAtributos().editarClavePrimariaAtributo(vClavePrimaria);
 			}
 			if(compuestoSelected!=ta.getCompuesto()) {
 				this.getTheServiciosAtributos().editarCompuestoAtributo(ta);
 			}
 			if(uniqueSelected!=ta.getUnique()) {
-				this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+				this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
 			}
 			if(notNullSelected!=ta.getNotnull()) {
 				this.theServiciosAtributos.editarNotNullAtributo(ta);
@@ -2372,6 +2415,7 @@ public class Controlador {
 			break;
 		}
 		case GUIEditarDominioAtributo_Click_BotonEditar:{
+			//hola
 			Vector v = (Vector) datos;
 			TransferAtributo ta = (TransferAtributo) v.get(0);
 			this.antiguoDominioAtributo = ta.getDominio();
@@ -2410,7 +2454,8 @@ public class Controlador {
 			break;
 		}
 		case GUIEditarClavePrimariaAtributo_Click_BotonAceptar:{
-			Vector<Transfer> vectorAtributoyEntidad = (Vector<Transfer>)datos;
+			Vector<Object> vectorAtributoyEntidad = (Vector<Object>)datos;
+			vectorAtributoyEntidad.add(0);
 			this.getTheServiciosAtributos().editarClavePrimariaAtributo(vectorAtributoyEntidad);
 			ActualizaArbol((Transfer)vectorAtributoyEntidad.get(1));
 			this.getTheServiciosSistema().reset();
@@ -3207,7 +3252,22 @@ public class Controlador {
 			intAux = (int) aux.get(2);
 		}
 		
+<<<<<<< HEAD
+		if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			intAux = (int) aux.get(2);
+		}
+		
+		if (mensaje == TC.SA_EditarUniqueAtributo_HECHO){
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			intAux = (int) aux.get(1);
+		}
+		
+		
+		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || (mensaje == TC.SA_EditarUniqueAtributo_HECHO && intAux== 0) || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO && intAux == 0)) {
+=======
 		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
+>>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
@@ -3382,7 +3442,8 @@ public class Controlador {
 			
 			
 			setCambios(true);
-			TransferAtributo ta = (TransferAtributo) datos;
+			Vector<Object> ve = (Vector<Object>) datos;
+			TransferAtributo ta = (TransferAtributo) ve.get(0);
 			ActualizaArbol(ta);
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EditarUniqueAtributo, ta);
 			break;
@@ -4293,7 +4354,7 @@ public class Controlador {
 			String str = this.filetemp.getAbsolutePath();
 			ruta = str.substring(0, str.length() - 27) + "LastProyectBackup.xml";
 		}
-		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
+		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar_Backup, ruta);
 		//File f = new File(ruta);
 		//this.setFileguardar(f);
 	}

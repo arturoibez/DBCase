@@ -73,7 +73,11 @@ public enum TC {
 	GUI_WorkSpace_Recent,
 	GUI_WorkSpace_Click_Abrir,
 	GUI_WorkSpace_Click_Guardar,
+<<<<<<< HEAD
+	GUI_WorkSpace_Click_Guardar_Backup,
+=======
 
+>>>>>>> 78843543b7e43691552f03dcba38f974cc3a2e5e
 	GUI_WorkSpace_Click_GuardarDeshacer,
 
 	GUI_WorkSpace_ClickBotonCancelar,

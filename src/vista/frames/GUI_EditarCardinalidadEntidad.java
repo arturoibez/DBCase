@@ -584,7 +584,7 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 			this.buttonMaxN.setSelected(false);
 			this.cajaInicio.setEnabled(true);
 			this.cajaFinal.setEnabled(true);
-			this.cajaFinal.setText("1");
+			//this.cajaFinal.setText("1");
 			this.cajaInicio.setText(this.cajaInicio.getText());
 		}
 		else{
@@ -602,7 +602,7 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 			this.buttonMax1.setSelected(false);
 			this.cajaInicio.setEnabled(true);
 			this.cajaFinal.setEnabled(true);
-			this.cajaFinal.setText("N");
+			//this.cajaFinal.setText("N");
 			this.cajaInicio.setText(this.cajaInicio.getText());
 		}
 		else{
