@@ -666,6 +666,7 @@ public class Lenguaje {
 	public static final int AGGREGATIONS_FILE_ERROR = 5303;
 	public static final int EMPTY_AGREG_NAME = 5304;
 	public static final int INT_NOM_AGREG = 5305;
+
 	public static final int AGGREGATIONS = 5306;
 	//copiar y pegar
 	public static final int COPIAR = 5400;

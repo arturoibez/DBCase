@@ -131,6 +131,7 @@ public class MenuDesplegable extends JPopupMenu {
 			
 			return;
 		}
+
 		else {
 		// Se ha pinchado sobre un nodo
 		this.nodo = nodo;
@@ -257,6 +258,7 @@ public class MenuDesplegable extends JPopupMenu {
 		
 		}
 	}
+
 
 		if (nodo instanceof TransferAtributo) { // Si es atributo
 			// Editar el dominio del atributo
@@ -751,7 +753,8 @@ public class MenuDesplegable extends JPopupMenu {
 					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 					TransferRelacion elemento = (TransferRelacion) menu.nodo;
 					TransferRelacion clon = elemento.clonar();
-					Gui_Agreg(clon);
+					//Gui_Agreg(clon);
+					Gui_Confirm(clon);
 				}
 			});
 			this.add(j10);
@@ -765,35 +768,93 @@ public class MenuDesplegable extends JPopupMenu {
 		int seleccionados = 0;
 		for (@SuppressWarnings("unused")Transfer t : p.getPicked()) seleccionados++;
 		int respuesta = 1;
+		Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 		if (seleccionados > 1) {
+			
 			respuesta = this.controlador.getPanelOpciones().setActiva(
-					Lenguaje.text(Lenguaje.DELETE_ALL_NODES) + "\n" + Lenguaje.text(Lenguaje.WISH_CONTINUE),
-					Lenguaje.text(Lenguaje.DBCASE_DELETE));
+				Lenguaje.text(Lenguaje.DELETE_ALL_NODES) + "\n" + Lenguaje.text(Lenguaje.WISH_CONTINUE),
+				Lenguaje.text(Lenguaje.DBCASE_DELETE));
 		}
 		if (respuesta == 0 || seleccionados == 1) {
 			PickedState<Transfer> ps = vv.getPickedVertexState();
+			int cont = 0; //contador para identificar eliminaciones de entidades/relaciones debiles
+			//si se elimina una entidad debil se elimina automaticamente la relacion debil y viceversa
+			//entonces si ambas estaban seleccionadas da error
+			int cont2 = 0;
 			for (Transfer t : ps.getPicked()) {
 				Vector<Object> v = new Vector<Object>();
 				v.add(t);
 				v.add(respuesta == 1);
-				if (t instanceof TransferEntidad)
-					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
-
-				if (t instanceof TransferAtributo)
-					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAtributo, v);
-
-				if (t instanceof TransferRelacion)
+				if (cont2==0)v.add(0);
+				else v.add(1);
+				if (t instanceof TransferEntidad) {
+					vta = ((TransferEntidad) t).getListaAtributos();
+					if (((TransferEntidad) t).isDebil()){
+						// si es debil y el contador es 0, es decir, aun no se ha eliminado su relacion debil, se elimina
+						if (cont==0) {
+							controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
+							cont = 1;//aumentamos el contador para indicar a la relacion debil que no debe ser eliminada
+						}
+						else {
+							//si el contador es 1, reiniciamos el contdor, por si se han seleccionado otras
+							//entidades/relaciones debiles, y no eliminamos la entidad, pues se elimino con la relacion
+							cont = 0;
+						}
+						
+					}
+					
+					else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
+				}
+				if (t instanceof TransferAtributo) {
+					TransferAtributo ta = (TransferAtributo) t;
+					if (!contiene(vta, ta.getIdAtributo())) 
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAtributo, v);
+				}	
+				if (t instanceof TransferRelacion) {
+					vta = ((TransferRelacion) t).getListaAtributos();
 					if (((TransferRelacion) t).getTipo().equals("IsA"))
-						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionIsA, v);
-					else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionIsA, v);
+					else {
+						if (((TransferRelacion) t).getTipo().equals("Debil")){
+							// si es debil y el contador es 0, es decir, aun no se ha eliminado su entidad debil, se elimina
+							if (cont==0) {
+								controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+								cont = 1;//aumentamos el contador para indicar a la entidad debil que no debe ser eliminada
+							}
+							else {
+								//si el contador es 1, reiniciamos el contador, por si se han seleccionado otras
+								//entidades/relaciones debiles, y no eliminamos la entidad, pues se elimino con la relacion
+								cont = 0;
+							}
+							
+						}
+						else controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
+					}
+				
+				}
+				cont2++;
 			}
 		}
 	}
 	
+
+	private boolean contiene (Vector lista, int idAtributo) {
+		boolean r = false;
+		for(int i=0; i<lista.size(); ++i) {
+			if (lista.get(i).toString() == Integer.toString(idAtributo))r=true;
+		}
+		return r;
+	}
+
 	protected void copiar() {
 		PickedState<Transfer> p = vv.getPickedVertexState();
 		int seleccionados = 0;
 		for (@SuppressWarnings("unused")Transfer t : p.getPicked()) seleccionados++;
+
+		if (seleccionados > 1) {
+			return;
+		}
+
 		PickedState<Transfer> ps = vv.getPickedVertexState();
 		for (Transfer t : ps.getPicked()) {
 			this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, t);
@@ -828,14 +889,15 @@ public class MenuDesplegable extends JPopupMenu {
 	protected void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
-
+/*
 	private void Gui_Agreg(Transfer t) {
 		JDialog pane = new JDialog();
 		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 		pane.setResizable(false);
 		pane.setModal(true);
 		pane.setTitle(Lenguaje.text(Lenguaje.WARNING));
-		pane.setSize(700, 200);
+
+		pane.setSize(620, 200);
 		pane.setAlwaysOnTop(false);
 		pane.setLocationRelativeTo(null);
 		pane.setLayout(null);
@@ -845,7 +907,7 @@ public class MenuDesplegable extends JPopupMenu {
 		texto.setBounds(10, -10, 700, 100);
 		
 		JButton confirm = new JButton(Lenguaje.text(Lenguaje.ACCEPT));
-		confirm.setBounds(10, 90, 60, 60);
+		confirm.setBounds(50, 90, 100, 60);
 		pane.add(confirm);
 		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -856,7 +918,9 @@ public class MenuDesplegable extends JPopupMenu {
 		
 		JButton cancel = new JButton(Lenguaje.text(Lenguaje.CANCEL));
 		pane.add(cancel);
-		cancel.setBounds(570,90,120,60);
+
+		cancel.setBounds(430,90,120,60);
+
 		cancel.setBackground(Color.red);
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -869,7 +933,7 @@ public class MenuDesplegable extends JPopupMenu {
 		
 		
 	}
-	
+*/
 	private void Gui_Confirm(Transfer t) {
 		JDialog pane = new JDialog();
 		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -942,5 +1006,6 @@ public class MenuDesplegable extends JPopupMenu {
 	
 	public Point2D getPunto() {
 		return this.punto;
+
 	}
 }

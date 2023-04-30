@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inf_dbcase>
+    <EntityList proximoID="2">
+        <Entity EntityId="1">
+            <Name>a</Name>
+            <Weak>false</Weak>
+            <AttribList/>
+            <RelatnList>
+                <Relatn>1</Relatn>
+            </RelatnList>
+            <PrimaryKeyList/>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>70,50</Position>
+        </Entity>
+    </EntityList>
+    <RelationList proximoID="2">
+        <Relation idRelacion="1">
+            <Name>b</Name>
+            <Type>Normal</Type>
+            <EntityAndArityList>
+                <EntityAndArity>(1,0,n,)</EntityAndArity>
+            </EntityAndArityList>
+            <AttribList/>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>70,120</Position>
+        </Relation>
+    </RelationList>
+    <AttributeList proximoID="1"/>
+    <DomainList proximoID="1"/>
+    <AggregationList proximoID="1"/>
+</Inf_dbcase>

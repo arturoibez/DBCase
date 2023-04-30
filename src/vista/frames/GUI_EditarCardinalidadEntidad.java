@@ -82,7 +82,7 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
         getContentPane().add(getPartialParticipationButton());
         getContentPane().add(getBotonCancelar());
         
-        this.setSize(300, 600);
+        this.setSize(400, 600);
         this.addMouseListener(this);
 		this.addKeyListener(this);
     }
@@ -147,11 +147,14 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 					buttonMaxN.setSelected(true);
 				}
 			}
-			if(eya.getMarcadaConMinMax()) {
-				cajaInicio.setText(v.get(0));
-				cajaFinal.setText(v.get(1));
+
+			if(eya.getMarcadaConMinMax()) {		
 				buttonMinMax.setSelected(true);
 			}
+			
+			cajaInicio.setText(v.get(0));
+			cajaFinal.setText(v.get(1));
+			
 			if(eya.getMarcadaConParticipacion()) {
 				System.out.println(eya.getPrincipioRango());
 				if(eya.getPrincipioRango()==0) {
@@ -427,7 +430,7 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 			explicacion.setFont(theme.font());
 			explicacion.setText(Lenguaje.text(Lenguaje.SELECT_ENTITY_TO_CHANGE));
 			explicacion.setOpaque(false);
-			explicacion.setBounds(25, 21, 238, 25);
+			explicacion.setBounds(25, 21, 395, 25);
 			explicacion.setFocusable(false);
 		}
 		return explicacion;

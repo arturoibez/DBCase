@@ -264,7 +264,7 @@ public class ServiciosEntidades {
 	 * Condiciones:
 	 * Se se produce un error al usar el DAOEntidades -> SE_EliminarEntidad_ERROR_DAOEntidades 
 	 */
-	public void eliminarEntidad(TransferEntidad te){
+	public void eliminarEntidad(TransferEntidad te, int vieneDeOtro){
 		DAOEntidades daoEntidades = new DAOEntidades(this.controlador.getPath());
 		// Eliminamos la entidad
 		if (daoEntidades.borrarEntidad(te) == false)
@@ -274,6 +274,7 @@ public class ServiciosEntidades {
 			Vector<Object> vectorEntidadEliminadaYvectorRelacionesModificadas = new Vector<Object>();
 			vectorEntidadEliminadaYvectorRelacionesModificadas.add(te);
 			vectorEntidadEliminadaYvectorRelacionesModificadas.add(vectorRelacionesModificadas);
+			vectorEntidadEliminadaYvectorRelacionesModificadas.add(vieneDeOtro);
 			controlador.mensajeDesde_SE(TC.SE_EliminarEntidad_HECHO, vectorEntidadEliminadaYvectorRelacionesModificadas);
 		}
 		return;

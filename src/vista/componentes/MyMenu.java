@@ -1,5 +1,7 @@
 package vista.componentes;
 
+
+import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -852,6 +854,8 @@ public class MyMenu extends JMenuBar{
 			    System.out.println(ex);
 			  }
 			deshacer.setForeground(theme.fontColor());
+			if(c.getContFicherosDeshacer()==1) deshacer.setBackground(Color.GRAY);
+			else deshacer.setBackground(Color.WHITE);
 			add(deshacer);
 			deshacer.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -870,6 +874,8 @@ public class MyMenu extends JMenuBar{
 			    System.out.println(ex);
 			  }
 			rehacer.setForeground(theme.fontColor());
+			if(c.getContFicherosDeshacer()==c.getLimiteFicherosDeshacer() || c.getAuxDeshacer() == true) rehacer.setBackground(Color.GRAY);
+			else rehacer.setBackground(Color.WHITE);
 			add(rehacer);
 			rehacer.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -948,4 +954,14 @@ public class MyMenu extends JMenuBar{
 		coords[0]=coords[0]<diagramWidth?coords[0]+150:70;
 		coords[1]=coords[0]==70?coords[1]-70:coords[1];
 	}
+
+	
+	public JButton getDeshacer() {
+		return this.deshacer;
+	}
+	
+	public JButton getRehacer() {
+		return this.rehacer;
+	}
+
 }

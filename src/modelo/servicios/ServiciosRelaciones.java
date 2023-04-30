@@ -150,12 +150,17 @@ public class ServiciosRelaciones {
 	/*
 	 *  Eliminar una relaciÃ³n Normal
 	 */
-	public void eliminarRelacionNormal(TransferRelacion tr){
+
+	public void eliminarRelacionNormal(TransferRelacion tr, int vieneDeEntidadDebil){
 		DAORelaciones daoRelaciones = new DAORelaciones(this.controlador.getPath());
+		Vector<Object> v = new Vector<Object>();
 		if (daoRelaciones.borrarRelacion(tr) == false)
 			controlador.mensajeDesde_SR(TC.SR_EliminarRelacionNormal_ERROR_DAORelaciones, tr);
 		else{ 
-			controlador.mensajeDesde_SR(TC.SR_EliminarRelacionNormal_HECHO, tr);
+			v.add(tr);
+			if (v.size() == 1) v.add(vieneDeEntidadDebil);
+			else v.set(1, vieneDeEntidadDebil);
+			controlador.mensajeDesde_SR(TC.SR_EliminarRelacionNormal_HECHO, v);
 		}
 	}
 	
@@ -335,8 +340,8 @@ public class ServiciosRelaciones {
 	}
 	
 	public void getSubesquema(TransferRelacion tr, Vector rel) {
-		if(!rel.contains(tr.getIdRelacion())) {//si  está en el vector que llevamos hasta ahora aqui se acaba esta rama
-			rel.add(tr.getIdRelacion()); //si no, se añade y exploramos las entidades que tiene para ver sus relaciones
+		if(!rel.contains(tr.getIdRelacion())) {//si  estï¿½ en el vector que llevamos hasta ahora aqui se acaba esta rama
+			rel.add(tr.getIdRelacion()); //si no, se aï¿½ade y exploramos las entidades que tiene para ver sus relaciones
 			Vector<EntidadYAridad> entidadesRelacionadas = tr.getListaEntidadesYAridades();
 			ServiciosEntidades serEn = new ServiciosEntidades();
 			serEn.setControlador(controlador);

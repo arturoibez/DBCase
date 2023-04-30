@@ -38,7 +38,9 @@ public class GeneradorEsquema {
 	//aqui se almacenaran las tablas ya creadas, organizadas por el id de la entidad /relacion (clave) y con el objeto tabla como valor.
 	private Hashtable<Integer,Tabla> tablasEntidades=new Hashtable<Integer,Tabla>();
 	private Hashtable<Integer,Tabla> tablasRelaciones=new Hashtable<Integer,Tabla>();
+
 	private Hashtable<Integer,Tabla> tablasAgregaciones = new Hashtable<Integer,Tabla>();
+
 	private Vector<Tabla> tablasMultivalorados=new Vector<Tabla>();
 	private Hashtable<Integer,Enumerado> tiposEnumerados = new Hashtable<Integer,Enumerado>();
 	private ValidadorBD validadorBD;
@@ -56,6 +58,7 @@ public class GeneradorEsquema {
 	}
 
 	//metodos de recorrido de los daos para la creacion de las tablas.
+
 	
 	private void generaTablasAgregaciones() {
 		
