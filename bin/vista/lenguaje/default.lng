@@ -3,7 +3,7 @@
 # the physical name of this file
 # If this file is called "default.lng", this language will be 
 # loaded as default.
-#
+
 # WARNING: There cannot be empty lines before this information
 English
 
@@ -297,11 +297,11 @@ informationIncomplete=Some necessary information has not been given
 dbdt=DBCASE
 
 #"GUI_EditarCardinalidadEntidad" window
-editArityAndRolle=Editing role and cardinality of an entity
+editArityAndRolle=Editing role, participacion and cardinality of an entity
 imposibleToEditRolle=You cannot edit the cardinality of any entity.
 noEntitiesInRelation=There is no entity associated to the relation.
 editArity= Edit cardinality of an entity
-selectEntityToChange=Entity whose cardinality will be modified.
+selectEntityToChange=Entity whose properties will be modified.
 writeNewArity=New cardinality:
 writeNewRolle=New rol name:
 ifEntityHasRolle=Entity's role:
@@ -409,7 +409,7 @@ deleteRel=Remove relation
 renameRelation=Rename relation
 addEnt=Add entity
 removeEntity=Remove entity
-editCardRol=Edit entity cardinality or role
+editCardRol=Edit entity cardinality, participation or role
 
 #GUIPrincipal + utilidades.AccionMenu 
 domMenuRename=Rename
@@ -615,3 +615,4 @@ agg_file_error=An error has occurred in the relations file access.
 int_nom_agreg=Introduce aggregation's name.
 copiar=Copy
 pegar=Paste
+aggregations=Aggregations

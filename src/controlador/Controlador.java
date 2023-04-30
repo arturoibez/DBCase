@@ -1,5 +1,6 @@
 package controlador;
 
+
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -163,6 +164,9 @@ public class Controlador {
 	private static Stack<Document> pilaDeshacer;
 	private Vector<TransferEntidad> listaEntidades;
 	private Vector<TransferRelacion> listaRelaciones;
+
+	//private Vector<TransferAgregacion> listaAgregaciones; por el momento no parece necesario 
+
 	private boolean modoSoporte;
 	
 	//Para boton Deshacer solo afecta a acciones con elementos
@@ -193,6 +197,7 @@ public class Controlador {
 	
 	private int contFicherosDeshacer = 0;
 	private int limiteFicherosDeshacer = 0;
+	private boolean auxDeshacer = false;
 	
 	public Controlador() {
 		iniciaFrames();
@@ -474,107 +479,140 @@ public class Controlador {
 	// Mensajes que le manda la GUI_WorkSpace al Controlador
 	public void mensajeDesde_GUIWorkSpace(TC mensaje, Object datos){
 		switch (mensaje){
-		case GUI_WorkSpace_Recent:{
-			archivosRecent.add((File)datos);
-			break;
-		}
-		case GUI_WorkSpace_Nuevo:{
-			this.setPath((String)datos);
-			SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-					getTheServiciosSistema().reset();
-					theGUIPrincipal.loadInfo();
-					getTheGUIPrincipal().reiniciar();
-	        }});
-			setCambios(false);
-			File temp = new File(System.getProperty("user.dir")+"/projects/temp");
-			this.setFileguardar(temp);
-			File directory = new File(System.getProperty("user.dir")+"/deshacer");
-	    	for (File file: Objects.requireNonNull(directory.listFiles())) {
-	            if (!file.isDirectory()) {
-	                file.delete();
-	            }
-	        }
-			this.contFicherosDeshacer = 0;
-			this.limiteFicherosDeshacer = 0;
-			this.guardarDeshacer();
-			break;
-		}
-		case GUI_WorkSpace_Click_Abrir:{
-			this.contFicherosDeshacer = 0;
-			this.limiteFicherosDeshacer = 0;
-			String abrirPath =(String)datos;
-			String tempPath =this.filetemp.getAbsolutePath();
-			FileCopy(abrirPath, tempPath);
-			SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-					getTheServiciosSistema().reset();
-					theGUIPrincipal.loadInfo();
-					getTheGUIPrincipal().reiniciar();
-	        }});
-			setCambios(false);
-			this.guardarDeshacer();
-			break;
-		}
-		
-		case GUI_WorkSpace_Click_Abrir_Deshacer:{//tenemos que diferencarsi abrimos un nuevo proyecto o el de deshacer
-			String abrirPath =(String)datos;
-			String tempPath =this.filetemp.getAbsolutePath();
-			FileCopy(abrirPath, tempPath);
-			SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-					getTheServiciosSistema().reset();
-					theGUIPrincipal.loadInfo();
-					getTheGUIPrincipal().reiniciar();
-	        }});
-			setCambios(false);
-			break;
-		}
-		
-		case GUI_WorkSpace_Click_Guardar:{
-			String guardarPath =(String)datos;
-			String tempPath =this.filetemp.getAbsolutePath();
-			FileCopy(tempPath, guardarPath);
-			this.getTheGUIWorkSpace().setInactiva();
-			setCambios(false);
-			this.tiempoGuardado = System.currentTimeMillis()/1000;
-			if (this.fileguardar.getPath() != (String)datos) {
+			case GUI_WorkSpace_Recent:{
+				archivosRecent.add((File)datos);
+				break;
+			}
+			case GUI_WorkSpace_Nuevo:{
+				this.setPath((String)datos);
+				SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+						getTheServiciosSistema().reset();
+						theGUIPrincipal.loadInfo();
+						getTheGUIPrincipal().reiniciar();
+		        }});
+				setCambios(false);
+				File temp = new File(System.getProperty("user.dir")+"/projects/temp");
+				this.setFileguardar(temp);
 				File directory = new File(System.getProperty("user.dir")+"/deshacer");
-				for (File file: Objects.requireNonNull(directory.listFiles())) {
-		            if (!file.isDirectory()) {
-		                file.delete();
-		            }
-		        }
-				File temp = new File(guardarPath);
-    			this.setFileguardar(temp);
+				if (directory.exists()) {
+					for (File file: Objects.requireNonNull(directory.listFiles())) {
+			            if (!file.isDirectory()) {
+			                file.delete();
+			            }
+			        }
+				}
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
 				this.guardarDeshacer();
+				this.tiempoGuardado = System.currentTimeMillis()/1000;
+				break;
 			}
-			break;
-		}
-		
-		case GUI_WorkSpace_Click_GuardarDeshacer:{
-			String guardarPath =(String)datos;
-			String tempPath =this.filetemp.getAbsolutePath();
-			FileCopy(tempPath, guardarPath);
-			this.getTheGUIWorkSpace().setInactiva();
-			setCambios(false);
-			this.tiempoGuardado = System.currentTimeMillis()/1000;
-			break;
-		}
-		
-		case GUI_WorkSpace_ERROR_CreacionFicherosXML:{
-			JOptionPane.showMessageDialog(null,Lenguaje.text(Lenguaje.INITIAL_ERROR)+"\n" +
-					Lenguaje.text(Lenguaje.OF_XMLFILES)+"\n"+this.getPath(),Lenguaje.text(Lenguaje.DBCASE),JOptionPane.ERROR_MESSAGE);
-			break;
-		}
-		default: break;
+			case GUI_WorkSpace_Click_Abrir:{
+				this.contFicherosDeshacer = 0;
+				this.limiteFicherosDeshacer = 0;
+				String abrirPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(abrirPath, tempPath);
+				SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+						getTheServiciosSistema().reset();
+						theGUIPrincipal.loadInfo();
+						getTheGUIPrincipal().reiniciar();
+		        }});
+				setCambios(false);
+				this.guardarDeshacer();
+				this.tiempoGuardado = System.currentTimeMillis()/1000;
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_Abrir_Deshacer:{//tenemos que diferenciar si abrimos un nuevo proyecto o el de deshacer
+				String abrirPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(abrirPath, tempPath);
+				SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+						getTheServiciosSistema().reset();
+						theGUIPrincipal.loadInfo();
+						getTheGUIPrincipal().reiniciar();
+		        }});
+				//setCambios(false);
+				//this.getTheGUIPrincipal().getPanelDiseno().grabFocus();
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_Guardar:{
+				String guardarPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(tempPath, guardarPath);
+				this.getTheGUIWorkSpace().setInactiva();
+				setCambios(false);
+				this.tiempoGuardado = System.currentTimeMillis()/1000;
+				if (this.fileguardar.getPath() != (String)datos) {
+					File directory = new File(System.getProperty("user.dir")+"/deshacer");
+					if (directory.exists()) {
+						for (File file: Objects.requireNonNull(directory.listFiles())) {
+				            if (!file.isDirectory()) {
+				                file.delete();
+				            }
+				        }
+					}
+					File temp = new File(guardarPath);
+	    			this.setFileguardar(temp);
+					this.contFicherosDeshacer = 0;
+					this.limiteFicherosDeshacer = 0;
+					this.guardarDeshacer();
+				}
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_Guardar_Backup:{
+				String guardarPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(tempPath, guardarPath);
+				this.getTheGUIWorkSpace().setInactiva();
+				setCambios(false);
+				//this.tiempoGuardado = System.currentTimeMillis()/1000;
+				if (this.fileguardar.getPath() != (String)datos) {
+					File directory = new File(System.getProperty("user.dir")+"/deshacer");
+					if (directory.exists()) {
+						for (File file: Objects.requireNonNull(directory.listFiles())) {
+				            if (!file.isDirectory()) {
+				                file.delete();
+				            }
+				        }
+					}
+					File temp = new File(guardarPath);
+	    			//this.setFileguardar(temp);
+					//this.contFicherosDeshacer = 0;
+					//this.limiteFicherosDeshacer = 0;
+					//this.guardarDeshacer();
+				}
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_GuardarDeshacer:{
+				String guardarPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(tempPath, guardarPath);
+				this.getTheGUIWorkSpace().setInactiva();
+				setCambios(false);
+				//this.tiempoGuardado = System.currentTimeMillis()/1000;
+				break;
+			}
+			
+			case GUI_WorkSpace_ERROR_CreacionFicherosXML:{
+				JOptionPane.showMessageDialog(null,Lenguaje.text(Lenguaje.INITIAL_ERROR)+"\n" +
+						Lenguaje.text(Lenguaje.OF_XMLFILES)+"\n"+this.getPath(),Lenguaje.text(Lenguaje.DBCASE),JOptionPane.ERROR_MESSAGE);
+				break;
+			}
+			default: break;
 		}// Switch
 	}
+
 
 	// Mensajes que manda el Panel de Diseño al Controlador
 	public void mensajeDesde_PanelDiseno(TC mensaje, Object datos){
@@ -658,7 +696,7 @@ public class Controlador {
 				while (lista_atributos != null && conta < lista_atributos.size()){
 					String idAtributo = (String) lista_atributos.get(conta);
 					ta.setIdAtributo(Integer.valueOf(idAtributo));
-					this.getTheServiciosAtributos().eliminarAtributo(ta, 1);				
+					this.getTheServiciosAtributos().eliminarAtributo(ta, 1);
 					conta++;
 				}
 				//Si la entidad es débil eliminamos la relación débil asociada
@@ -759,8 +797,11 @@ public class Controlador {
 			}
 			if (respuesta == 0){
 				if(ta.getUnique()){
+					Vector<Object> ve = new Vector<Object>();
 					TransferAtributo clon_atributo = ta.clonar();
-					this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,clon_atributo);
+					ve.add(clon_atributo);
+					ve.add(1);
+					this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ve);
 				}
 				TransferAtributo clon_atributo2 = ta.clonar();
 				this.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarReferenciasUniqueAtributo,clon_atributo2);
@@ -931,8 +972,10 @@ public class Controlador {
 			break;			
 		}
 		case PanelDiseno_Click_EditarUniqueAtributo:{
-			TransferAtributo ta = (TransferAtributo) datos;
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			//hola
+			Vector<Object> ve = (Vector<Object>) datos;
+			TransferAtributo ta = (TransferAtributo) ve.get(0);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, (int) ve.get(1));
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -979,7 +1022,7 @@ public class Controlador {
 		}
 		case PanelDiseno_Click_EliminarReferenciasUniqueAtributo:{
 			TransferAtributo ta = (TransferAtributo) datos;
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 1);
 			
 			//this.getTheServiciosEntidades().ListaDeEntidades();
 			//this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1029,7 +1072,7 @@ public class Controlador {
 			TransferAtributo ta = (TransferAtributo) v1.get(0);
 			String antiguoNombre =(String)v1.get(1);
 			
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1088,7 +1131,7 @@ public class Controlador {
 			break;
 		}
 		case PanelDiseno_Click_EditarClavePrimariaAtributo:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
+			Vector<Object> v = (Vector<Object>) datos;
 			this.getTheServiciosAtributos().editarClavePrimariaAtributo(v);
 			break;
 		}
@@ -1277,6 +1320,7 @@ public class Controlador {
 						te.setIdEntidad(idEntidad);	
 						//Tengo que rellenar los atributos de te
 						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades()); //falla aqui
+						if (auxiliar == null) auxiliar = this.getListaEntidades();
 						boolean encontrado= false;
 						int i=0;
 						if (auxiliar != null) {
@@ -1288,7 +1332,7 @@ public class Controlador {
 								else
 									i++;								
 							}
-						}						
+						}
 						//Elimino también la entidad débil
 						if (this.getTheServiciosEntidades().esDebil(idEntidad)){							
 							//Esto es para borrar los atributos de la entidad débil y la propia entidad débil
@@ -1302,6 +1346,7 @@ public class Controlador {
 						cont++;							
 					}
 				}
+				
 				// Eliminamos la relacion
 				this.getTheServiciosRelaciones().eliminarRelacionNormal(tr,intAux);
 			}
@@ -1596,7 +1641,10 @@ public class Controlador {
 		default: break;
 		} // switch 
 	}
-
+	/*case GUI_Principal_DESHACER:{
+		funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
+		break;
+	}*/
 	// Mensajes que manda la GUIPrincipal al Controlador
 	@SuppressWarnings("static-access")
 	public void mensajeDesde_GUIPrincipal(TC mensaje, Object datos){
@@ -1620,6 +1668,12 @@ public class Controlador {
 			this.getTheServiciosRelaciones().ListaDeRelaciones();
 			break;
 		}
+
+		case GUIPrincipal_ActualizameLaListaDeAgregaciones:{
+			this.getTheServiciosAgregaciones().ListaDeAgregaciones();
+			break;
+		}
+
 		case GUIPrincipal_ActualizameLaListaDeDominios:{
 			this.getTheServiciosDominios().ListaDeDominios();
 			break;
@@ -1673,22 +1727,26 @@ public class Controlador {
 		
 		case GUI_Principal_DESHACER2:{
 			String str = fileguardar.getPath().replace(".xml","");
-		    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml"; 
+			String ruta;
+		    ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml"; 
 		    if(this.contFicherosDeshacer > 1) 
 		    	this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
 		    else return;
 		    this.contFicherosDeshacer = this.contFicherosDeshacer-1;
+		    this.auxDeshacer = false;
 		    setCambios(true);
+		    this.getTheGUIPrincipal().getPanelDiseno().grabFocus();
 		    break;
 		}
 		
 		case GUI_Principal_REHACER:{
 			String str = fileguardar.getPath().replace(".xml","");
 		    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml"; 
-		    if (this.contFicherosDeshacer == this.limiteFicherosDeshacer) return;
+		    if (this.contFicherosDeshacer == this.limiteFicherosDeshacer || this.auxDeshacer == true) return;
 		    this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
 		    ++this.contFicherosDeshacer;
 		    setCambios(true);
+		    this.getTheGUIPrincipal().getPanelDiseno().grabFocus();
 		    break;
 		}
 		
@@ -2048,6 +2106,7 @@ public class Controlador {
 			agreg.setNombre(nombre);
 			Vector relaciones = new Vector();
 			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
+
 			agreg.setListaRelaciones(relaciones);
 			agreg.setListaAtributos(new Vector());
 			
@@ -2126,16 +2185,17 @@ public class Controlador {
 			}
 			//Modificamos los valores ClavePrimaria, Compuesto, Unique, NotNull y Multivalorado si es necesario
 			if(encontrado && clavePrimaraSelected!=ta.isClavePrimaria()) {
-				Vector<Transfer> vClavePrimaria= new Vector<Transfer>();
+				Vector<Object> vClavePrimaria= new Vector<Object>();
 				vClavePrimaria.add(ta);
 				vClavePrimaria.add(te);
+				vClavePrimaria.add(0);
 				this.getTheServiciosAtributos().editarClavePrimariaAtributo(vClavePrimaria);
 			}
 			if(compuestoSelected!=ta.getCompuesto()) {
 				this.getTheServiciosAtributos().editarCompuestoAtributo(ta);
 			}
 			if(uniqueSelected!=ta.getUnique()) {
-				this.getTheServiciosAtributos().editarUniqueAtributo(ta);
+				this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
 			}
 			if(notNullSelected!=ta.getNotnull()) {
 				this.theServiciosAtributos.editarNotNullAtributo(ta);
@@ -2345,6 +2405,7 @@ public class Controlador {
 			break;
 		}
 		case GUIEditarDominioAtributo_Click_BotonEditar:{
+			//hola
 			Vector v = (Vector) datos;
 			TransferAtributo ta = (TransferAtributo) v.get(0);
 			this.antiguoDominioAtributo = ta.getDominio();
@@ -2383,7 +2444,8 @@ public class Controlador {
 			break;
 		}
 		case GUIEditarClavePrimariaAtributo_Click_BotonAceptar:{
-			Vector<Transfer> vectorAtributoyEntidad = (Vector<Transfer>)datos;
+			Vector<Object> vectorAtributoyEntidad = (Vector<Object>)datos;
+			vectorAtributoyEntidad.add(0);
 			this.getTheServiciosAtributos().editarClavePrimariaAtributo(vectorAtributoyEntidad);
 			ActualizaArbol((Transfer)vectorAtributoyEntidad.get(1));
 			this.getTheServiciosSistema().reset();
@@ -2523,8 +2585,9 @@ public class Controlador {
 			if(relDebil && entDebil && relTieneEntDebil)
 				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ALREADY_WEAK_ENTITY), Lenguaje.text(Lenguaje.ERROR), 0);
 			else this.getTheServiciosRelaciones().anadirEntidadARelacion(v);
-			
+
 			//a�adimos la relacion a la entidad para que sepa a que relaciones esta conectada
+
 			this.getTheServiciosEntidades().anadirRelacionAEntidad(v);
 			
 			ActualizaArbol(tr);
@@ -2637,17 +2700,24 @@ public class Controlador {
 
 	// Mensajes que mandan los Servicios de Entidades al Controlador
 	public void mensajeDesde_SE(TC mensaje, Object datos){
+
 		int intAux = 2;
 		if (mensaje == TC.SE_EliminarEntidad_HECHO) {
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
 			intAux = (int) aux.get(2);
 		}
 		
-		
 		if(mensaje == TC.SE_MoverPosicionEntidad_HECHO || mensaje == TC.SE_InsertarEntidad_HECHO || mensaje == TC.SE_RenombrarEntidad_HECHO || mensaje == TC.SE_AnadirAtributoAEntidad_HECHO || (mensaje == TC.SE_EliminarEntidad_HECHO && intAux == 0)) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
+			this.auxDeshacer = true;
+			
+			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
+			
+			if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
 		}
 		
 		
@@ -2982,6 +3052,13 @@ public class Controlador {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
+			
+			this.auxDeshacer = true;
+			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
+			
+			if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
 		}
 		
 		
@@ -3165,10 +3242,28 @@ public class Controlador {
 			intAux = (int) aux.get(2);
 		}
 		
-		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || mensaje == TC.SE_setUniqueUnitarioAEntidad_HECHO || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
+		if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			intAux = (int) aux.get(2);
+		}
+		
+		if (mensaje == TC.SA_EditarUniqueAtributo_HECHO){
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			intAux = (int) aux.get(1);
+		}
+		
+		
+		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || (mensaje == TC.SA_EditarUniqueAtributo_HECHO && intAux== 0) || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO && intAux == 0)) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
+			
+			this.auxDeshacer = true;
+			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
+			
+			if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
 		}
 		
 		
@@ -3333,7 +3428,8 @@ public class Controlador {
 			
 			
 			setCambios(true);
-			TransferAtributo ta = (TransferAtributo) datos;
+			Vector<Object> ve = (Vector<Object>) datos;
+			TransferAtributo ta = (TransferAtributo) ve.get(0);
 			ActualizaArbol(ta);
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EditarUniqueAtributo, ta);
 			break;
@@ -3487,13 +3583,21 @@ public class Controlador {
 	
 	//mensajes que manda el ServivioAgregaciones al controlador
 	public void mensajeDesde_AG(TC mensaje, Object datos) {
-		
-		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO) {
+
+		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
+			
+			this.auxDeshacer = true;
+			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
+			
+			if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
+
 		}
-		
+
 		switch(mensaje) {
 		
 		case SAG_InsertarAgregacion_ERROR_NombreVacio: {
@@ -3512,6 +3616,20 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
 		}
+
+		case SAG_ListarAgregacion_HECHO:{ // igual hay mas clases en las que hay que cambiar la lista de agregaciones
+			this.getTheGUIPrincipal().setListaAgregaciones((Vector) datos);
+			break;
+		}
+		
+		case SAG_InsertarAgregacion_HECHO:{
+			setCambios(true);
+			//this.getTheGUIInsertarRelacion().setInactiva();
+			TransferAgregacion ta = (TransferAgregacion) datos;
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarAgregacion, ta);
+			break;
+		}
+
 		case SAG_RenombrarAgregacion_HECHO:{
 			setCambios(true);
 			Vector v = (Vector) datos;
@@ -3522,6 +3640,10 @@ public class Controlador {
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarAgregacion, tr);
 			break;
 		}
+
+		default:
+			break;
+
 		}
 	}
 	
@@ -3537,6 +3659,13 @@ public class Controlador {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();
+			
+			this.auxDeshacer = true;
+			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
+			
+			if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
+			else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
 		}
 		
 		
@@ -3544,662 +3673,662 @@ public class Controlador {
 		
 		switch(mensaje){
 
-		case SR_ListarRelaciones_HECHO: {
-			this.getTheGUIPrincipal().setListaRelaciones((Vector) datos);
-			this.setListaRelaciones((Vector)datos);
-			break;
-		}
-		/*
-		 * Insercion de Relaciones
-		 */
-		case SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}		
-		case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExiste:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_InsertarRelacion_ERROR_NombreDelRolYaExiste:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ROL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		
-		case SR_InsertarRelacion_ERROR_NombreDeRolNecesario:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.NECESARY_ROL), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		
-		case SR_InsertarRelacion_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			this.getTheGUIInsertarRelacion().setInactiva();
-			
-			break;
-		}
-		case SR_InsertarRelacion_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIInsertarRelacion().setInactiva();
-			TransferRelacion te = (TransferRelacion) datos;
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacion, te);
-			
-			break;
-		}
-		/*
-		 * Eliminacion de una relacion
-		 */
-		case SR_EliminarRelacion_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		
-		/*creo q esta no se usa nunca*/
-		case SR_EliminarRelacion_HECHO:{
-			
-			
-			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacion, tr);
-			
-			break;
-		}
-
-		// Renombrar relacion
-		case SR_RenombrarRelacion_ERROR_NombreDeRelacionEsVacio:{
-			Vector v = (Vector) datos;
-			v.get(2);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_RenombrarRelacion_ERROR_NombreDeRelacionYaExiste:{
-			Vector v = (Vector) datos;
-			v.get(1);
-			v.get(2);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_RenombrarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
-			this.getTheGUIRenombrarRelacion().setInactiva();
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			this.getTheGUIRenombrarRelacion().setActiva();
-			
-			
-			break;
-		}
-		case SR_RenombrarRelacion_ERROR_DAORelaciones:{
-			Vector v = (Vector) datos;
-			v.get(1);
-			v.get(2);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_RenombrarRelacion_ERROR_DAOEntidades:{
-			Vector v = (Vector) datos;
-			v.get(1);
-			v.get(2);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ENTITIES_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_RenombrarRelacion_HECHO:{
-			
-			setCambios(true);
-			Vector v = (Vector) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(0);
-			v.get(1);
-			v.get(2);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarRelacion, tr);
-			this.getTheGUIRenombrarRelacion().setInactiva();
-			break;
-		}
-		/*
-		 * Debilitar una relacion
-		 */
-		case SR_DebilitarRelacion_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			break;
-		}
-		case SR_DebilitarRelacion_HECHO:{
-			
-			
-			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_DebilitarRelacion, tr);
-			ActualizaArbol(tr);
-			break;
-		}
-		/*
-		 * Restricciones a Relacion
-		 */
-		case SR_AnadirRestriccionARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion te = (TransferRelacion) v.get(0);
-			v.get(1);
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirRestriccionRelacion, te);
-			//this.getTheGUIAnadirRestriccionAAtributo().setInactiva();
-			break;
-		}
-		case SR_QuitarRestriccionARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion te = (TransferRelacion) v.get(0);
-			v.get(1);
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarRestriccionRelacion, te);
-			break;
-		}
-		case SR_setRestriccionesARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion te = (TransferRelacion) v.get(1);
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setRestriccionesRelacion, te);
-			break;
-		}
-		
-		/*
-		 * Mover Relacion en el panel de diseno (cambiar la posicion)
-		 */
-		case SR_MoverPosicionRelacion_ERROR_DAORelaciones:{
-			TransferRelacion tr = (TransferRelacion) datos;
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_MoverRelacion_ERROR, tr);
-			break;
-		}
-		case SR_MoverPosicionRelacion_HECHO:{
-			
-			
-			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_MoverRelacion_HECHO, tr);
-			break;
-		}
-
-		/*
-		 * Añadir atributo a una relacion
-		 */
-		case SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoVacio:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_ATTRIB_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoYaExiste:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ATTRIB_NAME_REL), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirAtributoARelacion_ERROR_TamanoNoEsEntero:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_SIZE1), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirAtributoARelacion_ERROR_TamanoEsNegativo:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_SIZE2), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirAtributoARelacion_ERROR_DAOAtributos:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ATTRIBUTES_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			this.getTheGUIAnadirAtributoRelacion().setInactiva();
-			break;
-		}
-		case SR_AnadirAtributoARelacion_ERROR_DAORelaciones:{
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			this.getTheGUIAnadirAtributoRelacion().setInactiva();
-			break;
-		}
-		case SR_AnadirAtributoARelacion_HECHO:{
-			
-			
-			setCambios(true);
-			Vector<Transfer> v = (Vector<Transfer>) datos;
-			v.get(0);
-			v.get(1);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirAtributoARelacion, v);
-			this.getTheGUIAnadirAtributoRelacion().setInactiva();
-			//meter un if para cuando ya este
-			TransferAtributo ta = (TransferAtributo) v.get(1);
-			boolean esta = false;
-			for (int i = 0; i < this.listaAtributos.size(); ++i) {
-				if(ta.getIdAtributo() == this.listaAtributos.get(i).getIdAtributo()) esta = true;
+			case SR_ListarRelaciones_HECHO: {
+				this.getTheGUIPrincipal().setListaRelaciones((Vector) datos);
+				this.setListaRelaciones((Vector)datos);
+				break;
+			}
+			/*
+			 * Insercion de Relaciones
+			 */
+			case SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}		
+			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExiste:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_InsertarRelacion_ERROR_NombreDelRolYaExiste:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ROL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
 			}
 			
-			if (!esta) this.listaAtributos.add(ta);
-			break;
+			case SR_InsertarRelacion_ERROR_NombreDeRolNecesario:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.NECESARY_ROL), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			
+			case SR_InsertarRelacion_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				this.getTheGUIInsertarRelacion().setInactiva();
+				
+				break;
+			}
+			case SR_InsertarRelacion_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIInsertarRelacion().setInactiva();
+				TransferRelacion te = (TransferRelacion) datos;
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacion, te);
+				
+				break;
+			}
+			/*
+			 * Eliminacion de una relacion
+			 */
+			case SR_EliminarRelacion_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			
+			/*creo q esta no se usa nunca*/
+			case SR_EliminarRelacion_HECHO:{
+				
+				
+				setCambios(true);
+				TransferRelacion tr = (TransferRelacion) datos;
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacion, tr);
+				
+				break;
+			}
+	
+			// Renombrar relacion
+			case SR_RenombrarRelacion_ERROR_NombreDeRelacionEsVacio:{
+				Vector v = (Vector) datos;
+				v.get(2);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_RenombrarRelacion_ERROR_NombreDeRelacionYaExiste:{
+				Vector v = (Vector) datos;
+				v.get(1);
+				v.get(2);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_RenombrarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
+				this.getTheGUIRenombrarRelacion().setInactiva();
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				this.getTheGUIRenombrarRelacion().setActiva();
+				
+				
+				break;
+			}
+			case SR_RenombrarRelacion_ERROR_DAORelaciones:{
+				Vector v = (Vector) datos;
+				v.get(1);
+				v.get(2);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_RenombrarRelacion_ERROR_DAOEntidades:{
+				Vector v = (Vector) datos;
+				v.get(1);
+				v.get(2);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ENTITIES_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_RenombrarRelacion_HECHO:{
+				
+				setCambios(true);
+				Vector v = (Vector) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(0);
+				v.get(1);
+				v.get(2);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarRelacion, tr);
+				this.getTheGUIRenombrarRelacion().setInactiva();
+				break;
+			}
+			/*
+			 * Debilitar una relacion
+			 */
+			case SR_DebilitarRelacion_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				break;
+			}
+			case SR_DebilitarRelacion_HECHO:{
+				
+				
+				setCambios(true);
+				TransferRelacion tr = (TransferRelacion) datos;
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_DebilitarRelacion, tr);
+				ActualizaArbol(tr);
+				break;
+			}
+			/*
+			 * Restricciones a Relacion
+			 */
+			case SR_AnadirRestriccionARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion te = (TransferRelacion) v.get(0);
+				v.get(1);
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirRestriccionRelacion, te);
+				//this.getTheGUIAnadirRestriccionAAtributo().setInactiva();
+				break;
+			}
+			case SR_QuitarRestriccionARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion te = (TransferRelacion) v.get(0);
+				v.get(1);
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarRestriccionRelacion, te);
+				break;
+			}
+			case SR_setRestriccionesARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion te = (TransferRelacion) v.get(1);
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setRestriccionesRelacion, te);
+				break;
+			}
+			
+			/*
+			 * Mover Relacion en el panel de diseno (cambiar la posicion)
+			 */
+			case SR_MoverPosicionRelacion_ERROR_DAORelaciones:{
+				TransferRelacion tr = (TransferRelacion) datos;
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_MoverRelacion_ERROR, tr);
+				break;
+			}
+			case SR_MoverPosicionRelacion_HECHO:{
+				
+				
+				setCambios(true);
+				TransferRelacion tr = (TransferRelacion) datos;
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_MoverRelacion_HECHO, tr);
+				break;
+			}
+	
+			/*
+			 * Añadir atributo a una relacion
+			 */
+			case SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoVacio:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.EMPTY_ATTRIB_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoYaExiste:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ATTRIB_NAME_REL), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirAtributoARelacion_ERROR_TamanoNoEsEntero:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_SIZE1), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirAtributoARelacion_ERROR_TamanoEsNegativo:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_SIZE2), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirAtributoARelacion_ERROR_DAOAtributos:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ATTRIBUTES_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				this.getTheGUIAnadirAtributoRelacion().setInactiva();
+				break;
+			}
+			case SR_AnadirAtributoARelacion_ERROR_DAORelaciones:{
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				this.getTheGUIAnadirAtributoRelacion().setInactiva();
+				break;
+			}
+			case SR_AnadirAtributoARelacion_HECHO:{
+				
+				
+				setCambios(true);
+				Vector<Transfer> v = (Vector<Transfer>) datos;
+				v.get(0);
+				v.get(1);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirAtributoARelacion, v);
+				this.getTheGUIAnadirAtributoRelacion().setInactiva();
+				//meter un if para cuando ya este
+				TransferAtributo ta = (TransferAtributo) v.get(1);
+				boolean esta = false;
+				for (int i = 0; i < this.listaAtributos.size(); ++i) {
+					if(ta.getIdAtributo() == this.listaAtributos.get(i).getIdAtributo()) esta = true;
+				}
+				
+				if (!esta) this.listaAtributos.add(ta);
+				break;
+			}
+	
+			/*
+			 * Establecer la entidad padre en una relacion IsA
+			 */
+			case SR_EstablecerEntidadPadre_ERROR_DAORelaciones:{
+				this.getTheGUIEstablecerEntidadPadre().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EstablecerEntidadPadre_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIEstablecerEntidadPadre().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EstablecerEntidadPadre, vt);
+				break;
+			}
+			/*
+			 * Quitar la entidad padre en una relacion IsA
+			 */
+			case SR_QuitarEntidadPadre_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				this.getTheGUIQuitarEntidadPadre().setInactiva();
+				
+				break;			
+			}
+			case SR_QuitarEntidadPadre_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIQuitarEntidadPadre().setInactiva();
+				TransferRelacion tr = (TransferRelacion) datos;
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadPadre, tr);			
+				break;			
+			}
+			/*
+			 * Anadir una entidad hija a una relacion IsA
+			 */
+			case SR_AnadirEntidadHija_ERROR_DAORelaciones:{
+				this.getTheGUIEstablecerEntidadPadre().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadHija_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIAnadirEntidadHija().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirEntidadHija, vt);
+				break;
+			}
+			/*
+			 * Quitar una entidad hija en una relacion IsA
+			 */
+			case SR_QuitarEntidadHija_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				this.getTheGUIQuitarEntidadHija().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				
+				break;
+			}
+			case SR_QuitarEntidadHija_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIQuitarEntidadHija().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(1);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadHija, vt);
+				break;
+			}
+			/*
+			 * Eliminar una relacion IsA
+			 */
+			case SR_EliminarRelacionIsA_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EliminarRelacionIsA_HECHO:{
+			
+				
+				setCambios(true);
+				TransferRelacion tr = (TransferRelacion) datos;
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacionIsA, tr);
+				ActualizaArbol(null);
+				break;
+			}
+			/*
+			 * Eliminar una relacion Normal
+			 */
+			case SR_EliminarRelacionNormal_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EliminarRelacionNormal_HECHO:{
+				
+				
+				setCambios(true);
+				Vector<Object> v = (Vector<Object>) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(0);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacionNormal, tr);
+				ActualizaArbol(null);
+				break;
+			}
+			/*
+			 * Insertar una relacion IsA
+			 */
+			case SR_InsertarRelacionIsA_ERROR_DAORelaciones:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;	
+			}
+			case SR_InsertarRelacionIsA_HECHO:{
+				
+				
+				setCambios(true);
+				TransferRelacion tr = (TransferRelacion) datos;
+				this.antiguaIsA = tr;
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacionIsA, tr);
+				ActualizaArbol(tr);
+				break;
+			}
+			/*
+			 * Anadir una entidad a una relacion normal
+			 */
+			case SR_AnadirEntidadARelacion_ERROR_InicioNoEsEnteroOn:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY1), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_ERROR_InicioEsNegativo:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY2), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_ERROR_FinalNoEsEnteroOn:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY3), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_ERROR_FinalEsNegativo:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY4), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_ERROR_InicioMayorQueFinal:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY5), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_ERROR_DAORelaciones:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_AnadirEntidadARelacion_HECHO:{
+				
+				
+				setCambios(true);
+				Vector v = (Vector) datos;
+				TransferRelacion tr= (TransferRelacion) v.get(0);
+				v.get(1);
+				v.get(2);
+				v.get(3);
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirEntidadARelacion, v);
+				this.getTheGUIAnadirEntidadARelacion().setInactiva();
+				break;
+			}
+			/*
+			 * Quitar una entidad en una relacion Normal
+			 */
+			case SR_QuitarEntidadARelacion_ERROR_DAORelaciones:{
+				this.getTheGUIQuitarEntidadARelacion().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(0);
+				vt.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_QuitarEntidadARelacion_HECHO:{
+				
+				
+				setCambios(true);
+				this.getTheGUIQuitarEntidadARelacion().setInactiva();
+				Vector<Transfer> vt = (Vector<Transfer>) datos;
+				vt.get(0);
+				vt.get(1);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadARelacion, vt);
+				break;
+			}
+			/*
+			 * Editar la aridad de una entidad en una relacion
+			 */
+			case SR_EditarCardinalidadEntidad_ERROR_InicioNoEsEnteroOn:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY1), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_ERROR_InicioEsNegativo:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY2), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_ERROR_FinalNoEsEnteroOn:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY3), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_ERROR_FinalEsNegativo:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY4), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_ERROR_InicioMayorQueFinal:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY5), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_ERROR_DAORelaciones:{
+				Vector v = (Vector) datos;
+				v.get(0);
+				v.get(1);
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
+				
+				break;
+			}
+			case SR_EditarCardinalidadEntidad_HECHO:{
+				
+				
+				setCambios(true);
+				Vector v = (Vector) datos;
+				v.get(1);
+				v.get(2);
+				v.get(3);
+				v.get(4);
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EditarCardinalidadEntidad, v);
+				this.getTheGUIEditarCardinalidadEntidad().setInactiva();
+				break;
+	
+			}
+			
+			case SR_AridadEntidadUnoUno_HECHO:{
+				
+				
+				setCambios(true);
+				Vector v = (Vector) datos;
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_CardinalidadUnoUno, v);
+				break;
+			} // switch
+			case SR_AnadirUniqueARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(0);
+				TransferRelacion clon_relacion =tr.clonar();
+				v.get(1);
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirUniqueRelacion, clon_relacion);
+				//this.getTheGUIAnadirRestriccionAEntidad().setInactiva();
+				break;
+			}
+			case SR_QuitarUniqueARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(0);
+				TransferRelacion clon_relacion =tr.clonar();
+				v.get(1);
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarUniqueRelacion, clon_relacion);
+				break;
+			}
+	
+			case SR_setUniquesARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(1);
+				TransferRelacion clon_relacion =tr.clonar();
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setUniquesRelacion, clon_relacion);
+				break;
+			}
+			case SR_setUniqueUnitarioARelacion_HECHO:{
+				
+				
+				Vector v = (Vector) datos;
+				TransferRelacion tr = (TransferRelacion) v.get(0);
+				TransferRelacion clon_relacion =tr.clonar();
+				setCambios(true);
+				
+				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setUniqueUnitarioRelacion, clon_relacion);
+				break;
+			}
+			
+			default: break;
 		}
-
-		/*
-		 * Establecer la entidad padre en una relacion IsA
-		 */
-		case SR_EstablecerEntidadPadre_ERROR_DAORelaciones:{
-			this.getTheGUIEstablecerEntidadPadre().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EstablecerEntidadPadre_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIEstablecerEntidadPadre().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EstablecerEntidadPadre, vt);
-			break;
-		}
-		/*
-		 * Quitar la entidad padre en una relacion IsA
-		 */
-		case SR_QuitarEntidadPadre_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			this.getTheGUIQuitarEntidadPadre().setInactiva();
-			
-			break;			
-		}
-		case SR_QuitarEntidadPadre_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIQuitarEntidadPadre().setInactiva();
-			TransferRelacion tr = (TransferRelacion) datos;
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadPadre, tr);			
-			break;			
-		}
-		/*
-		 * Anadir una entidad hija a una relacion IsA
-		 */
-		case SR_AnadirEntidadHija_ERROR_DAORelaciones:{
-			this.getTheGUIEstablecerEntidadPadre().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadHija_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIAnadirEntidadHija().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirEntidadHija, vt);
-			break;
-		}
-		/*
-		 * Quitar una entidad hija en una relacion IsA
-		 */
-		case SR_QuitarEntidadHija_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			this.getTheGUIQuitarEntidadHija().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			
-			break;
-		}
-		case SR_QuitarEntidadHija_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIQuitarEntidadHija().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(1);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadHija, vt);
-			break;
-		}
-		/*
-		 * Eliminar una relacion IsA
-		 */
-		case SR_EliminarRelacionIsA_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EliminarRelacionIsA_HECHO:{
-		
-			
-			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacionIsA, tr);
-			ActualizaArbol(null);
-			break;
-		}
-		/*
-		 * Eliminar una relacion Normal
-		 */
-		case SR_EliminarRelacionNormal_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EliminarRelacionNormal_HECHO:{
-			
-			
-			setCambios(true);
-			Vector<Object> v = (Vector<Object>) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(0);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarRelacionNormal, tr);
-			ActualizaArbol(null);
-			break;
-		}
-		/*
-		 * Insertar una relacion IsA
-		 */
-		case SR_InsertarRelacionIsA_ERROR_DAORelaciones:{
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;	
-		}
-		case SR_InsertarRelacionIsA_HECHO:{
-			
-			
-			setCambios(true);
-			TransferRelacion tr = (TransferRelacion) datos;
-			this.antiguaIsA = tr;
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacionIsA, tr);
-			ActualizaArbol(tr);
-			break;
-		}
-		/*
-		 * Anadir una entidad a una relacion normal
-		 */
-		case SR_AnadirEntidadARelacion_ERROR_InicioNoEsEnteroOn:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY1), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_ERROR_InicioEsNegativo:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY2), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_ERROR_FinalNoEsEnteroOn:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY3), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_ERROR_FinalEsNegativo:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY4), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_ERROR_InicioMayorQueFinal:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY5), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_ERROR_DAORelaciones:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_AnadirEntidadARelacion_HECHO:{
-			
-			
-			setCambios(true);
-			Vector v = (Vector) datos;
-			TransferRelacion tr= (TransferRelacion) v.get(0);
-			v.get(1);
-			v.get(2);
-			v.get(3);
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirEntidadARelacion, v);
-			this.getTheGUIAnadirEntidadARelacion().setInactiva();
-			break;
-		}
-		/*
-		 * Quitar una entidad en una relacion Normal
-		 */
-		case SR_QuitarEntidadARelacion_ERROR_DAORelaciones:{
-			this.getTheGUIQuitarEntidadARelacion().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(0);
-			vt.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_QuitarEntidadARelacion_HECHO:{
-			
-			
-			setCambios(true);
-			this.getTheGUIQuitarEntidadARelacion().setInactiva();
-			Vector<Transfer> vt = (Vector<Transfer>) datos;
-			vt.get(0);
-			vt.get(1);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarEntidadARelacion, vt);
-			break;
-		}
-		/*
-		 * Editar la aridad de una entidad en una relacion
-		 */
-		case SR_EditarCardinalidadEntidad_ERROR_InicioNoEsEnteroOn:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY1), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_ERROR_InicioEsNegativo:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY2), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_ERROR_FinalNoEsEnteroOn:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY3), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_ERROR_FinalEsNegativo:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY4), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_ERROR_InicioMayorQueFinal:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.INCORRECT_CARDINALITY5), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_ERROR_DAORelaciones:{
-			Vector v = (Vector) datos;
-			v.get(0);
-			v.get(1);
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
-			
-			break;
-		}
-		case SR_EditarCardinalidadEntidad_HECHO:{
-			
-			
-			setCambios(true);
-			Vector v = (Vector) datos;
-			v.get(1);
-			v.get(2);
-			v.get(3);
-			v.get(4);
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EditarCardinalidadEntidad, v);
-			this.getTheGUIEditarCardinalidadEntidad().setInactiva();
-			break;
-
-		}
-		
-		case SR_AridadEntidadUnoUno_HECHO:{
-			
-			
-			setCambios(true);
-			Vector v = (Vector) datos;
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_CardinalidadUnoUno, v);
-			break;
-		} // switch
-		case SR_AnadirUniqueARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(0);
-			TransferRelacion clon_relacion =tr.clonar();
-			v.get(1);
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirUniqueRelacion, clon_relacion);
-			//this.getTheGUIAnadirRestriccionAEntidad().setInactiva();
-			break;
-		}
-		case SR_QuitarUniqueARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(0);
-			TransferRelacion clon_relacion =tr.clonar();
-			v.get(1);
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_QuitarUniqueRelacion, clon_relacion);
-			break;
-		}
-
-		case SR_setUniquesARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(1);
-			TransferRelacion clon_relacion =tr.clonar();
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setUniquesRelacion, clon_relacion);
-			break;
-		}
-		case SR_setUniqueUnitarioARelacion_HECHO:{
-			
-			
-			Vector v = (Vector) datos;
-			TransferRelacion tr = (TransferRelacion) v.get(0);
-			TransferRelacion clon_relacion =tr.clonar();
-			setCambios(true);
-			
-			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_setUniqueUnitarioRelacion, clon_relacion);
-			break;
-		}
-		default: break;
-	  }
 	}
-
-
-	// Mensajes que mandan los Servicios del Sistema al Controlador
-	@SuppressWarnings("incomplete-switch")
-	public void mensajeDesde_SS(TC mensaje, Object datos){
-		switch(mensaje){
-		case SS_ValidacionM:{
-			String info = (String) datos;
-			this.getTheGUIPrincipal().escribeEnModelo(info);
-			break;
-		}
-		case SS_ValidacionC:{
-			String info = (String) datos;
-			this.getTheGUIPrincipal().escribeEnCodigo(info);
-			break;
-		}
-		case SS_GeneracionScriptSQL:{
-			String info = (String) datos;
-			this.getTheGUIPrincipal().escribeEnCodigo(info);
-			this.getTheGUIPrincipal().setScriptGeneradoCorrectamente(true);
-			break;
-		}
-		case SS_GeneracionArchivoScriptSQL:{
-			String info = (String) datos;
-			this.getTheGUIPrincipal().escribeEnCodigo(info);
-			break;
-		}
-		case SS_GeneracionModeloRelacional:{
-			String info = (String) datos;
-			this.getTheGUIPrincipal().escribeEnModelo(info);
-			break;
-		}
-		}// switch
+	
+	
+		// Mensajes que mandan los Servicios del Sistema al Controlador
+		@SuppressWarnings("incomplete-switch")
+		public void mensajeDesde_SS(TC mensaje, Object datos){
+			switch(mensaje){
+				case SS_ValidacionM:{
+					String info = (String) datos;
+					this.getTheGUIPrincipal().escribeEnModelo(info);
+					break;
+				}
+				case SS_ValidacionC:{
+					String info = (String) datos;
+					this.getTheGUIPrincipal().escribeEnCodigo(info);
+					break;
+				}
+				case SS_GeneracionScriptSQL:{
+					String info = (String) datos;
+					this.getTheGUIPrincipal().escribeEnCodigo(info);
+					this.getTheGUIPrincipal().setScriptGeneradoCorrectamente(true);
+					break;
+				}
+				case SS_GeneracionArchivoScriptSQL:{
+					String info = (String) datos;
+					this.getTheGUIPrincipal().escribeEnCodigo(info);
+					break;
+				}
+				case SS_GeneracionModeloRelacional:{
+					String info = (String) datos;
+					this.getTheGUIPrincipal().escribeEnModelo(info);
+					break;
+				}
+			}// switch
 	}
-
 	//Utilidades
 	
 	private void guardarBackup() {
@@ -4211,7 +4340,7 @@ public class Controlador {
 			String str = this.filetemp.getAbsolutePath();
 			ruta = str.substring(0, str.length() - 27) + "LastProyectBackup.xml";
 		}
-		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar, ruta);
+		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Guardar_Backup, ruta);
 		//File f = new File(ruta);
 		//this.setFileguardar(f);
 	}
@@ -4227,10 +4356,10 @@ public class Controlador {
 		this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_GuardarDeshacer, ruta);
 		++this.contFicherosDeshacer;
 		if( !existe)++this.limiteFicherosDeshacer;
-		if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.RED);
+		if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
 		else this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.WHITE);
 		
-		if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer())this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.RED);
+		if(this.getContFicherosDeshacer()==this.getLimiteFicherosDeshacer() || this.auxDeshacer == true)this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.GRAY);
 		else this.getTheGUIPrincipal().getMyMenu().getRehacer().setBackground(Color.WHITE);
 
 	}
@@ -4238,11 +4367,13 @@ public class Controlador {
 	private boolean existe(String ruta) {
 		boolean r = false;
 		File directory = new File(System.getProperty("user.dir")+"/deshacer");
-		for (File file: Objects.requireNonNull(directory.listFiles())) {
-			if (file.getPath().equals(ruta)) {
-				r = true;
-            }
-        }
+		if (directory.exists()) {
+			for (File file: Objects.requireNonNull(directory.listFiles())) {
+				if (file.getPath().equals(ruta)) {
+					r = true;
+	            }
+	        }
+		}
 		return r;
 	}
 	
@@ -4293,7 +4424,7 @@ public class Controlador {
 			in.close();
 			out.close();
 		} catch(IOException e) {
-			System.err.println("Hubo un error de entrada/salida");
+			System.err.println(e);
 		}
 	}
     
@@ -4322,12 +4453,14 @@ public class Controlador {
     
     private void eliminarCarpetaDeshacer(){
     	File directory = new File(System.getProperty("user.dir")+"/deshacer");
-    	 for (File file: Objects.requireNonNull(directory.listFiles())) {
-             if (!file.isDirectory()) {
-                 file.delete();
-             }
-         }
-    	 directory.delete();
+    	if (directory.exists()) {
+	    	for (File file: Objects.requireNonNull(directory.listFiles())) {
+	             if (!file.isDirectory()) {
+	                 file.delete();
+	             }
+	         }
+	    	 directory.delete();
+    	}	 
     }
     
     private void ActualizaArbol(Transfer t){
@@ -4697,6 +4830,10 @@ public class Controlador {
 		return this.limiteFicherosDeshacer;
 	}
 	
+	public boolean getAuxDeshacer() {
+		return this.auxDeshacer;
+	}
+	
 	
 	/*public void funcionDeshacer(TC mensaje, Object datos) {
 		switch (mensaje) {
@@ -4762,9 +4899,28 @@ public class Controlador {
 				break;
 			}
 			
+<<<<<<< HEAD
 			
 			
 			case SA_EliminarAtributo_HECHO:{
+=======
+			/*case SE_MoverPosicionEntidad_HECHO:{ //ni idea de por que no funciona
+				TransferEntidad te = (TransferEntidad) datos;
+				Point2D pos = te.getPosicion();
+				TransferEntidad teAux = new TransferEntidad();
+				/*for (int i = 0; i < this.listaEntidades.size(); ++i) {
+					if(te.getNombre() == this.listaEntidades.get(i).getNombre()) {
+						pos = this.listaEntidades.get(i).getPosicion();
+					}
+				}
+				te.setPosicion(this.posAux);
+				this.mensajeDesde_PanelDiseno(TC.PanelDiseno_MoverEntidad, te);
+				this.getTheGUIPrincipal().getPanelDiseno().repaint();
+			}*/
+
+			
+			/*case SA_EliminarAtributo_HECHO:{
+>>>>>>> c1dde9d278d258feb3eb6b27f7f559348f1a13cf
 				Vector<Object> v = new Vector<Object>();
 				Vector<Object> v2 = (Vector<Object>) datos;
 				v.add(v2.get(1));
@@ -5104,8 +5260,13 @@ public class Controlador {
 			
 			
 			default: break;
+<<<<<<< HEAD
 		}
 	}
 	*/
 }
+
+
+
+
 

@@ -131,7 +131,8 @@ public class MenuDesplegable extends JPopupMenu {
 			
 			return;
 		}
-		
+
+		else {
 		// Se ha pinchado sobre un nodo
 		this.nodo = nodo;
 		if (nodo instanceof TransferEntidad) { // Si es entidad
@@ -254,8 +255,10 @@ public class MenuDesplegable extends JPopupMenu {
 			}
 			});
 			this.add(j7);
-
+		
 		}
+	}
+
 
 		if (nodo instanceof TransferAtributo) { // Si es atributo
 			// Editar el dominio del atributo
@@ -339,9 +342,10 @@ public class MenuDesplegable extends JPopupMenu {
 						TransferAtributo atributo = (TransferAtributo) menu.nodo;
 						TransferAtributo clon_atributo = atributo.clonar();
 						TransferEntidad clon_entidad = ent.clonar();
-						Vector<Transfer> vector = new Vector<Transfer>();
+						Vector<Object> vector = new Vector<Object>();
 						vector.add(clon_atributo);
 						vector.add(clon_entidad);
+						vector.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,
 								vector);
 					}
@@ -362,7 +366,12 @@ public class MenuDesplegable extends JPopupMenu {
 					TransferAtributo atributo = (TransferAtributo) menu.nodo;
 					TransferAtributo clon_atributo = atributo.clonar();
 					if (notnul) controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarNotNullAtributo,clon_atributo);
-					if (unique) controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo, clon_atributo);
+					if (unique) {
+						Vector<Object> ve = new Vector<Object>();
+						ve.add(clon_atributo);
+						ve.add(0);
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo, clon_atributo);
+					}
 					controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarCompuestoAtributo,clon_atributo);
 				}
 			});
@@ -414,8 +423,11 @@ public class MenuDesplegable extends JPopupMenu {
 						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 						TransferAtributo atributo = (TransferAtributo) menu.nodo;
 						TransferAtributo clon_atributo = atributo.clonar();
+						Vector<Object> ve = new Vector<Object>();
+						ve.add(clon_atributo);
+						ve.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,
-								clon_atributo);
+								ve);
 					}
 				});
 				this.add(j3b);
@@ -750,13 +762,15 @@ public class MenuDesplegable extends JPopupMenu {
 					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 					TransferRelacion elemento = (TransferRelacion) menu.nodo;
 					TransferRelacion clon = elemento.clonar();
-					Gui_Agreg(clon);
+					//Gui_Agreg(clon);
+					Gui_Confirm(clon);
 				}
 			});
 			this.add(j10);
 		}
 
 	}
+
 	
 	protected void suprimir() {
 		PickedState<Transfer> p = vv.getPickedVertexState();
@@ -832,6 +846,7 @@ public class MenuDesplegable extends JPopupMenu {
 		}
 	}
 	
+
 	private boolean contiene (Vector lista, int idAtributo) {
 		boolean r = false;
 		for(int i=0; i<lista.size(); ++i) {
@@ -839,14 +854,16 @@ public class MenuDesplegable extends JPopupMenu {
 		}
 		return r;
 	}
-	
+
 	protected void copiar() {
 		PickedState<Transfer> p = vv.getPickedVertexState();
 		int seleccionados = 0;
 		for (@SuppressWarnings("unused")Transfer t : p.getPicked()) seleccionados++;
+
 		if (seleccionados > 1) {
 			return;
 		}
+
 		PickedState<Transfer> ps = vv.getPickedVertexState();
 		for (Transfer t : ps.getPicked()) {
 			this.controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, t);
@@ -881,13 +898,14 @@ public class MenuDesplegable extends JPopupMenu {
 	protected void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
-
+/*
 	private void Gui_Agreg(Transfer t) {
 		JDialog pane = new JDialog();
 		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 		pane.setResizable(false);
 		pane.setModal(true);
 		pane.setTitle(Lenguaje.text(Lenguaje.WARNING));
+
 		pane.setSize(620, 200);
 		pane.setAlwaysOnTop(false);
 		pane.setLocationRelativeTo(null);
@@ -909,7 +927,9 @@ public class MenuDesplegable extends JPopupMenu {
 		
 		JButton cancel = new JButton(Lenguaje.text(Lenguaje.CANCEL));
 		pane.add(cancel);
+
 		cancel.setBounds(430,90,120,60);
+
 		cancel.setBackground(Color.red);
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -922,7 +942,7 @@ public class MenuDesplegable extends JPopupMenu {
 		
 		
 	}
-	
+*/
 	private void Gui_Confirm(Transfer t) {
 		JDialog pane = new JDialog();
 		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);

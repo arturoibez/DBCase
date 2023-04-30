@@ -468,7 +468,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			this.cajaFinal.setEnabled(true);
 			this.cajaFinal.setEditable(false);
 			this.cajaInicio.setEditable(false);
-			this.cajaFinal.setText("1");
+			//this.cajaFinal.setText("1");
 			this.cajaInicio.setText(this.cajaInicio.getText());
 		}
 		else{
@@ -487,7 +487,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			this.cajaInicio.setEnabled(true);
 			this.cajaFinal.setEnabled(true);
 			this.cajaFinal.setEditable(false);
-			this.cajaFinal.setText("N");
+			//this.cajaFinal.setText("N");
 			this.cajaInicio.setText(this.cajaInicio.getText());
 		}
 		else{

@@ -306,7 +306,7 @@ informationIncomplete=No se ha indicado alguno de los datos
 dbdt=DBCase
 
 #"GUI_EditarCardinalidadEntidad" window
-editArityAndRolle=Editar la cardinalidad o el rol de una entidad
+editArityAndRolle=Editar la cardinalidad, participación o rol de una entidad
 imposibleToEditRolle=No se puede editar la cardinalidad de ninguna entidad.
 noEntitiesInRelation=No interviene ninguna entidad en la relación.
 editArity= Editar la cardinalidad de una entidad
@@ -418,7 +418,7 @@ deleteRel=Eliminar la relación
 renameRelation=Renombrar la relación
 addEnt=Añadir una entidad
 removeEntity=Quitar una entidad
-editCardRol=Editar la cardinalidad o rol de una entidad
+editCardRol=Editar la cardinalidad, participación o rol de una entidad
 
 #GUIPrincipal + utilidades.AccionMenu 
 domMenuRename=Renombrar
@@ -624,3 +624,5 @@ empty_ag_name=Nombre de agregación vacío.
 repeat_ag_name=Ese nombre ya existe.
 agg_file_error=Se ha producido un error en el acceso al fichero de relaciones.
 int_nom_agreg =Introduce el nombre de la agregación.
+aggregations=Agregaciones
+

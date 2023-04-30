@@ -666,6 +666,8 @@ public class Lenguaje {
 	public static final int AGGREGATIONS_FILE_ERROR = 5303;
 	public static final int EMPTY_AGREG_NAME = 5304;
 	public static final int INT_NOM_AGREG = 5305;
+
+	public static final int AGGREGATIONS = 5306;
 	//copiar y pegar
 	public static final int COPIAR = 5400;
 	public static final int PEGAR = 5401;
@@ -1424,6 +1426,7 @@ public class Lenguaje {
 		case INT_NOM_AGREG: texto=_textos.get("int_nom_agreg");break;
 		case COPIAR: texto=_textos.get("copiar");break;
 		case PEGAR: texto=_textos.get("pegar");break;
+		case AGGREGATIONS: texto=_textos.get("aggregations");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

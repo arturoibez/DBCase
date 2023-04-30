@@ -214,13 +214,18 @@ public class GUI_AnadirAtributoEntidad extends Parent_GUI{
 			clon_atributo2.setClavePrimaria(false);
 			v1.add(clon_atributo2);
 		    v1.add(entidad);
+		    v1.add(1);
 			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,v1);
 		}
 		//actualizamos la tabla de Uniques de la entidad
 		if (this.opcionUnique.isSelected()){
+			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
-			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,clon_atributo);
+			ve.add(clon_atributo);
+			ve.add(1);
+			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ve);
 		}
+		this.setInactiva();
 	}
 	
 	public void keyPressed( KeyEvent e ) {
