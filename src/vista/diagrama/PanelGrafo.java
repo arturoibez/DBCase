@@ -512,12 +512,13 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			TransferRelacion relacion = it.next();
 			this.relaciones.put(relacion.getIdRelacion(), relacion);
 		}
+
 		// Inserta las agregaciones con su id como clave
 		for (Iterator<TransferAgregacion> it = agregaciones.iterator(); it.hasNext();) {
 			TransferAgregacion agregacion = it.next();
 			this.agregaciones.put(agregacion.getIdAgregacion(), agregacion);
 		}
-		
+
 		creaArrayTablas();
 	}
 
@@ -607,7 +608,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		tablas.addAll(listaMultivalorados().values());
 		tablas.addAll(agregaciones.values());
 	}
-
+	
 	public void refreshTables(TableModelEvent datos) {
 		MyTableModel tabla = (MyTableModel) datos.getSource();
 		int row = 0;
@@ -698,7 +699,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			}
 			
 		}
-		
+
 		for (HashMap.Entry<Integer, TransferEntidad> ent : this.entidades.entrySet()) {
 			DefaultMutableTreeNode nodoEntidad = new DefaultMutableTreeNode(ent.getValue());
 			Vector lista = (ent.getValue().getListaAtributos());
@@ -731,6 +732,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		}
 		root.add(arbolEntidades);
 		root.add(arbolRelaciones);
+
 		root.add(arbolAgregaciones);
 		arbolInformacion = new JTree(root);
 		arbolInformacion.setRootVisible(false);
@@ -818,6 +820,13 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 				// Añado sus atributos
 				for (Iterator<String> it2 = antigua.getListaAtributos().iterator(); it2.hasNext();) {
 					Integer id = Integer.parseInt(it2.next());
+/*<<<<<<< HEAD
+					if (!graph.areNeighbors(antigua, this.atributos.get(id))) { // Añade aristas que no existiesen
+						graph.addEdge(new Double(Math.random()), antigua, this.atributos.get(id));
+					}
+				}
+			}
+			vv.repaint(); // Se redibuja todo el grafo actualizado*/
 				}
 			}
 			//vv.repaint(); // Se redibuja todo el grafo actualizado
@@ -883,6 +892,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			TransferAgregacion agregacion = (TransferAgregacion) arg0;
 			agregaciones.put(agregacion.getIdAgregacion(), agregacion);
 		}
+
 		creaArrayTablas();
 		vv.repaint();
 	}

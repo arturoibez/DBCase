@@ -94,7 +94,9 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	private Vector<TransferEntidad> listaEntidades;
 	private Vector<TransferAtributo> listaAtributos;
 	private Vector<TransferRelacion> listaRelaciones;
+
 	private Vector<TransferAgregacion> listaAgregaciones;
+
 	private Vector<TransferDominio> listaDominios;
 	private TablaVolumenes tablaVolumenes;
 	private JPanel panelTablas;
@@ -292,6 +294,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		listaTransfers.addAll(listaEntidades);
 		listaTransfers.addAll(listaRelaciones);
 		listaTransfers.addAll(listaAgregaciones);
+
 		addTransfersPanel botonesAnadir = new addTransfersPanel(c, listaTransfers);
 		/*Listener del tamano del panel*/
 		panelDiseno.addComponentListener(new ComponentListener() {
@@ -487,7 +490,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	/*
 	 * OYENTES DE TECLADO
 	 * */
-	public void keyPressed( KeyEvent e ) {} 
+	//public void keyPressed( KeyEvent e ) {} 
 	public void keyReleased(KeyEvent arg0) {}
 	public void keyTyped(KeyEvent arg0) {}
 	
@@ -502,6 +505,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 			loadInfo();
 			break;
 		}
+
 		case Controlador_InsertarAgregacion:{
 			TransferAgregacion ta = (TransferAgregacion) datos;
 			panelDiseno.anadirNodo(ta);
@@ -883,6 +887,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	public void setListaEntidades(Vector<TransferEntidad> listaEntidades) {
 		this.listaEntidades = listaEntidades;
 	}
+
 	public void setListaAgregaciones(Vector<TransferAgregacion> listaAgregaciones) {
 		this.listaAgregaciones = listaAgregaciones;
 	}
@@ -1281,6 +1286,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 							Vector<Object> v = new Vector<Object>();
 							v.add(clon_entidad);
 							v.add(true);
+							v.add(0);
 							c.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad,v);
 						}	
 				});
@@ -1918,4 +1924,28 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
             break;
         }
 	}
+
+	public MyMenu getMyMenu() {
+		return this.barraDeMenus;
+	}
+	
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {			
+		case 83:// CTRL S
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Guardar, null);
+			break;
+			
+		case 89: //CTR Y
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
+			break;	
+			
+		case 90: //CTR Z
+			if (e.isControlDown())
+				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
+			break;
+		}
+	}
+
 }

@@ -189,9 +189,13 @@ public class GUI_AnadirAtributoRelacion extends Parent_GUI {
 		
 		//actualizamos la tabla de Uniques de la relacion	
 		if (this.opcionUnique.isSelected()){
+			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
-			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,clon_atributo);
+			ve.add(clon_atributo);
+			ve.add(1);
+			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo,ve);
 		}
+		this.setInactiva();
 	}
 
 	private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {

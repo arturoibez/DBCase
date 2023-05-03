@@ -226,7 +226,9 @@ public class GUI_SaveAs extends Parent_GUI{
 				Lenguaje.text(Lenguaje.ERROR_TEMP_FILE),
 				Lenguaje.text(Lenguaje.DBCASE), JOptionPane.ERROR_MESSAGE);
 		}
-		controlador.setFileguardar(null);
+
+		//controlador.setFileguardar(null);
+
 	}
 	
 

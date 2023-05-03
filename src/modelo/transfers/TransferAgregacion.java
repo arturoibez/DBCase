@@ -42,7 +42,7 @@ public class TransferAgregacion extends Transfer{
 		agreg.setOffsetAttr(this.offsetAttr);
 		return agreg;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -103,6 +103,7 @@ public class TransferAgregacion extends Transfer{
 	@Override
 	public void setFrecuencia(int f) {
 		// TODO Auto-generated method stub
+
 		frecuencia=f;
 	}
 	

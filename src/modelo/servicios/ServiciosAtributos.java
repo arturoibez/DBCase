@@ -99,10 +99,12 @@ public class ServiciosAtributos {
 	 * Si se produce un error al usar el DAOAtributos ->  SA_EliminarAtributo_ERROR_DAOAtributos
 	 * Hay que comprobar primero que el atributo que viene en el transfer exista con un consultar
 	 */
-	public void eliminarAtributo (TransferAtributo ta){
+
+	public void eliminarAtributo (TransferAtributo ta, int vieneDeOtro){//si el entero es 1 viene de eliminar entidad o relacion
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
 		TransferAtributo aux = ta;
 		ta = daoAtributos.consultarAtributo(ta);
+		if (ta == null) return;
 		ta.setClavePrimaria(aux.getClavePrimaria());
 		ta.setCompuesto(aux.getCompuesto());
 		ta.setDominio(aux.getDominio());
@@ -137,9 +139,11 @@ public class ServiciosAtributos {
 					}
 				}
 					
-				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
+				Vector<Object> vectorAtributoYElemMod = new Vector<Object>();
 				vectorAtributoYElemMod.add(ta);
 				vectorAtributoYElemMod.add(elem_mod);
+				if (vectorAtributoYElemMod.size() == 2) vectorAtributoYElemMod.add(vieneDeOtro);
+				else vectorAtributoYElemMod.set(2, vieneDeOtro);
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_HECHO, vectorAtributoYElemMod);
 			}
 		}
@@ -158,7 +162,7 @@ public class ServiciosAtributos {
 				int idAtributoHijo = Integer.parseInt((String) lista_idSubatributos.get(cont));
 				TransferAtributo ta_hijo = new TransferAtributo(controlador);
 				ta_hijo.setIdAtributo(idAtributoHijo);
-				this.eliminarAtributo(ta_hijo);
+				this.eliminarAtributo(ta_hijo, 1);
 				cont++;
 			}
 			// Ya estan eliminados todos sus subatributos. Ponemos compuesto a falso y eliminamos
@@ -169,9 +173,11 @@ public class ServiciosAtributos {
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_ERROR_DAOAtributos, ta);
 			else{
 				Transfer elem_mod = this.eliminaRefererenciasAlAtributo(ta);
-				Vector<Transfer> vectorAtributoYElemMod = new Vector<Transfer>();
+				Vector<Object> vectorAtributoYElemMod = new Vector<Object>();
 				vectorAtributoYElemMod.add(ta);
 				vectorAtributoYElemMod.add(elem_mod);
+				if (vectorAtributoYElemMod.size() == 2) vectorAtributoYElemMod.add(vieneDeOtro);
+				else vectorAtributoYElemMod.set(2, vieneDeOtro);
 				controlador.mensajeDesde_SA(TC.SA_EliminarAtributo_HECHO, vectorAtributoYElemMod);
 			}
 		}
@@ -478,14 +484,19 @@ public class ServiciosAtributos {
 		return;
 	}
 	
-	public void editarUniqueAtributo(TransferAtributo ta){
+	public void editarUniqueAtributo(TransferAtributo ta, int vieneDeInsertarAtriuto){
 		// Modificamos el atributo
 		ta.setUnique(!ta.getUnique());
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
 		if (daoAtributos.modificarAtributo(ta) == false)
 			controlador.mensajeDesde_SA(TC.SA_EditarUniqueAtributo_ERROR_DAOAtributos, ta);
-		else
-			controlador.mensajeDesde_SA(TC.SA_EditarUniqueAtributo_HECHO, ta);
+		else {
+			Vector<Object> ve = new Vector<Object>();
+			ve.add(ta);
+			ve.add(vieneDeInsertarAtriuto);
+			controlador.mensajeDesde_SA(TC.SA_EditarUniqueAtributo_HECHO, ve);
+		}
+			
 		return;
 	}
 	
@@ -576,9 +587,10 @@ public class ServiciosAtributos {
 	 * En el vector viene el atributo (pos 0) y la entidad (pos 1)
 	 * Hay que negar el valor de esClavePrimaria del atributo
 	 */
-	public void editarClavePrimariaAtributo(Vector<Transfer> vectorDeTransfer){
-		TransferAtributo ta = (TransferAtributo) vectorDeTransfer.get(0);
-		TransferEntidad te = (TransferEntidad) vectorDeTransfer.get(1);
+	public void editarClavePrimariaAtributo(Vector<Object> v){
+		TransferAtributo ta = (TransferAtributo) v.get(0);
+		TransferEntidad te = (TransferEntidad) v.get(1);
+		
 		// Si era clave primaria
 		if(ta.isClavePrimaria()){
 			te.getListaClavesPrimarias().remove(String.valueOf(ta.getIdAtributo()));
@@ -593,11 +605,12 @@ public class ServiciosAtributos {
 			ta.setMultivalorado(false);
 			ta.setUnique(false);
 		}
+		
 		// Persistimos la entidad y devolvemos el mensaje
 		DAOEntidades daoEntidades = new DAOEntidades(this.controlador.getPath());
 		if (daoEntidades.modificarEntidad(te) == false)
-			controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_ERROR_DAOEntidades,vectorDeTransfer);
-		else controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_HECHO, vectorDeTransfer);
+			controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_ERROR_DAOEntidades,v);
+		else controlador.mensajeDesde_SA(TC.SA_EditarClavePrimariaAtributo_HECHO, v);
 	}
 	public String getNombreAtributo(int id){
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
