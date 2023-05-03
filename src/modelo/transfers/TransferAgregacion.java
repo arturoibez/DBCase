@@ -62,7 +62,8 @@ public class TransferAgregacion extends Transfer{
 		this.listaRelaciones = listaRelaciones;
 	}
 	public Point2D getPosicion() {
-		return posicion;
+		Point2D p = new Point2D.Double(0,0);
+		return p;
 	}
 	public void setPosicion(Point2D posicion) {
 		this.posicion = posicion;

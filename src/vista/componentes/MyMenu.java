@@ -37,6 +37,7 @@ import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.Transfer;
 import modelo.transfers.TransferConexion;
+import persistencia.DAOAgregaciones;
 import persistencia.DAOAtributos;
 import persistencia.DAOEntidades;
 import persistencia.DAORelaciones;
@@ -601,6 +602,8 @@ public class MyMenu extends JMenuBar{
         		listaTransfers.addAll(daoEntidades.ListaDeEntidades());
         		DAOAtributos daoAtributos = new DAOAtributos(c);
         		listaTransfers.addAll(daoAtributos.ListaDeAtributos());
+        		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(c.getPath());
+        		listaTransfers.addAll(daoAgregaciones.ListaDeAgregaciones());
 				c.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_InsertarAtributo, listaTransfers);
 				}
 			});

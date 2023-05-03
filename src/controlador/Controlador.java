@@ -2166,6 +2166,13 @@ public class Controlador {
 			this.getTheServiciosSistema().reset();
 			break;
 		}
+		case GUIAnadirAtributoAgregacion_Click_BotonAnadir:{
+			Vector<Transfer> vectorTransfers = (Vector<Transfer>)datos;
+			this.getTheServiciosAgregaciones().anadirAtributo(vectorTransfers);	
+			ActualizaArbol((Transfer)vectorTransfers.get(1));
+			this.getTheServiciosSistema().reset();
+			break;
+		}
 		case GUIAnadirAtributoRelacion_Click_BotonAnadir:{
 			Vector<Transfer> vectorTransfers = (Vector<Transfer>)datos;
 			this.getTheServiciosRelaciones().anadirAtributo(vectorTransfers);
@@ -3447,6 +3454,25 @@ public class Controlador {
 			v.get(2);
 			
 			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_RenombrarAgregacion, tr);
+			break;
+		}
+		case SAG_AnadirAtributoAAgregacion_HECHO:{
+			Vector<Transfer> v = (Vector<Transfer>) datos;
+			v.get(0);
+			v.get(1);
+			setCambios(true);
+			
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_AnadirAtributoAAgregacion, v);
+			this.getTheGUIAnadirAtributoEntidad().setInactiva();
+			
+			//meter un if para cuando ya este
+			TransferAtributo ta = (TransferAtributo) v.get(1);
+			boolean esta = false;
+			for (int i = 0; i < this.listaAtributos.size(); ++i) {
+				if(ta.getIdAtributo() == this.listaAtributos.get(i).getIdAtributo()) esta = true;
+			}
+			
+			if (!esta) this.listaAtributos.add(ta);
 			break;
 		}
 		default:

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inf_dbcase>
+    <EntityList proximoID="3">
+        <Entity EntityId="1">
+            <Name>a</Name>
+            <Weak>false</Weak>
+            <AttribList>
+                <Attrib>1</Attrib>
+            </AttribList>
+            <RelatnList/>
+            <PrimaryKeyList>
+                <PrimaryKey>1</PrimaryKey>
+            </PrimaryKeyList>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>183,94</Position>
+        </Entity>
+        <Entity EntityId="2">
+            <Name>b</Name>
+            <Weak>false</Weak>
+            <AttribList>
+                <Attrib>2</Attrib>
+            </AttribList>
+            <RelatnList/>
+            <PrimaryKeyList>
+                <PrimaryKey>2</PrimaryKey>
+            </PrimaryKeyList>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>492,96</Position>
+        </Entity>
+    </EntityList>
+    <RelationList proximoID="2">
+        <Relation idRelacion="1">
+            <Name>r</Name>
+            <Type>Normal</Type>
+            <EntityAndArityList>
+                <EntityAndArity>(1,0,n,)</EntityAndArity>
+                <EntityAndArity>(2,0,n,)</EntityAndArity>
+            </EntityAndArityList>
+            <AttribList/>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>341,198</Position>
+        </Relation>
+    </RelationList>
+    <AttributeList proximoID="3">
+        <Attribute AttributeId="1">
+            <Name>pka</Name>
+            <Dom>VARCHAR(10)</Dom>
+            <Composed>false</Composed>
+            <NotNull>false</NotNull>
+            <Unique>false</Unique>
+            <ComponentList/>
+            <Multivalued>false</Multivalued>
+            <AssertionList/>
+            <Position>63,90</Position>
+        </Attribute>
+        <Attribute AttributeId="2">
+            <Name>pkb</Name>
+            <Dom>VARCHAR(10)</Dom>
+            <Composed>false</Composed>
+            <NotNull>false</NotNull>
+            <Unique>false</Unique>
+            <ComponentList/>
+            <Multivalued>false</Multivalued>
+            <AssertionList/>
+            <Position>612,96</Position>
+        </Attribute>
+    </AttributeList>
+    <DomainList proximoID="1"/>
+    <AggregationList proximoID="2">
+        <Aggregation idAgregacion="1">
+            <Name>agre</Name>
+            <RelatnList>
+                <Relatn>1</Relatn>
+            </RelatnList>
+            <AttribList/>
+        </Aggregation>
+    </AggregationList>
+</Inf_dbcase>

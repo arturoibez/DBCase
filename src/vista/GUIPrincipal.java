@@ -633,6 +633,14 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 			panelDiseno.ModificaValorInterno(te);
 			break;
 		}
+		case Controlador_AnadirAtributoAAgregacion:{
+			Vector<Transfer> vt = (Vector<Transfer>) datos;
+			TransferAgregacion te = (TransferAgregacion) vt.get(0);
+			TransferAtributo ta = (TransferAtributo) vt.get(1);
+			panelDiseno.anadirNodo(ta);
+			panelDiseno.ModificaValorInterno(te);
+			break;
+		}
 		case Controlador_RenombrarAtributo:{
 			TransferAtributo ta = (TransferAtributo) datos;
 			panelDiseno.ModificaValorInterno(ta);

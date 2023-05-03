@@ -6,9 +6,11 @@ import java.util.Vector;
 import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.TransferAgregacion;
+import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
 import persistencia.DAOAgregaciones;
+import persistencia.DAOAtributos;
 import persistencia.DAOEntidades;
 import persistencia.DAORelaciones;
 
@@ -137,5 +139,56 @@ public class ServiciosAgregaciones {
 
 	public void setControlador(Controlador controlador) {
 		this.controlador = controlador;
+	}
+	
+	public void anadirAtributo(Vector v){
+		TransferAgregacion te = (TransferAgregacion) v.get(0);
+		TransferAtributo ta = (TransferAtributo) v.get(1);
+		// Si nombre de atributo es vacio -> ERROR
+		if (ta.getNombre().isEmpty()){ this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_NombreDeAtributoVacio, v); return; }
+		
+		// Si nombre de atributo ya existe en esa entidad-> ERROR
+		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
+		Vector<TransferAtributo> lista = daoAtributos.ListaDeAtributos(); //lista de todos los atributos
+		if (lista == null){
+			// este tipo de mensajes habra que modificarlos en el controlador para que 
+			// el mensaje de error que lancen sea relativo a agregaciones no a entidades
+			controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_DAOAtributos,v);
+			return;
+		}
+		for (int i=0; i<te.getListaAtributos().size();i++)
+			if(daoAtributos.nombreDeAtributo((Integer.parseInt((String)te.getListaAtributos().get(i)))).toLowerCase().equals(ta.getNombre().toLowerCase())){ 
+				controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_NombreDeAtributoYaExiste,v);
+				return;
+			}
+		
+		// Si hay tamano y no es un entero positivo -> ERROR
+		if(v.size()==3){
+			try{
+				int tamano = Integer.parseInt((String) v.get(2));
+				if(tamano<1){
+					this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_TamanoEsNegativo, v); return;
+				}			
+			}
+			catch(Exception e){
+				this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_TamanoNoEsEntero, v); return;
+			}
+		}
+		// Creamos el atributo
+		// de momento al no representarse, esto no se utiliza ta.setPosicion(te.nextAttributePos(ta.getPosicion()));
+		int idNuevoAtributo = daoAtributos.anadirAtributo(ta);
+		if(idNuevoAtributo == -1){this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_DAOAtributos, v); return; }
+		// Anadimos el atributo a la lista de atributos de la entidad
+		ta.setIdAtributo(idNuevoAtributo);
+		te.getListaAtributos().add(Integer.toString(idNuevoAtributo));
+		
+		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(this.controlador.getPath());
+		if (!daoAgregaciones.modificarAgregacion(te)){
+			this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_DAOEntidades, v);
+			return;
+		}
+		
+		// Si todo ha ido bien devolvemos al controlador la agregacion modificada y el nuevo atributo
+		this.controlador.mensajeDesde_AG(TC.SAG_AnadirAtributoAAgregacion_HECHO, v); 
 	}
 }

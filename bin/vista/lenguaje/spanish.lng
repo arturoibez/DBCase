@@ -624,7 +624,4 @@ empty_ag_name=Nombre de agregación vacío
 repeat_ag_name=Ese nombre ya existe
 agg_file_error=Se ha producido un error en el acceso al fichero de relaciones.
 int_nom_agreg =Introduce el nombre de la agregación.
-<<<<<<< HEAD
 aggregations=Agregaciones
-=======
->>>>>>> master
