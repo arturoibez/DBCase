@@ -155,6 +155,7 @@ public enum TC {
 	
 	//agregaciones
 	GUIInsertarAgregacion,
+	GUIAnadirAtributoAgregacion_Click_BotonAnadir,
 	
 	
 	//---------------------------------------------------------------------------------
@@ -340,6 +341,7 @@ public enum TC {
 	SAG_RenombrarAgregacion_HECHO,
 	SAG_ListarAgregacion_HECHO,
 	SAG_InsertarAgregacion_HECHO,
+	SAG_AnadirAtributoAAgregacion_HECHO,
 	
 	//esto no va aqui
 	Controlador_RenombrarAgregacion,
@@ -556,6 +558,7 @@ public enum TC {
 	Controlador_QuitarUniqueRelacion,
 	Controlador_setUniquesRelacion,
 	Controlador_setUniqueUnitarioRelacion,
+	Controlador_AnadirAtributoAAgregacion,
 	PanelDiseno_MostrarDatosEnTablaDeVolumenes,
 	Controlador_MostrarDatosEnTablaDeVolumenes,
 	PanelDiseno_ActualizarDatosEnTablaDeVolumenes,

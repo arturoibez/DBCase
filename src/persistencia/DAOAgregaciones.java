@@ -167,23 +167,23 @@ public class DAOAgregaciones {
 			// Obtenemos el Relacion
 			Node nodo = dameNodoAgregacion(tc.getIdAgregacion());
 			if (nodo != null) {
-				// Cambiamos los datos del Relacion
-				ponValorAElemento(dameNodoPedidoDeAgregacion(nodo, "Name"), tc.getNombre());
-				ponValorAElemento(dameNodoPedidoDeAgregacion(nodo,
-				"Position"), ((int)(tc.getPosicion().getX())+","+(int)(tc.getPosicion().getY())));
+				
+				ponValorAElemento(
+						dameNodoPedidoDeAgregacion(nodo, "Name"), tc
+								.getNombre());
 							
 				//--------------------------------------
-				Node listaC=dameNodoPedidoDeAgregacion(nodo,"RelationList");
+				Node listaC=dameNodoPedidoDeAgregacion(nodo,"RelatnList");
 				int i=0;
 				Node n;
 				while (i<listaC.getChildNodes().getLength()){
-					n=this.dameNodoPedidoDeAgregacion(listaC,"Relation");
+					n=this.dameNodoPedidoDeAgregacion(listaC,"Relatn");
 					if (n!=null)listaC.removeChild(n);
 					i++;
 				}
 				
 				for (int cont = 0; cont <tc.getListaRelaciones().size(); cont++) {
-					Element Relacion = doc.createElement("Relation");
+					Element Relacion = doc.createElement("Relatn");
 					Relacion.appendChild(doc.createTextNode(tc.getListaRelaciones().elementAt(cont).toString()));
 					listaC.appendChild(Relacion);		
 				}

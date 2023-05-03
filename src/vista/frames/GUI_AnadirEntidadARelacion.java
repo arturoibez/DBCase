@@ -22,6 +22,7 @@ import javax.swing.border.Border;
 
 import controlador.Controlador;
 import controlador.TC;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
 import persistencia.EntidadYAridad;
@@ -34,7 +35,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 
 	private Controlador controlador;
 	private Vector<TransferEntidad> listaEntidades;
-	private JComboBox comboEntidades;
+	private JComboBox comboEntidadesyAgregaciones;
 	private JLabel jLabel1;
 	private JTextField cajaFinal;
 	private JRadioButton buttonMaxN;
@@ -126,8 +127,8 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			this.partialParticipation.setSelected(false);
 			this.cajaInicio.setEnabled(false);
 			this.cajaFinal.setEnabled(false);
-			this.comboEntidades.setModel(new javax.swing.DefaultComboBoxModel(items));
-			this.comboEntidades.setSelectedItem(primerItem());
+			this.comboEntidadesyAgregaciones.setModel(new javax.swing.DefaultComboBoxModel(items));
+			this.comboEntidadesyAgregaciones.setSelectedItem(primerItem());
 			this.cajaRol.setText("");
 			
 			this.centraEnPantalla();
@@ -139,7 +140,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 	
 	private Runnable doFocus = new Runnable() {
 	     public void run() {
-	         comboEntidades.grabFocus();
+	         comboEntidadesyAgregaciones.grabFocus();
 	     }
 	 };
 
@@ -216,7 +217,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 		// Mandaremos el siguiente vector al controlador
 		Vector v = new Vector();
 		v.add(this.getRelacion());
-		v.add(this.getListaEntidades().get(indiceAsociado(this.comboEntidades.getSelectedIndex())));
+		v.add(this.getListaEntidades().get(indiceAsociado(this.comboEntidadesyAgregaciones.getSelectedIndex())));
 		//En función de que boton de la cardinalidad haya seleccionado se guardará una u otra:
 		if(this.cajaInicio.getText().equals("")){
 			v.add(String.valueOf(0));
@@ -285,14 +286,14 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 	}
 	
 	private JComboBox getComboEntidades() {
-		if(comboEntidades == null) {
-			comboEntidades = new JComboBox();
-			comboEntidades.setRenderer(new MyComboBoxRenderer());
-			comboEntidades.setFont(theme.font());
-			comboEntidades.setBounds(25, 35, 231, 27);
+		if(comboEntidadesyAgregaciones == null) {
+			comboEntidadesyAgregaciones = new JComboBox();
+			comboEntidadesyAgregaciones.setRenderer(new MyComboBoxRenderer());
+			comboEntidadesyAgregaciones.setFont(theme.font());
+			comboEntidadesyAgregaciones.setBounds(25, 35, 231, 27);
 		}
-		comboEntidades.addKeyListener(general);
-		return comboEntidades;
+		comboEntidadesyAgregaciones.addKeyListener(general);
+		return comboEntidadesyAgregaciones;
 	}
 	
 	private JLabel getExplicacion2() {

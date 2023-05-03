@@ -17,6 +17,7 @@ import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.TipoDominio;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferDominio;
 import modelo.transfers.TransferEntidad;
@@ -205,8 +206,10 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 			}
 		}
 		ta.setListaRestricciones(new Vector());
+		
 		double x = this.listaTransfers.get(comboTransfers.getSelectedIndex()).getPosicion().getX() + 100;
 		double y = this.listaTransfers.get(comboTransfers.getSelectedIndex()).getPosicion().getY();
+		
 		ta.setPosicion(new Point2D.Double(x,y));
 		// Mandamos la entidad, el nuevo atributo y si hay tamano tambien
 		Vector<Object> v = new Vector<Object>();
@@ -215,6 +218,18 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 		if (!tamano.isEmpty()) v.add(tamano);
 		if(comboTransfers.getSelectedItem() instanceof TransferRelacion) 
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoRelacion_Click_BotonAnadir, v);
+		else if (comboTransfers.getSelectedItem() instanceof TransferAgregacion) {
+			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoAgregacion_Click_BotonAnadir, v);
+			if (this.opcionClavePrimaria.isSelected()){
+				Vector<Object> v1= new Vector<Object>();
+				TransferAtributo clon_atributo2 = ta.clonar();
+				clon_atributo2.setClavePrimaria(false);
+				v1.add(clon_atributo2);
+			    v1.add(listaTransfers.get(comboTransfers.getSelectedIndex()));
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,v1);
+			//posiblemente habrá que modificar esto ultimo tambien en el controlador
+			}
+		}
 		else if(comboTransfers.getSelectedItem() instanceof TransferEntidad) {
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoEntidad_Click_BotonAnadir, v);
 			if (this.opcionClavePrimaria.isSelected()){

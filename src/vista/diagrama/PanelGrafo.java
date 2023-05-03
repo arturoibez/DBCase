@@ -33,6 +33,8 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.ConstantTransformer;
 import controlador.Controlador;
@@ -111,6 +113,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		layout = new GrafoLayout<Transfer, Object>(graph);
 		// Inserta las entidades, atributos, relaciones, agregaciones al grafo
 		this.generaTablasNodos(entidades, atributos, relaciones, agregaciones);
+		
 		Collection<TransferEntidad> entities = this.entidades.values();
 		for (Iterator<TransferEntidad> it = entities.iterator(); it.hasNext();) {
 			TransferEntidad entidad = it.next();
@@ -665,12 +668,36 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		
 		for (HashMap.Entry<Integer,TransferAgregacion> agg: this.agregaciones.entrySet()) {
 			DefaultMutableTreeNode nodoAgregacion = new DefaultMutableTreeNode(agg.getValue());
-			Vector lista = agg.getValue().getListaRelaciones();
-			for (int j = 0; j < lista.size(); j++) {
-				TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista.get(j))); 
-				nodoAgregacion.add(new DefaultMutableTreeNode(rel));
+			Vector lista_rel = agg.getValue().getListaRelaciones();
+			Vector listaEntidades;
+			String tipo = "";
+			
+			//Añadimos los atributos de la agregacion
+			Vector lista_atb = (agg.getValue().getListaAtributos());
+			for (int j = 0; j < lista_atb.size(); j++) {
+				TransferAtributo a = this.atributos.get(Integer.parseInt((String) lista_atb.get(j)));
+				a.setSubatributo(false);
+				nodoAgregacion.add(nodoAtributo(a,new DefaultMutableTreeNode(a)));
 			}
 			arbolAgregaciones.add(nodoAgregacion);
+			
+			//Añadimos las relaciones de la agregacion
+			for (int j = 0; j < lista_rel.size(); j++) {
+				TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista_rel.get(j)));
+				DefaultMutableTreeNode nodoRel = new DefaultMutableTreeNode(rel);
+				//para cada relacion añadimos sus entidades
+				listaEntidades = rel.getListaEntidadesYAridades();
+				for(int k = 0; k < listaEntidades.size(); ++k ) {
+					tipo = rel.getTipo().equals("IsA") ? k == 0 ? "padre" : "hija" : "normal";
+					NodoEntidad ne = new NodoEntidad(
+							this.entidades.get(((EntidadYAridad) listaEntidades.get(k)).getEntidad()).getNombre(),
+							((EntidadYAridad) listaEntidades.get(k)), tipo);
+					nodoRel.add(new DefaultMutableTreeNode(ne));
+				}
+				nodoAgregacion.add(nodoRel);
+				
+			}
+			
 		}
 
 		for (HashMap.Entry<Integer, TransferEntidad> ent : this.entidades.entrySet()) {
