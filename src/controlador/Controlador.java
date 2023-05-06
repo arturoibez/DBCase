@@ -645,8 +645,8 @@ public class Controlador {
 			}
 			if(listaTransfers.isEmpty())
 				JOptionPane.showMessageDialog(null,
-					"ERROR.\nAdd an entity or a relation first\n",
-					Lenguaje.text(Lenguaje.ADD_ENTITY_RELATION),
+					"ERROR.\nAdd an entity, a relation or an aggregation first\n",
+					Lenguaje.text(Lenguaje.ADD_ATTRIBUTE),
 					JOptionPane.PLAIN_MESSAGE);
 			else {
 				this.getTheGUIAnadirAtributo().setListaTransfers(listaTransfers);
@@ -1319,8 +1319,8 @@ public class Controlador {
 						int idEntidad = eya.getEntidad();
 						te.setIdEntidad(idEntidad);	
 						//Tengo que rellenar los atributos de te
-						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades()); //falla aqui
-						if (auxiliar == null) auxiliar = this.getListaEntidades();
+						Vector<TransferEntidad> auxiliar=(this.theGUIQuitarEntidadARelacion.getListaEntidades()); //falla aqui				if (auxiliar == null) 
+						auxiliar = this.getListaEntidades();
 						boolean encontrado= false;
 						int i=0;
 						if (auxiliar != null) {
@@ -1735,7 +1735,7 @@ public class Controlador {
 		    this.contFicherosDeshacer = this.contFicherosDeshacer-1;
 		    this.auxDeshacer = false;
 		    setCambios(true);
-		    this.getTheGUIPrincipal().getPanelDiseno().grabFocus();
+		    //this.getTheGUIPrincipal().getPanelDiseno().grabFocus();
 		    break;
 		}
 		
@@ -3591,7 +3591,7 @@ public class Controlador {
 	//mensajes que manda el ServivioAgregaciones al controlador
 	public void mensajeDesde_AG(TC mensaje, Object datos) {
 
-		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO) {
+		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO) {
 			this.ultimoMensaje = mensaje;
 			this.ultimosDatos = datos;
 			this.guardarDeshacer();

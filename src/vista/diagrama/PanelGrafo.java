@@ -530,6 +530,10 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			vv.grabFocus();
 		}
 	};
+	
+	public VisualizationViewer getVV() {
+		return this.vv;
+	}
 
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -672,7 +676,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			Vector listaEntidades;
 			String tipo = "";
 			
-			//Añadimos los atributos de la agregacion
+			//Aï¿½adimos los atributos de la agregacion
 			Vector lista_atb = (agg.getValue().getListaAtributos());
 			for (int j = 0; j < lista_atb.size(); j++) {
 				TransferAtributo a = this.atributos.get(Integer.parseInt((String) lista_atb.get(j)));
@@ -681,11 +685,11 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			}
 			arbolAgregaciones.add(nodoAgregacion);
 			
-			//Añadimos las relaciones de la agregacion
+			//Aï¿½adimos las relaciones de la agregacion
 			for (int j = 0; j < lista_rel.size(); j++) {
 				TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista_rel.get(j)));
 				DefaultMutableTreeNode nodoRel = new DefaultMutableTreeNode(rel);
-				//para cada relacion añadimos sus entidades
+				//para cada relacion aï¿½adimos sus entidades
 				listaEntidades = rel.getListaEntidadesYAridades();
 				for(int k = 0; k < listaEntidades.size(); ++k ) {
 					tipo = rel.getTipo().equals("IsA") ? k == 0 ? "padre" : "hija" : "normal";

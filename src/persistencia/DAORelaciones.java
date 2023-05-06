@@ -104,7 +104,7 @@ public class DAORelaciones{
 		}
 		//posicion
 		elem = doc.createElement("Position");
-		System.out.println(tc.getNombre());
+		//System.out.println(tc.getNombre());
 		elem.appendChild(doc.createTextNode((int)(tc.getPosicion().getX())+","+(int)(tc.getPosicion().getY())));
 		raiz.appendChild(elem);
 		

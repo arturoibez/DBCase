@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import controlador.Controlador;
 import controlador.TC;
@@ -345,9 +347,71 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			cajaInicio.setForeground(theme.labelFontColorDark());
 			cajaInicio.setBounds(86, 270, 40, 25);
 			cajaInicio.addKeyListener(general);
+			//cajaInicio.getDocument().addDocumentListener(documentListener);	
+			/*cajaInicio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					cajaInicioActionPerformed(evt);
+				}
+			});*/
+		
 		}
+		/*else 
+			cajaInicio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					cajaInicioActionPerformed(evt);
+				}
+			});*/
 		return cajaInicio;
 	}
+	
+	private void cajaInicioActionPerformed(ActionEvent evt) {
+		if(cajaInicio.getText()=="0") {
+			this.totalParticipation.setSelected(false);
+			this.partialParticipation.setSelected(true);
+		}
+		
+		else if(cajaInicio.getText()=="1") {
+			this.totalParticipation.setSelected(true);
+			this.partialParticipation.setSelected(false);
+		}
+	}
+	
+	/*DocumentListener documentListener = new DocumentListener() {
+		@Override
+		public void changedUpdate(DocumentEvent arg0) {
+			// TODO Auto-generated method stub
+			// Código a ejecutar cuando el texto del JTextField cambia
+			if(cajaInicio.getText()=="0") {
+				totalParticipation.setSelected(false);
+				partialParticipation.setSelected(true);
+			}
+			
+			else if(cajaInicio.getText()=="1") {
+				totalParticipation.setSelected(true);
+				partialParticipation.setSelected(false);
+			}
+			
+		}
+		@Override
+		public void insertUpdate(DocumentEvent arg0) {
+			// TODO Auto-generated method stub
+			if(cajaInicio.getText()=="0") {
+				totalParticipation.setSelected(false);
+				partialParticipation.setSelected(true);
+			}
+			
+			else if(cajaInicio.getText()=="1") {
+				totalParticipation.setSelected(true);
+				partialParticipation.setSelected(false);
+			}
+			
+		}
+		@Override
+		public void removeUpdate(DocumentEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};*/
 	
 	private JTextField getCajaFinal() {
 		if(cajaFinal == null) {
@@ -517,6 +581,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			this.cajaFinal.setEnabled(true);
 			this.cajaFinal.setEditable(false);
 			this.cajaInicio.setEditable(false);
+			this.cajaInicio.setText("1");
 		}
 	}
 	private void buttonPartialParticipationItemStateChanged(java.awt.event.ItemEvent evt) {
@@ -526,6 +591,7 @@ public class GUI_AnadirEntidadARelacion extends Parent_GUI{
 			this.cajaFinal.setEnabled(true);
 			this.cajaFinal.setEditable(false);
 			this.cajaInicio.setEditable(false);
+			this.cajaInicio.setText("0");
 		}
 	}
 	private JRadioButton getButton1a1() {

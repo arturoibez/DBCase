@@ -374,8 +374,8 @@ public class ServiciosDominios {
 								int espacio = s.indexOf(" ");
 								String date= s.substring(0, espacio);
 								String time= s.substring(espacio+1);
-								System.out.println(date);
-								System.out.println(time);
+								//System.out.println(date);
+								//System.out.println(time);
 								//comprobar date
 								boolean resulDate;
 								try{

@@ -813,6 +813,8 @@ public class ServiciosRelaciones {
 		// Aqui ya sabemos que los valores (individualmete) son correctos
 		if(inicioEnInt>finalEnInt){	controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_InicioMayorQueFinal, v); return; }
 		// Aqui ya sabemos que los valores (conjuntamente) son correctos
+		
+		if(cardinalidadMax1Seleccionada) finalEnInt = 1;//hola
 		Vector veya = tr.getListaEntidadesYAridades();
 		EntidadYAridad eya = new EntidadYAridad();
 		eya.setEntidad(idEntidad);
@@ -894,7 +896,7 @@ public class ServiciosRelaciones {
 			else cont++;
 		}
 		EntidadYAridad eya = (EntidadYAridad) veya.get(cont);
-		
+		if (cardinalidadMax1Seleccionada) finalEnInt = 1; //hola
 		eya.setPrincipioRango(inicioEnInt);
 		eya.setFinalRango(finalEnInt);
 		eya.setRol(rol);	
@@ -944,7 +946,7 @@ public class ServiciosRelaciones {
 		else controlador.mensajeDesde_SR(TC.SR_QuitarEntidadARelacion_HECHO, datos);
 	}
 	
-	//Aqui fallan los atributos no se porque
+
 	public boolean tieneAtributo(TransferRelacion tr, TransferAtributo ta){
 		for (int i=0; i<tr.getListaAtributos().size(); i++){
 			if(Integer.parseInt((String) tr.getListaAtributos().get(i))==ta.getIdAtributo())

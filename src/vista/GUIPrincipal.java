@@ -1928,24 +1928,18 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	public MyMenu getMyMenu() {
 		return this.barraDeMenus;
 	}
-	
-	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {			
-		case 83:// CTRL S
-			if (e.isControlDown())
-				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Click_Submenu_Guardar, null);
-			break;
-			
-		case 89: //CTR Y
-			if (e.isControlDown())
-				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
-			break;	
-			
-		case 90: //CTR Z
-			if (e.isControlDown())
-				this.c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
-			break;
-		}
-	}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*private Runnable doFocus = new Runnable() {
+		public void run() {
+			panelDiseno.grabFocus();
+		}
+	};*/
+
+	
 }
