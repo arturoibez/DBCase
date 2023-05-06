@@ -583,7 +583,6 @@ public class ServiciosEntidades {
 			controlador.mensajeDesde_SE(TC.SE_MoverPosicionEntidad_HECHO, te);
 	}
 	
-	//Salta excecion aqui
 	public boolean tieneAtributo(TransferEntidad te, TransferAtributo ta){
 		for (int i=0; i<te.getListaAtributos().size(); i++){
 			if(Integer.parseInt((String) te.getListaAtributos().get(i))==ta.getIdAtributo())

@@ -208,7 +208,7 @@ public class GUI_AnadirAtributoEntidad extends Parent_GUI{
 		v.add(ta);
 		if (!tamano.isEmpty()) v.add(tamano);
 		controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoEntidad_Click_BotonAnadir, v);
-		if (this.opcionClavePrimaria.isSelected()){
+		if (((TransferAtributo) v.get(1)).getNotnull() && this.opcionClavePrimaria.isSelected()){
 			Vector<Object> v1= new Vector<Object>();
 			TransferAtributo clon_atributo2 = ta.clonar();
 			clon_atributo2.setClavePrimaria(false);
@@ -218,7 +218,7 @@ public class GUI_AnadirAtributoEntidad extends Parent_GUI{
 			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,v1);
 		}
 		//actualizamos la tabla de Uniques de la entidad
-		if (this.opcionUnique.isSelected()){
+		if (((TransferAtributo) v.get(1)).getNotnull() && this.opcionUnique.isSelected()){
 			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
 			ve.add(clon_atributo);
