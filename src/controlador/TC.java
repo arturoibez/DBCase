@@ -37,6 +37,8 @@ public enum TC {
 	GUI_Principal_DESHACER2,
 	GUI_Principal_REHACER,
 	GUI_WorkSpace_Click_Abrir_Deshacer,
+	GUI_WorkSpace_Click_Abrir_Lenguaje,
+	GUI_WorkSpace_Click_Abrir_Tema,
 	// Click en la barra de menus y submenus
 	GUI_Principal_Click_Submenu_Salir,
 	GUI_Principal_Click_Imprimir,
@@ -567,5 +569,5 @@ public enum TC {
 	GUI_Principal_ConfirmarEliminaciones,
 	GUI_Principal_Cuadricula,
 	GUI_Principal_ModoSoporte,
-	GUI_Principal_IniciaFrames,
+	GUI_Principal_IniciaFrames, 
 }

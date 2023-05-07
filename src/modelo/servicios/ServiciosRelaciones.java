@@ -372,7 +372,11 @@ public class ServiciosRelaciones {
 		TransferRelacion tr = (TransferRelacion) v.get(0);
 		TransferAtributo ta = (TransferAtributo) v.get(1);
 		// Si nombre de atributo es vacio -> ERROR
-		if (ta.getNombre().isEmpty()){ this.controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoVacio, v); return; }
+		if (ta.getNombre().isEmpty()){ 
+			this.controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoVacio, v); 
+			v.add(0);
+			return; 
+			}
 		// Si nombre de atributo ya existe en esa entidad-> ERROR
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
 		Vector<TransferAtributo> lista = daoAtributos.ListaDeAtributos(); //lista de todos los atributos
@@ -383,6 +387,7 @@ public class ServiciosRelaciones {
 		for (int i=0; i<tr.getListaAtributos().size();i++)
 			if(daoAtributos.nombreDeAtributo((Integer.parseInt((String)tr.getListaAtributos().get(i)))).toLowerCase().equals(ta.getNombre().toLowerCase())){ 
 				controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoYaExiste,v);
+				v.add(0);
 				return;
 			}
 		
@@ -761,7 +766,10 @@ public class ServiciosRelaciones {
 		boolean participacionSeleccionada=(boolean)v.get(6);
 		boolean minMaxSeleccionado=(boolean)v.get(7);
 		boolean cardinalidadMax1Seleccionada;
-		if(v.size()==8)cardinalidadMax1Seleccionada=true;
+		if(v.size()==8) {
+			if (!te.isDebil()) cardinalidadMax1Seleccionada=true;
+			else cardinalidadMax1Seleccionada=false;
+		}	
 		else cardinalidadMax1Seleccionada=(boolean)v.get(8);
 		
 		String aux = (String)v.get(4);

@@ -505,6 +505,7 @@ public class Controlador {
 				}
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
+				this.auxDeshacer = false;
 				this.guardarDeshacer();
 				this.tiempoGuardado = System.currentTimeMillis()/1000;
 				break;
@@ -512,6 +513,7 @@ public class Controlador {
 			case GUI_WorkSpace_Click_Abrir:{
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
+				this.auxDeshacer = false;
 				String abrirPath =(String)datos;
 				String tempPath =this.filetemp.getAbsolutePath();
 				FileCopy(abrirPath, tempPath);
@@ -525,6 +527,36 @@ public class Controlador {
 				setCambios(false);
 				this.guardarDeshacer();
 				this.tiempoGuardado = System.currentTimeMillis()/1000;
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_Abrir_Lenguaje:{
+				String abrirPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(abrirPath, tempPath);
+				SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+						getTheServiciosSistema().reset();
+						theGUIPrincipal.loadInfo();
+						getTheGUIPrincipal().reiniciar();
+		        }});
+				setCambios(false);
+				break;
+			}
+			
+			case GUI_WorkSpace_Click_Abrir_Tema:{
+				String abrirPath =(String)datos;
+				String tempPath =this.filetemp.getAbsolutePath();
+				FileCopy(abrirPath, tempPath);
+				SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+						getTheServiciosSistema().reset();
+						theGUIPrincipal.loadInfo();
+						getTheGUIPrincipal().reiniciar();
+		        }});
+				setCambios(false);
 				break;
 			}
 			
@@ -2013,11 +2045,12 @@ public class Controlador {
 			/* guardar, "guardado", tempguarda... y todo eso. guardar en un temporal nuevo y luego abrirlo para dejarlo como estuviese*/ 
 			boolean cambios = this.cambios;
 			File fileguardar = this.fileguardar;
+			boolean aux = this.auxDeshacer;
 			try{
 				if (filetemp.exists()){
 					File guardado =File.createTempFile("dbcase", "xml");
 					FileCopy(filetemp.getAbsolutePath(), guardado.getAbsolutePath());
-					mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir, guardado.getAbsolutePath());
+					mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Lenguaje, guardado.getAbsolutePath());
 					guardado.delete();
 				}
 				else this.getTheGUIWorkSpace().nuevoTemp();
@@ -2026,6 +2059,7 @@ public class Controlador {
 					
 			this.fileguardar=fileguardar;
 			this.cambios = cambios;
+			this.auxDeshacer = aux;
 			
 			break;
 		}
@@ -2034,11 +2068,12 @@ public class Controlador {
 			/* guardar, "guardado", tempguarda... y todo eso. guardar en un temporal nuevo y luego abrirlo para dejarlo como estuviese*/ 
 			boolean cambios = this.cambios;
 			File fileguardar = this.fileguardar;
+			boolean aux = this.auxDeshacer;
 			try{
 				if (filetemp.exists()){
 					File guardado =File.createTempFile("dbcase", "xml");
 					FileCopy(filetemp.getAbsolutePath(), guardado.getAbsolutePath());
-					mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir, guardado.getAbsolutePath());
+					mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Tema, guardado.getAbsolutePath());
 					guardado.delete();
 				}
 				else this.getTheGUIWorkSpace().nuevoTemp();
@@ -2046,6 +2081,7 @@ public class Controlador {
 					
 			this.fileguardar=fileguardar;
 			this.cambios= cambios;
+			this.auxDeshacer = aux;
 			break;
 		}
 		/*

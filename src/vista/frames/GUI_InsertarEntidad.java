@@ -317,7 +317,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			v.add(Integer.toString(0));//Inicio
 			v.add("1");//Fin
 			v.add("");//Rol
-			//INcluimos en el vector MarcadaConCardinalidad(true), MarcadaConParticipacion(false), MarcadaConMinMax(false)			
+			//INcluimos en el vector MarcadaConCardinalidad(false), MarcadaConParticipacion(false), MarcadaConMinMax(false)			
 
 			v.add(false);
 

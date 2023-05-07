@@ -1823,6 +1823,7 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 	}
 	
 	public void cambiarZoom(int zoom) {
+		/*
 		this.zoom = zoom;
 		if(this.dealer.getPanelsMode() == 2) return;
 		Double d = Double.valueOf(zoom);
@@ -1835,20 +1836,19 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 		g2d.setTransform(savedXForm);
 		panelDiseno.revalidate();
 		this.revalidate();
-		//System.out.println(zoom);
-		//this.dealer.cambiarZoom(zoom);
+		*/
 	}
 	
 	
 	public void modoCuadricula(boolean cuadricula) throws IOException {
+		/*
 		if (cuadricula) {
-			System.out.println("hola");
 			Image img = ImageIO.read(getClass().getResource("/vista/imagenes/casillas.PNG"));
 			panelDiseno.setFondo(img, panelDiseno.getGraphics());
 			this.revalidate();
 		}
 		else panelDiseno.setOpaque(true);
-		
+		*/
 	}
 	
 	public ReportPanel getModeloText() {
