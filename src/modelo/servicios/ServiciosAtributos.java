@@ -42,6 +42,7 @@ public class ServiciosAtributos {
 		// Si nombre de atributo hijo es vacio -> ERROR
 		if (tah.getNombre().isEmpty()){
 			this.controlador.mensajeDesde_SA(TC.SA_AnadirSubAtributoAtributo_ERROR_NombreDeAtributoVacio, v);
+			
 			return; 
 		}
 		// Si nombre de atributo ya existe en esa entidad-> ERROR

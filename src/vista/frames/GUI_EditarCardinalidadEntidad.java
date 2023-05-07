@@ -157,7 +157,7 @@ public class GUI_EditarCardinalidadEntidad extends Parent_GUI{
 			
 			
 			if(eya.getMarcadaConParticipacion()) {
-				System.out.println(eya.getPrincipioRango());
+				//System.out.println(eya.getPrincipioRango());
 				if(eya.getPrincipioRango()==0) {
 					partialParticipation.setSelected(true);
 					totalParticipation.setSelected(false);

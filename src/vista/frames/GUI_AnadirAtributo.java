@@ -232,7 +232,8 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 		}
 		else if(comboTransfers.getSelectedItem() instanceof TransferEntidad) {
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoEntidad_Click_BotonAnadir, v);
-			if (((TransferAtributo) v.get(1)).getNotnull() && this.opcionClavePrimaria.isSelected()){
+			if (v.size() == 3 && this.opcionClavePrimaria.isSelected()){
+				//si v.size()=4 significa que hemos anadido el flag de que no se ha podido añadir el atributo
 				Vector<Object> v1= new Vector<Object>();
 				TransferAtributo clon_atributo2 = ta.clonar();
 				clon_atributo2.setClavePrimaria(false);
@@ -243,7 +244,7 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 			}
 		}else if(comboTransfers.getSelectedItem() instanceof TransferAtributo) 
 			controlador.mensajeDesde_GUI(TC.GUIAnadirSubAtributoAtributo_Click_BotonAnadir, v);
-		if (this.opcionUnique.isSelected()){
+		if (v.size() == 3 && this.opcionUnique.isSelected()){
 			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
 			ve.add(clon_atributo);
