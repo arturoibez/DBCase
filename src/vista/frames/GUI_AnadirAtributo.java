@@ -218,6 +218,7 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 		if (!tamano.isEmpty()) v.add(tamano);
 		if(comboTransfers.getSelectedItem() instanceof TransferRelacion) 
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoRelacion_Click_BotonAnadir, v);
+		
 		else if (comboTransfers.getSelectedItem() instanceof TransferAgregacion) {
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoAgregacion_Click_BotonAnadir, v);
 			if (this.opcionClavePrimaria.isSelected()){
@@ -230,6 +231,7 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 			//posiblemente habr� que modificar esto ultimo tambien en el controlador
 			}
 		}
+		
 		else if(comboTransfers.getSelectedItem() instanceof TransferEntidad) {
 			controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoEntidad_Click_BotonAnadir, v);
 			if (v.size() == 3 && this.opcionClavePrimaria.isSelected()){
