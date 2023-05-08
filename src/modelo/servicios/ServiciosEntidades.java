@@ -212,7 +212,11 @@ public class ServiciosEntidades {
 		TransferEntidad te = (TransferEntidad) v.get(0);
 		TransferAtributo ta = (TransferAtributo) v.get(1);
 		// Si nombre de atributo es vacio -> ERROR
-		if (ta.getNombre().isEmpty()){ this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_NombreDeAtributoVacio, v); return; }
+		if (ta.getNombre().isEmpty()){ 
+			this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_NombreDeAtributoVacio, v);
+			v.add(0); //anadimos un flag para identificar que no se ha anadido el atributo
+			return; 
+			}
 		
 		// Si nombre de atributo ya existe en esa entidad-> ERROR
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
@@ -224,6 +228,7 @@ public class ServiciosEntidades {
 		for (int i=0; i<te.getListaAtributos().size();i++)
 			if(daoAtributos.nombreDeAtributo((Integer.parseInt((String)te.getListaAtributos().get(i)))).toLowerCase().equals(ta.getNombre().toLowerCase())){ 
 				controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_ERROR_NombreDeAtributoYaExiste,v);
+				v.add(0);
 				return;
 			}
 		
@@ -583,7 +588,6 @@ public class ServiciosEntidades {
 			controlador.mensajeDesde_SE(TC.SE_MoverPosicionEntidad_HECHO, te);
 	}
 	
-	//Salta excecion aqui
 	public boolean tieneAtributo(TransferEntidad te, TransferAtributo ta){
 		for (int i=0; i<te.getListaAtributos().size(); i++){
 			if(Integer.parseInt((String) te.getListaAtributos().get(i))==ta.getIdAtributo())

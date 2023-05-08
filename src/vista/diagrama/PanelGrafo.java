@@ -530,6 +530,10 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			vv.grabFocus();
 		}
 	};
+	
+	public VisualizationViewer getVV() {
+		return this.vv;
+	}
 
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -680,6 +684,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 					TransferAtributo a = this.atributos.get(Integer.parseInt((String) lista_atb.get(j)));
 					a.setSubatributo(false);
 					nodoAgregacion.add(nodoAtributo(a,new DefaultMutableTreeNode(a)));
+
 				}
 				arbolAgregaciones.add(nodoAgregacion);
 				
@@ -835,7 +840,7 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 				// Añado sus atributos
 				for (Iterator<String> it2 = antigua.getListaAtributos().iterator(); it2.hasNext();) {
 					Integer id = Integer.parseInt(it2.next());
-/*<<<<<<< HEAD
+/*
 					if (!graph.areNeighbors(antigua, this.atributos.get(id))) { // Añade aristas que no existiesen
 						graph.addEdge(new Double(Math.random()), antigua, this.atributos.get(id));
 					}
