@@ -672,7 +672,7 @@ public class Controlador {
 			TransferEntidad te = (TransferEntidad) v.get(0);
 			this.auxTransferAtributos = te.getListaAtributos();
 			boolean preguntar =  (Boolean) v.get(1);
-			int intAux = (int) v.get(2);
+			int intAux = 1;
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
 			if(preguntar == true){
@@ -782,7 +782,7 @@ public class Controlador {
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferAtributo ta = (TransferAtributo) v.get(0);
 			this.antiguosSubatributos = ta.getListaComponentes();
-			int intAux = (int) v.get(2);
+			int intAux = 1;
 			boolean preguntar =  (Boolean) v.get(1);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
@@ -1254,7 +1254,7 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionNormal:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-			int intAux = (int) v.get(2);
+			int intAux = 1;
 			Vector vtaAux = tr.getListaAtributos();
 			Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 			Vector<EntidadYAridad> veya = tr.getListaEntidadesYAridades();

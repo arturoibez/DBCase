@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Inf_dbcase>
+    <EntityList proximoID="4">
+        <Entity EntityId="1">
+            <Name>a</Name>
+            <Weak>false</Weak>
+            <AttribList>
+                <Attrib>1</Attrib>
+            </AttribList>
+            <RelatnList/>
+            <PrimaryKeyList>
+                <PrimaryKey>1</PrimaryKey>
+            </PrimaryKeyList>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>70,50</Position>
+        </Entity>
+        <Entity EntityId="2">
+            <Name>b</Name>
+            <Weak>false</Weak>
+            <AttribList>
+                <Attrib>2</Attrib>
+            </AttribList>
+            <RelatnList/>
+            <PrimaryKeyList>
+                <PrimaryKey>2</PrimaryKey>
+            </PrimaryKeyList>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>326,83</Position>
+        </Entity>
+        <Entity EntityId="3">
+            <Name>c</Name>
+            <Weak>false</Weak>
+            <AttribList>
+                <Attrib>3</Attrib>
+            </AttribList>
+            <RelatnList/>
+            <PrimaryKeyList>
+                <PrimaryKey>3</PrimaryKey>
+            </PrimaryKeyList>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>356,230</Position>
+        </Entity>
+    </EntityList>
+    <RelationList proximoID="3">
+        <Relation idRelacion="1">
+            <Name>r1</Name>
+            <Type>Normal</Type>
+            <EntityAndArityList>
+                <EntityAndArity>(1,0,n,)</EntityAndArity>
+                <EntityAndArity>(2,0,n,)</EntityAndArity>
+            </EntityAndArityList>
+            <AttribList/>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>177,152</Position>
+        </Relation>
+        <Relation idRelacion="2">
+            <Name>r2</Name>
+            <Type>Normal</Type>
+            <EntityAndArityList>
+                <EntityAndArity>(3,0,n,)</EntityAndArity>
+                <EntityAndArity>(2,0,n,)</EntityAndArity>
+            </EntityAndArityList>
+            <AttribList/>
+            <AssertionList/>
+            <UniqueList/>
+            <Position>504,149</Position>
+        </Relation>
+    </RelationList>
+    <AttributeList proximoID="4">
+        <Attribute AttributeId="1">
+            <Name>pka</Name>
+            <Dom>VARCHAR(10)</Dom>
+            <Composed>false</Composed>
+            <NotNull>false</NotNull>
+            <Unique>false</Unique>
+            <ComponentList/>
+            <Multivalued>false</Multivalued>
+            <AssertionList/>
+            <Position>190,50</Position>
+        </Attribute>
+        <Attribute AttributeId="2">
+            <Name>pkb</Name>
+            <Dom>VARCHAR(10)</Dom>
+            <Composed>false</Composed>
+            <NotNull>false</NotNull>
+            <Unique>false</Unique>
+            <ComponentList/>
+            <Multivalued>false</Multivalued>
+            <AssertionList/>
+            <Position>446,83</Position>
+        </Attribute>
+        <Attribute AttributeId="3">
+            <Name>pkc</Name>
+            <Dom>VARCHAR(10)</Dom>
+            <Composed>false</Composed>
+            <NotNull>false</NotNull>
+            <Unique>false</Unique>
+            <ComponentList/>
+            <Multivalued>false</Multivalued>
+            <AssertionList/>
+            <Position>337,315</Position>
+        </Attribute>
+    </AttributeList>
+    <DomainList proximoID="2">
+        <Domain DomainId="1">
+            <Name>u</Name>
+            <BaseType>BIT</BaseType>
+            <ValueList>
+                <Value>0</Value>
+            </ValueList>
+        </Domain>
+    </DomainList>
+    <AggregationList proximoID="2">
+        <Aggregation idAgregacion="1">
+            <Name>agre</Name>
+            <RelatnList>
+                <Relatn>1</Relatn>
+                <Relatn>2</Relatn>
+            </RelatnList>
+            <AttribList/>
+        </Aggregation>
+    </AggregationList>
+</Inf_dbcase>

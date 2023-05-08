@@ -6,9 +6,11 @@ import java.util.Vector;
 import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import persistencia.DAOAgregaciones;
 import persistencia.DAOAtributos;
 import persistencia.DAOEntidades;
 import persistencia.DAORelaciones;
@@ -197,7 +199,8 @@ public class ServiciosAtributos {
 		boolean enEntidad = false;
 		boolean enRelacion = false;
 		boolean enAtributo = false;
-
+		boolean enAgregacion = false;
+		
 		// Buscamos si esta en entidades
 		DAOEntidades daoEntidades = new DAOEntidades(this.controlador.getPath());
 		Vector listaEntidades = daoEntidades.ListaDeEntidades();
@@ -287,6 +290,36 @@ public class ServiciosAtributos {
 				}
 				j++;
 			}
+			
+		}
+		
+		if(!enEntidad && !enRelacion && !enAtributo) {
+			// Buscamos si esta en agregaciones
+			DAOAgregaciones daoAgregaciones = new DAOAgregaciones(this.controlador.getPath());
+			Vector listaAgregaciones = daoAgregaciones.ListaDeAgregaciones();
+			j = 0;
+			while (j < listaAgregaciones.size()&& !enAgregacion){
+				// Obetenemos el atributo y la lista de subatributos del atributo
+				TransferAgregacion ta_padre = (TransferAgregacion) listaAgregaciones.get(j);
+				Vector listaAtributos = ta_padre.getListaAtributos();
+				int k = 0;
+				while (k < listaAtributos.size()&& !enAgregacion){
+					int id_posible = Integer.parseInt((String) listaAtributos.get(k));
+					if (idAtributo == id_posible){
+						// Es un subatributo de un atributo
+						enAtributo = true;
+						// Lo quitamos de la lista de componentes
+						listaAtributos.remove(k);
+						// Modificamos en la persistencia el atributo y lo devolvemos
+						//boolean clavePrim = ta_padre.getClavePrimaria();
+						daoAgregaciones.modificarAgregacion(ta_padre);
+						return ta_padre;
+					}
+					k++;
+				}
+				j++;
+			}
+			
 		}
 		// Si devuelve null es que el atributo no esta referenciado (ERROR!)
 		return null;

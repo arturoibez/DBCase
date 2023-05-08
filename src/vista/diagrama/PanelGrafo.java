@@ -666,37 +666,44 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 		DefaultMutableTreeNode arbolRelaciones = new DefaultMutableTreeNode(Lenguaje.text(Lenguaje.RELATIONS));
 		DefaultMutableTreeNode arbolAgregaciones = new DefaultMutableTreeNode(Lenguaje.text(Lenguaje.AGGREGATIONS));
 		
+		
 		for (HashMap.Entry<Integer,TransferAgregacion> agg: this.agregaciones.entrySet()) {
 			DefaultMutableTreeNode nodoAgregacion = new DefaultMutableTreeNode(agg.getValue());
 			Vector lista_rel = agg.getValue().getListaRelaciones();
 			Vector listaEntidades;
 			String tipo = "";
 			
-			//Añadimos los atributos de la agregacion
-			Vector lista_atb = (agg.getValue().getListaAtributos());
-			for (int j = 0; j < lista_atb.size(); j++) {
-				TransferAtributo a = this.atributos.get(Integer.parseInt((String) lista_atb.get(j)));
-				a.setSubatributo(false);
-				nodoAgregacion.add(nodoAtributo(a,new DefaultMutableTreeNode(a)));
-			}
-			arbolAgregaciones.add(nodoAgregacion);
-			
-			//Añadimos las relaciones de la agregacion
-			for (int j = 0; j < lista_rel.size(); j++) {
-				TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista_rel.get(j)));
-				DefaultMutableTreeNode nodoRel = new DefaultMutableTreeNode(rel);
-				//para cada relacion añadimos sus entidades
-				listaEntidades = rel.getListaEntidadesYAridades();
-				for(int k = 0; k < listaEntidades.size(); ++k ) {
-					tipo = rel.getTipo().equals("IsA") ? k == 0 ? "padre" : "hija" : "normal";
-					NodoEntidad ne = new NodoEntidad(
-							this.entidades.get(((EntidadYAridad) listaEntidades.get(k)).getEntidad()).getNombre(),
-							((EntidadYAridad) listaEntidades.get(k)), tipo);
-					nodoRel.add(new DefaultMutableTreeNode(ne));
+			if(lista_rel.size()>0) {
+				//Añadimos los atributos de la agregacion
+				Vector lista_atb = (agg.getValue().getListaAtributos());
+				for (int j = 0; j < lista_atb.size(); j++) {
+					TransferAtributo a = this.atributos.get(Integer.parseInt((String) lista_atb.get(j)));
+					a.setSubatributo(false);
+					nodoAgregacion.add(nodoAtributo(a,new DefaultMutableTreeNode(a)));
 				}
-				nodoAgregacion.add(nodoRel);
+				arbolAgregaciones.add(nodoAgregacion);
 				
+				//Añadimos las relaciones de la agregacion
+				for (int j = 0; j < lista_rel.size(); j++) {
+					TransferRelacion rel = this.relaciones.get(Integer.parseInt((String)lista_rel.get(j)));
+					if(rel != null) {
+						DefaultMutableTreeNode nodoRel = new DefaultMutableTreeNode(rel);
+						//para cada relacion añadimos sus entidades
+						listaEntidades = rel.getListaEntidadesYAridades();
+						for(int k = 0; k < listaEntidades.size(); ++k ) {
+							tipo = rel.getTipo().equals("IsA") ? k == 0 ? "padre" : "hija" : "normal";
+							NodoEntidad ne = new NodoEntidad(
+									this.entidades.get(((EntidadYAridad) listaEntidades.get(k)).getEntidad()).getNombre(),
+									((EntidadYAridad) listaEntidades.get(k)), tipo);
+							nodoRel.add(new DefaultMutableTreeNode(ne));
+						}
+						nodoAgregacion.add(nodoRel);
+					}
+					
+					
+				}
 			}
+			
 			
 		}
 
@@ -750,6 +757,14 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 	 *            Dato que actualizarÃ¡ en el grafo
 	 */
 	public Transfer ModificaValorInterno(Transfer object) {
+		//Si es agregacion se actualiza
+		if (object instanceof TransferAgregacion) {
+			TransferAgregacion agre = (TransferAgregacion) object;
+			TransferAgregacion antigua = agregaciones.get(agre.getIdAgregacion());
+			antigua.CopiarAgregacion(agre);
+			vv.repaint(); // Se redibuja todo el grafo actualizado
+			return antigua;
+		}
 		// Si es entidad se actualiza
 		if (object instanceof TransferEntidad) {
 			TransferEntidad entidad = (TransferEntidad) object;
