@@ -46,6 +46,7 @@ domain=Dominio
 thedomain=El dominio
 primaryKeys=Claves primarias
 candidateKeys=Claves candidatas
+candidateKeys2 = *Nota: La combinación de claves de una misma entidad conforman la clave candidata
 delete=Eliminar
 rename=Renombrar
 new=Nuevo

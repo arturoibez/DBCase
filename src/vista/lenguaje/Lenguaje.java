@@ -671,6 +671,8 @@ public class Lenguaje {
 	//copiar y pegar
 	public static final int COPIAR = 5400;
 	public static final int PEGAR = 5401;
+	
+	public static final int CANDIDATE_KEYS2 = 5500;
 
 	
 	// --- --- --- ATRIBUTOS --- --- ---
@@ -1298,6 +1300,7 @@ public class Lenguaje {
 		case VOLUME: texto = _textos.get("volume"); break;
 		case FREQ: texto = _textos.get("freq"); break;
 		case CANDIDATE_KEYS: texto = _textos.get("candidateKeys"); break;
+		case CANDIDATE_KEYS2: texto = _textos.get("candidateKeys2"); break;
 		case TABLE_CONSTR: texto = _textos.get("tableconstraints"); break;
 		case RELATIONS: texto = _textos.get("relations"); break;
 		case RIC: texto = _textos.get("ric"); break;

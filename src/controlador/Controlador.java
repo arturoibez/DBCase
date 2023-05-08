@@ -525,6 +525,14 @@ public class Controlador {
 						getTheGUIPrincipal().reiniciar();
 		        }});
 				setCambios(false);
+				File directory = new File(System.getProperty("user.dir")+"/deshacer");
+				if (directory.exists()) {
+			    	for (File file: Objects.requireNonNull(directory.listFiles())) {
+			             if (!file.isDirectory()) {
+			                 file.delete();
+			             }
+			         }
+				}
 				this.guardarDeshacer();
 				this.tiempoGuardado = System.currentTimeMillis()/1000;
 				break;
