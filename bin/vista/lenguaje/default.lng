@@ -45,6 +45,7 @@ domain=Domain
 thedomain=The domain
 primaryKeys=Primary keys
 candidateKeys=Candidate keys
+candidateKeys2=*Note: The combination of keys of the same entity set the candidate key
 delete=Delete
 rename=Rename
 new=New
