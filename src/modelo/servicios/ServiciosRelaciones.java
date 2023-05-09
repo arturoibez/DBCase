@@ -374,7 +374,7 @@ public class ServiciosRelaciones {
 		// Si nombre de atributo es vacio -> ERROR
 		if (ta.getNombre().isEmpty()){ 
 			this.controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoVacio, v); 
-			v.add(0);
+			v.add("0");
 			return; 
 			}
 		// Si nombre de atributo ya existe en esa entidad-> ERROR
@@ -387,7 +387,7 @@ public class ServiciosRelaciones {
 		for (int i=0; i<tr.getListaAtributos().size();i++)
 			if(daoAtributos.nombreDeAtributo((Integer.parseInt((String)tr.getListaAtributos().get(i)))).toLowerCase().equals(ta.getNombre().toLowerCase())){ 
 				controlador.mensajeDesde_SR(TC.SR_AnadirAtributoARelacion_ERROR_NombreDeAtributoYaExiste,v);
-				v.add(0);
+				v.add("0");
 				return;
 			}
 		
@@ -822,7 +822,10 @@ public class ServiciosRelaciones {
 		if(inicioEnInt>finalEnInt){	controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_InicioMayorQueFinal, v); return; }
 		// Aqui ya sabemos que los valores (conjuntamente) son correctos
 		
-		if(cardinalidadMax1Seleccionada) finalEnInt = 1;//hola
+		if(cardinalidadMax1Seleccionada) {
+			finalEnInt = 1;//hola
+			//v.set(3,"1");
+		}
 		Vector veya = tr.getListaEntidadesYAridades();
 		EntidadYAridad eya = new EntidadYAridad();
 		eya.setEntidad(idEntidad);
@@ -835,8 +838,10 @@ public class ServiciosRelaciones {
 		eya.setMarcadaConParticipacion(participacionSeleccionada);
 		eya.setMarcadaConCardinalidadMax1(cardinalidadMax1Seleccionada);
 		
+	
 		// Lo anadimos a la lista de entidades y aridades de la relacion y lo persistimos
 		veya.add(eya);
+		//v.add(veya);
 		DAORelaciones daoRelaciones = new DAORelaciones(this.controlador.getPath());
 		if (!daoRelaciones.modificarRelacion(tr))
 			controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_DAORelaciones, v);

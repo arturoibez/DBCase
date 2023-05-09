@@ -188,7 +188,7 @@ public class GUI_AnadirAtributoRelacion extends Parent_GUI {
 		controlador.mensajeDesde_GUI(TC.GUIAnadirAtributoRelacion_Click_BotonAnadir, v);
 		
 		//actualizamos la tabla de Uniques de la relacion	
-		if (v.size()== 3 && this.opcionUnique.isSelected()){
+		if (((String)v.get(v.size()-1)) != "0" && this.opcionUnique.isSelected()){
 			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
 			ve.add(clon_atributo);
