@@ -2,6 +2,7 @@ package controlador;
 
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -712,7 +713,7 @@ public class Controlador {
 			TransferEntidad te = (TransferEntidad) v.get(0);
 			this.auxTransferAtributos = te.getListaAtributos();
 			boolean preguntar =  (Boolean) v.get(1);
-			int intAux = 1;
+			int intAux = (int) v.get(2);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
 			if(preguntar == true){
@@ -822,7 +823,7 @@ public class Controlador {
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferAtributo ta = (TransferAtributo) v.get(0);
 			this.antiguosSubatributos = ta.getListaComponentes();
-			int intAux = 1;
+			int intAux = (int) v.get(2);
 			boolean preguntar =  (Boolean) v.get(1);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
@@ -1294,7 +1295,7 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionNormal:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-			int intAux = 1;
+			int intAux = (int) v.get(2);
 			Vector vtaAux = tr.getListaAtributos();
 			Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 			Vector<EntidadYAridad> veya = tr.getListaEntidadesYAridades();
@@ -1307,7 +1308,7 @@ public class Controlador {
 				}
 			}
 			
-			this.antiguosAtributosRel = vta;
+			//this.antiguosAtributosRel = vta;
 			
 			for(int i = 0; i < veya.size(); ++i) {
 				int id = veya.get(i).getEntidad();
@@ -1316,7 +1317,7 @@ public class Controlador {
 				}
 			}
 			
-			this.antiguasEntidadesRel = vte;
+			//this.antiguasEntidadesRel = vte;
 			
 			
 			boolean preguntar =  (Boolean) v.get(1);
@@ -3289,17 +3290,17 @@ public class Controlador {
 	public void mensajeDesde_SA(TC mensaje, Object datos){
 		int intAux = 2;
 		if (mensaje == TC.SA_EliminarAtributo_HECHO) {
-			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributo venga de otra eliminacion
 			intAux = (int) aux.get(2);
 		}
 		
 		if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
-			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributo venga de otra eliminacion
 			intAux = (int) aux.get(2);
 		}
 		
 		if (mensaje == TC.SA_EditarUniqueAtributo_HECHO){
-			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributa venga de otra eliminacion
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributo venga de otra eliminacion
 			intAux = (int) aux.get(1);
 		}
 		
@@ -3725,6 +3726,16 @@ public class Controlador {
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
 			intAux = (int) aux.get(1);
 		}
+		
+		/*if (mensaje == TC.SR_AnadirEntidadARelacion_HECHO) {
+			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
+			Vector veya = (Vector) aux.get(aux.size()-1);
+			TransferRelacion auxTr= (TransferRelacion) aux.get(0);
+			for(TransferRelacion t : this.listaRelaciones) {
+				if (t==auxTr)auxTr.setListaEntidadesYAridades(veya);
+			}
+			((Vector<Object>) datos).remove(((Vector<Object>) datos).size()-1);
+		}*/
 			
 		if(mensaje == TC.SR_MoverPosicionRelacion_HECHO || mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || (mensaje == TC.SR_EliminarRelacionNormal_HECHO && intAux == 0) || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
 			this.ultimoMensaje = mensaje;
@@ -3791,6 +3802,7 @@ public class Controlador {
 				setCambios(true);
 				this.getTheGUIInsertarRelacion().setInactiva();
 				TransferRelacion te = (TransferRelacion) datos;
+				//this.listaRelaciones.add(te);//ojo
 				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacion, te);
 				
 				break;
