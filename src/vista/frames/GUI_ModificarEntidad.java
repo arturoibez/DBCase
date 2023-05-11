@@ -275,7 +275,7 @@ public class GUI_ModificarEntidad extends Parent_GUI{
 		}					
 	}
 	
-	public void comprobadaRelacion(boolean factibleRelacion){
+	public void comprobadaRelacion(boolean factibleRelacion){//hola
 		/*Si la entidad va a poder añadirse compruebo si la relación también va a poder añadirse
 		 *  y la relacion también entonces es cuando creamos la entidad, y la relación*/
 		if((items.size() != 0)&&(factibleRelacion)&&(this.factibleEntidad)){
