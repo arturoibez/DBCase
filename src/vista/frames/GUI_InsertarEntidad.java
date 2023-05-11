@@ -308,6 +308,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			tr.setListaUniques(new Vector());
 			tr.setTipo("Debil");
 			// Mandamos mensaje + datos al controlador
+
 			this.getControlador().mensajeDesde_GUI(TC.GUIInsertarRelacion_Click_BotonInsertar, tr);
 			//Unir la entidad fuerte con la relación
 			//Mandaremos el siguiente vector al controlador
@@ -319,13 +320,13 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			v.add("");//Rol
 			//INcluimos en el vector MarcadaConCardinalidad(false), MarcadaConParticipacion(false), MarcadaConMinMax(false)			
 
-			v.add(false);
+			v.add(true);
 
 			v.add(false);
 			v.add(false);
 			// Mandamos el mensaje y el vector con los datos
 			this.controlador.mensajeDesde_GUI(TC.GUIAnadirEntidadARelacion_ClickBotonAnadir,v);
-			
+			//Dudaa
 			//Unir la entidad debil con la relación
 			//Mandaremos el siguiente vector al controlador
 			Vector<Object> w = new Vector<Object>();
@@ -339,7 +340,7 @@ public class GUI_InsertarEntidad extends Parent_GUI{
 			w.add(false);
 			w.add(false);
 			// Mandamos el mensaje y el vector con los datos
-			this.controlador.mensajeDesde_GUI(TC.GUIAnadirEntidadARelacion_ClickBotonAnadir,w);
+			this.controlador.mensajeDesde_GUI(TC.GUIAnadirEntidadARelacion_ClickBotonAnadir, w);
 		}
 		if(items.size() == 0)
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.CREATE_STRONG_ENTITY), Lenguaje.text(Lenguaje.ERROR), 0);

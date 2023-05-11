@@ -2279,27 +2279,27 @@ public class Controlador {
 					v2.add(tr);
 					v2.add(te);
 					v2.add(Integer.toString(1));//Inicio
-					v2.add(Integer.toString(1));//Fin
+					v2.add("n");//Fin
 					v2.add("");//Rol
 					//INcluimos en el vector MarcadaConCardinalidad(true), MarcadaConParticipacion(false), MarcadaConMinMax(false)
 					v2.add(true);
 					v2.add(false);
 					v2.add(false);
 					//Debilitamos la entidad y añadimos a la nueva relacion
-					this.getTheServiciosRelaciones().anadirRelacion(tr);
-					this.getTheServiciosRelaciones().anadirEntidadARelacion(v2);
-					
+					this.getTheServiciosRelaciones().anadirRelacion(tr, 1);//mandamos un 1, se anade la relacion por otro metodo
+					this.getTheServiciosRelaciones().anadirEntidadARelacion(v2, 1);//mandamos un 1, se anade la relacion por otro metodo
+					//dudaa
 					Vector<Object>v3=new Vector<Object>();
 					v3.add(tr);
 					v3.add(te2);
-					v3.add(Integer.toString(1));//Inicio
-					v3.add("n");//Fin
+					v3.add(Integer.toString(0));//Inicio
+					v3.add("1");//Fin
 					v3.add("");//Rol
 					//INcluimos en el vector MarcadaConCardinalidad(true), MarcadaConParticipacion(false), MarcadaConMinMax(false)
 					v3.add(true);
 					v3.add(false);
 					v3.add(false);
-					this.getTheServiciosRelaciones().anadirEntidadARelacion(v3);
+					this.getTheServiciosRelaciones().anadirEntidadARelacion(v3, 1);//mandamos un 1, se anade la relacion por otro metodo
 				}
 				else if(!eraDebil) {
 					this.getTheServiciosEntidades().debilitarEntidad(te);
@@ -2307,9 +2307,11 @@ public class Controlador {
 			}
 			else if(eraDebil) {
 				this.getTheServiciosEntidades().debilitarEntidad(te);
+				DAORelaciones dao = new DAORelaciones(this.getPath());
+				Vector <TransferRelacion> lista_relaciones = dao.ListaDeRelaciones();
 				//this.getTheServiciosRelaciones().restablecerDebilidadRelaciones();
-				for(int i = 0; i<this.getListaRelaciones().size(); ++i) {
-					TransferRelacion tr = this.getListaRelaciones().get(i);
+				for(int i = 0; i<lista_relaciones.size(); ++i) {
+					TransferRelacion tr = lista_relaciones.get(i);
 					Vector<EntidadYAridad> eya = tr.getListaEntidadesYAridades();
 					for(int j = 0; j < eya.size(); ++j) {
 						if (eya.get(j).getEntidad() == te.getIdEntidad() && tr.getTipo().equals("Debil"))
@@ -2509,7 +2511,7 @@ public class Controlador {
 		 */
 		case GUIInsertarRelacion_Click_BotonInsertar:{
 			TransferRelacion tr = (TransferRelacion) datos;
-			this.getTheServiciosRelaciones().anadirRelacion(tr);
+			this.getTheServiciosRelaciones().anadirRelacion(tr, 0);
 			ActualizaArbol(tr);
 			this.getTheServiciosSistema().reset();
 			break;
@@ -2637,7 +2639,7 @@ public class Controlador {
 			}
 			if(relDebil && entDebil && relTieneEntDebil)
 				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.ALREADY_WEAK_ENTITY), Lenguaje.text(Lenguaje.ERROR), 0);
-			else this.getTheServiciosRelaciones().anadirEntidadARelacion(v);
+			else this.getTheServiciosRelaciones().anadirEntidadARelacion(v, 0);
 
 			//a�adimos la relacion a la entidad para que sepa a que relaciones esta conectada
 
@@ -3723,20 +3725,22 @@ public class Controlador {
 	// Mensajes que mandan los Servicios de Relaciones al Controlador
 	public void mensajeDesde_SR(TC mensaje, Object datos){
 		int intAux = 2;
+		TransferRelacion taux = new TransferRelacion();
 		if (mensaje == TC.SR_EliminarRelacionNormal_HECHO) {
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
 			intAux = (int) aux.get(1);
 		}
 		
-		/*if (mensaje == TC.SR_AnadirEntidadARelacion_HECHO) {
+		if (mensaje == TC.SR_InsertarRelacion_HECHO) {
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion de la relacion venga de eliminar entidad debil
-			Vector veya = (Vector) aux.get(aux.size()-1);
-			TransferRelacion auxTr= (TransferRelacion) aux.get(0);
-			for(TransferRelacion t : this.listaRelaciones) {
-				if (t==auxTr)auxTr.setListaEntidadesYAridades(veya);
-			}
-			((Vector<Object>) datos).remove(((Vector<Object>) datos).size()-1);
-		}*/
+			//intAux = (int) aux.get(1);
+			taux= (TransferRelacion) aux.get(0);
+		}
+		
+		if (mensaje == TC.SR_AnadirEntidadARelacion_HECHO) {
+			Vector<Object> aux = (Vector<Object>) datos;
+			//intAux = (int) aux.get(aux.size()-1);
+		}
 			
 		if(mensaje == TC.SR_MoverPosicionRelacion_HECHO || mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || (mensaje == TC.SR_EliminarRelacionNormal_HECHO && intAux == 0) || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
 			this.ultimoMensaje = mensaje;
@@ -3802,7 +3806,8 @@ public class Controlador {
 				
 				setCambios(true);
 				this.getTheGUIInsertarRelacion().setInactiva();
-				TransferRelacion te = (TransferRelacion) datos;
+				Vector<Object> v = (Vector<Object>) datos;
+				TransferRelacion te = (TransferRelacion) v.get(0);
 				//this.listaRelaciones.add(te);//ojo
 				this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_InsertarRelacion, te);
 				

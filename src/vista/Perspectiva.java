@@ -63,8 +63,9 @@ public class Perspectiva {
 		splitCodigos.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		diagramaSplitCode.add(codigos, JSplitPane.RIGHT);
 		diagramaSplitCode.add(diagrama, JSplitPane.LEFT);
+		diagramaSplitCode.setResizeWeight(1);
 		infoSplitMapa.setResizeWeight(0.2);
-		diagramaSplitCode.setResizeWeight(0);
+		//diagramaSplitCode.setResizeWeight(0);
 		diagramaSplitCode.setVisible(true);
 		programmerSplit.setVisible(false);
 		mainPanel.revalidate();		

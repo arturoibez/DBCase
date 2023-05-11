@@ -51,7 +51,7 @@ public class ServiciosRelaciones {
 	 */
 	
 	//hay que controlar que no exista el nombre de una agregacion
-	public void anadirRelacion(TransferRelacion tr){
+	public void anadirRelacion(TransferRelacion tr, int deOtro){
 		if (tr.getNombre().isEmpty()){
 			controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio, null);
 			return;
@@ -79,7 +79,10 @@ public class ServiciosRelaciones {
 		if (id==-1)	controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_ERROR_DAORelaciones,tr);
 		else{
 			tr.setIdRelacion(id);
-			controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_HECHO, daoRelaciones.consultarRelacion(tr));
+			Vector<Object> v = new Vector<Object>();
+			v.add(daoRelaciones.consultarRelacion(tr));
+			//v.add(deOtro);
+			controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_HECHO, v);
 		}
 	}
 	
@@ -758,7 +761,7 @@ public class ServiciosRelaciones {
 	/*
 	 * Anadir una entidad a una relacion
 	 */
-	public void anadirEntidadARelacion(Vector v){
+	public void anadirEntidadARelacion(Vector v, int deOtro){
 		// Sacamos los componentes del vector que sabemos que son correctos
 		TransferRelacion tr = (TransferRelacion) v.get(0);
 		TransferEntidad te = (TransferEntidad) v.get(1);
@@ -846,8 +849,9 @@ public class ServiciosRelaciones {
 		if (!daoRelaciones.modificarRelacion(tr))
 			controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_DAORelaciones, v);
 		else {
+			//v.add(deOtro);
 			controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_HECHO, v);
-			v.add("1");
+			//v.add("1");
 		}
 		return;
 	}
