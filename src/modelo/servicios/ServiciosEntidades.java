@@ -260,6 +260,7 @@ public class ServiciosEntidades {
 		
 		// Si todo ha ido bien devolvemos al controlador la entidad modificada y el nuevo atributo
 		this.controlador.mensajeDesde_SE(TC.SE_AnadirAtributoAEntidad_HECHO, v); 
+		v.add("1");
 	}
 
 	

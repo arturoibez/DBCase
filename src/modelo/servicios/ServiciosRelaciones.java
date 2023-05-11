@@ -845,7 +845,10 @@ public class ServiciosRelaciones {
 		DAORelaciones daoRelaciones = new DAORelaciones(this.controlador.getPath());
 		if (!daoRelaciones.modificarRelacion(tr))
 			controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_DAORelaciones, v);
-		else controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_HECHO, v);
+		else {
+			controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_HECHO, v);
+			v.add("1");
+		}
 		return;
 	}
 	

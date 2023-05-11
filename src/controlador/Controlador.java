@@ -1512,7 +1512,7 @@ public class Controlador {
 				nueva.setListaRestricciones(new Vector());
 				nueva.setListaUniques(new Vector());
 				this.mensajeDesde_GUI(TC.GUIInsertarEntidad_Click_BotonInsertar, nueva);
-				Vector<TransferAtributo> atributos = te.getListaAtributos();
+				/*Vector<TransferAtributo> atributos = te.getListaAtributos();
 				for (int i = 0; i < atributos.size(); ++i) {
 					for (int j = 0; j < this.listaAtributos.size(); ++j) {
 						//System.out.println(atributos.get(i));
@@ -1543,11 +1543,11 @@ public class Controlador {
 						}	
 					}
 					
-				}
-				nueva.setListaClavesPrimarias(te.getListaClavesPrimarias());
+				}*/
+				//nueva.setListaClavesPrimarias(te.getListaClavesPrimarias());
 				nueva.setListaRestricciones(te.getListaRestricciones());
 				nueva.setListaUniques(te.getListaUniques());
-				nueva.setIdEntidad(te.getIdEntidad() + 10);
+				//nueva.setIdEntidad(te.getIdEntidad() + 10);
 				nueva.setFrecuencia(te.getFrecuencia());
 				nueva.setVolumen(te.getVolumen());
 				nueva.setOffsetAttr(te.getOffsetAttr());
@@ -1585,7 +1585,7 @@ public class Controlador {
 					nueva.setListaAtributos(new Vector());
 					this.mensajeDesde_GUI(TC.GUIInsertarRelacion_Click_BotonInsertar, nueva);
 					Vector<TransferAtributo> atributos = tr.getListaAtributos();
-					for (int i = 0; i < atributos.size(); ++i) {
+					/*for (int i = 0; i < atributos.size(); ++i) {
 						for (int j = 0; j < this.listaAtributos.size(); ++j) {
 							//System.out.println(atributos.get(i));
 							//System.out.println(this.listaAtributos.get(j).getIdAtributo());
@@ -1615,7 +1615,7 @@ public class Controlador {
 							}	
 						}
 						
-					}
+					}*/
 					tr.setPegado(p+1);
 					ActualizaArbol(tr);
 					
@@ -1623,7 +1623,8 @@ public class Controlador {
 			}
 			
 			if(this.copiado instanceof TransferAtributo) {
-				TransferAtributo ta = (TransferAtributo) copiado;
+				return;
+				/*TransferAtributo ta = (TransferAtributo) copiado;
 				int p = ta.getPegado();
 				TransferAtributo nuevo = new TransferAtributo(this);
 				Point2D punto = (Point2D) datos;
@@ -1673,7 +1674,7 @@ public class Controlador {
 				
 				ta.setPegado(p + 1);
 				ActualizaArbol(ta);
-				
+				*/
 			}
 			
 			break;
