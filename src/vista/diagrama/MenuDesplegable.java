@@ -468,7 +468,7 @@ public class MenuDesplegable extends JPopupMenu {
 			this.add(j8);
 			
 			//copiar Entidad
-			JMenuItem j9 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
+			/*JMenuItem j9 = new JMenuItem(Lenguaje.text(Lenguaje.COPIAR));
 			j9.setFont(theme.font());
 			j9.setForeground(theme.fontColor());
 			j9.addActionListener(new java.awt.event.ActionListener() {
@@ -479,7 +479,7 @@ public class MenuDesplegable extends JPopupMenu {
 				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Copiar, atributo);
 			}
 			});
-			this.add(j9);
+			this.add(j9);*/
 		}
 
 		if (nodo instanceof TransferRelacion) { // Si es relación

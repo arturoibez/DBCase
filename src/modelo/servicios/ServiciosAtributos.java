@@ -89,6 +89,7 @@ public class ServiciosAtributos {
 		}
 		// Si todo ha ido bien devolvemos al controlador la el atributo padre modificado y el nuevo atributo
 		this.controlador.mensajeDesde_SA(TC.SA_AnadirSubAtributoAtributo_HECHO, v);
+		v.add("1");//hola
 	}
 
 

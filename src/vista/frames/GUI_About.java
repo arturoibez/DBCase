@@ -58,25 +58,20 @@ public class GUI_About extends JFrame{
 			"<h2>"+Lenguaje.text(Lenguaje.TOOL_FOR_DESING)+"</h2>" +
 			"<p><strong>"+Lenguaje.text(Lenguaje.DIRECTOR)+"</strong> "+
 				Lenguaje.text(Lenguaje.TEACHER_NAME)+"</p>"+
-			"<p><strong>"+Lenguaje.text(Lenguaje.AUTHOR)+"</strong> "+
+			"<p><strong>"+Lenguaje.text(Lenguaje.AUTHORS)+"</strong> "+
 				Lenguaje.text(Lenguaje.AUTHOR1)+"</p><br>"+
 			"<h3>"+Lenguaje.text(Lenguaje.BASED)+"</h3>"+
 			"<p><strong>"+Lenguaje.text(Lenguaje.BASED5)+"</strong></p>"+
-			"<p>"+Lenguaje.text(Lenguaje.AUTHORS)+"</p>"+
-			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED5A1)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED5A2)+"</p></li></ul><br>"+
+			"<p>"+Lenguaje.text(Lenguaje.AUTHOR)+"</p>"+
+			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED5A1)+"</p></li></ul><br>"+
 			"<p><strong>"+Lenguaje.text(Lenguaje.BASED4)+"</strong></p>"+
 			"<p>"+Lenguaje.text(Lenguaje.AUTHORS2)+"</p>"+
 			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED4A1)+"</p></li>"+
 			"<li><p>"+Lenguaje.text(Lenguaje.BASED4A2)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED4A3)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED4A4)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED4A5)+"</p></li></ul><br>"+
+			"<li><p>"+Lenguaje.text(Lenguaje.BASED4A4)+"</p></li></ul><br>"+
 			"<p><strong>"+Lenguaje.text(Lenguaje.BASED3)+"</strong></p>"+
-			"<p>"+Lenguaje.text(Lenguaje.AUTHORS)+"</p>"+
-			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED3A1)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED3A2)+"</p></li>"+
-			"<li><p>"+Lenguaje.text(Lenguaje.BASED3A3)+"</p></li></ul><br>"+			
+			"<p>"+Lenguaje.text(Lenguaje.AUTHOR)+"</p>"+
+			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED3A2)+"</p></li></ul><br>"+			
 			"<p><strong>"+Lenguaje.text(Lenguaje.BASED1)+"</strong></p>"+
 			"<p>"+Lenguaje.text(Lenguaje.AUTHORS)+"</p>"+
 			"<ul><li><p>"+Lenguaje.text(Lenguaje.BASED1A1)+"</p></li>"+
