@@ -1241,33 +1241,6 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionIsA:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-
-			Vector<EntidadYAridad> eyaV = tr.getListaEntidadesYAridades();
-			EntidadYAridad eya = (EntidadYAridad) eyaV.get(0);
-			int idPadre = eya.getEntidad();
-			TransferEntidad te = new TransferEntidad();
-			for (int i = 0; i < this.listaEntidades.size(); ++i) {
-				if(idPadre == this.listaEntidades.get(i).getIdEntidad()) this.padreAntiguo = this.listaEntidades.get(i);
-			}
-			
-			//obtenemos las hijas
-			Vector<TransferEntidad> th = new Vector<TransferEntidad>();
-			Vector<EntidadYAridad> hijas = new Vector<EntidadYAridad>();
-			for (int i = 1; i < eyaV.size(); i++) {
-				EntidadYAridad eyaH = (EntidadYAridad) eyaV.get(i);
-				hijas.add(eyaH);
-			}
-			
-			for(int i = 0; i < hijas.size(); ++i) {
-				EntidadYAridad e = (EntidadYAridad) hijas.get(i);
-				int idHija = e.getEntidad();
-				for (int j = 0; j < this.listaEntidades.size(); ++j) {
-					if(idHija == this.listaEntidades.get(j).getIdEntidad()) th.add(this.listaEntidades.get(j));
-				}
-			}
-			
-			this.hijosAntiguo = th;
-			
 			boolean preguntar =  (Boolean) v.get(1);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;

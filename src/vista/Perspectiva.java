@@ -270,4 +270,6 @@ public class Perspectiva {
 	public byte getPanelsMode() {
 		return modo;
 	}
+	
+	
 }
