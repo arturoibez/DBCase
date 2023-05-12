@@ -6,6 +6,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.LinearGradientPaint;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -25,6 +27,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -864,6 +867,7 @@ public class MyMenu extends JMenuBar{
 				public void actionPerformed(ActionEvent e) {
 					//c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER2, null);
+					deshacer.transferFocus();
 				}
 			});
 			
@@ -884,6 +888,7 @@ public class MyMenu extends JMenuBar{
 				public void actionPerformed(ActionEvent e) {
 					//c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_DESHACER, null);
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_REHACER, null);
+					rehacer.transferFocus();
 				}
 			});
 			
@@ -905,6 +910,24 @@ public class MyMenu extends JMenuBar{
 					
 				}
 			});*/
+			
+			KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z,InputEvent.CTRL_DOWN_MASK);
+			deshacer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlZ, "Deshacer");
+			deshacer.getActionMap().put("Deshacer", new AbstractAction() {
+	            public void actionPerformed(ActionEvent e) {
+	            	deshacer.doClick();
+					deshacer.transferFocus();
+	            }
+			});
+			
+			KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y,InputEvent.CTRL_DOWN_MASK);
+			rehacer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlY, "Rehacer");
+			rehacer.getActionMap().put("Rehacer", new AbstractAction() {
+	            public void actionPerformed(ActionEvent e) {
+	            	rehacer.doClick();
+					rehacer.transferFocus();
+	            }
+			});
 			
 			iconosPerspectiva.add(Box.createRigidArea(new Dimension(4,0)));
 			iconosPerspectiva.add(diagramLabel);
@@ -966,5 +989,6 @@ public class MyMenu extends JMenuBar{
 	public JButton getRehacer() {
 		return this.rehacer;
 	}
-
+	
+	
 }

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.Random;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,8 +36,9 @@ public class addTransfersPanel extends JPanel{
 	public addTransfersPanel(Controlador c, Vector<Transfer> lisTra){
 		super();
 		coords = new int[2];
-		coords[0]=70;
-		coords[1]=50;
+		Random random = new Random();
+		coords[0]= random.nextInt(500-70+1) + 70;
+		coords[1]=random.nextInt(500-50+1) + 50;;
 		Theme theme = Theme.getInstancia();
 		this.controlador = c;
 		this.listaTransfers = lisTra; 
