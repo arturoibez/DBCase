@@ -10,7 +10,7 @@ public class TransferAgregacion extends Transfer{
 
 	private int idAgregacion;
 	private String nombre;
-	private Vector listaRelaciones;
+	private Vector listaRelaciones; //Al parecer solo puede tener una asi que en principio solo tendra un elemento
 	private Vector listaAtributos;
 	private Point2D posicion;
 	private int volumen;//?

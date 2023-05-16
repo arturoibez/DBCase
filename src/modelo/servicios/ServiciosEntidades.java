@@ -8,9 +8,11 @@ import org.w3c.dom.Document;
 
 import controlador.Controlador;
 import controlador.TC;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import persistencia.DAOAgregaciones;
 import persistencia.DAOAtributos;
 import persistencia.DAOEntidades;
 import persistencia.DAORelaciones;
@@ -66,6 +68,16 @@ public class ServiciosEntidades {
 				return;
 			}
 		}
+		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(this.controlador.getPath());
+		Vector<TransferAgregacion> listaA = daoAgregaciones.ListaDeAgregaciones();
+		for (Iterator it = listaA.iterator(); it.hasNext(); ){
+			TransferAgregacion elem_te = (TransferAgregacion)it.next();
+			if (elem_te.getNombre().toLowerCase().equals(te.getNombre().toLowerCase())){
+				controlador.mensajeDesde_SE(TC.SE_InsertarRelacion_ERROR_NombreDeEntidadYaExisteComoAgregacion,te);
+				return;
+			}
+		}
+		
 		//Aquí se añade la entidad
 		int id = daoEntidades.anadirEntidad(te,pilaDeshacer);
 		if (id==-1)	controlador.mensajeDesde_SE(TC.SE_InsertarEntidad_ERROR_DAO,null);

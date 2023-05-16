@@ -6,9 +6,11 @@ import java.util.Vector;
 import controlador.Controlador;
 import controlador.TC;
 import modelo.transfers.Transfer;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import persistencia.DAOAgregaciones;
 import persistencia.DAOAtributos;
 import persistencia.DAOEntidades;
 import persistencia.DAORelaciones;
@@ -71,6 +73,15 @@ public class ServiciosRelaciones {
 			TransferEntidad elem_te = (TransferEntidad)it.next();
 			if (elem_te.getNombre().toLowerCase().equals(tr.getNombre().toLowerCase())){
 				controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad,tr);
+				return;
+			}
+		}
+		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(this.controlador.getPath());
+		Vector<TransferAgregacion> listaA = daoAgregaciones.ListaDeAgregaciones();
+		for (Iterator it = listaA.iterator(); it.hasNext(); ){
+			TransferAgregacion elem_te = (TransferAgregacion)it.next();
+			if (elem_te.getNombre().toLowerCase().equals(tr.getNombre().toLowerCase())){
+				controlador.mensajeDesde_SR(TC.SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoAgregacion,tr);
 				return;
 			}
 		}

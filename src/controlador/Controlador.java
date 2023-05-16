@@ -2135,20 +2135,45 @@ public class Controlador {
 		
 		case GUIInsertarAgregacion:{
 			Vector v = (Vector) datos;
-			TransferRelacion t = (TransferRelacion) v.elementAt(0); //elemento sobre el que se construye la agregacion
+			TransferRelacion t = (TransferRelacion) v.elementAt(0); //relacion sobre el que se construye la agregacion
 			String nombre = (String) v.elementAt(1); //nombre de la nueva agregacion
 			TransferAgregacion agreg = new TransferAgregacion();
-
-			agreg.setNombre(nombre);
-			Vector relaciones = new Vector();
-			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
-
-			agreg.setListaRelaciones(relaciones);
-			agreg.setListaAtributos(new Vector());
+			boolean sepuede = true;
 			
-			this.getTheServiciosAgregaciones().anadirAgregacion(agreg);
-			ActualizaArbol(agreg);
-			this.getTheServiciosSistema().reset();
+			//comprobamos que esa relación no pertenece a alguna agregacion existente:
+			Vector<TransferAgregacion> agregaciones = this.getTheServiciosAgregaciones().ListaDeAgregaciones();			
+			for(int i = 0; i < agregaciones.size() && sepuede; ++i) {
+				TransferAgregacion actual_agreg = agregaciones.get(i);
+				Vector lista_relaciones = actual_agreg.getListaRelaciones();
+				String relacionId =  (String) lista_relaciones.get(0); //solo hay una relacion por agregacion
+				if( Integer.parseInt(relacionId) == t.getIdRelacion()) {
+					JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELACION_YA_TIENE_AGREGACION), Lenguaje.text(Lenguaje.ERROR), 0);
+					sepuede=false;
+				}
+			}
+			
+			if(sepuede) {
+				agreg.setNombre(nombre);
+				Vector relaciones = new Vector();
+				this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
+
+				if(relaciones.size() == 1) {
+					agreg.setListaRelaciones(relaciones);
+					agreg.setListaAtributos(new Vector());
+					
+					this.getTheServiciosAgregaciones().anadirAgregacion(agreg);
+					ActualizaArbol(agreg);
+					this.getTheServiciosSistema().reset();
+					
+				}
+				
+				else {
+					JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.AGREG_MAS_RELACIONES), Lenguaje.text(Lenguaje.ERROR), 0);
+				}
+			}
+
+			
+			
 			break;
 		}
 		
@@ -2805,6 +2830,13 @@ public class Controlador {
 		
 			break;
 		}
+		
+		case SE_InsertarRelacion_ERROR_NombreDeEntidadYaExisteComoAgregacion:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+		
+			break;
+		}
+		
 		case SE_InsertarEntidad_ERROR_NombreDeEntidadYaExisteComoRelacion:{
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			
@@ -3648,7 +3680,7 @@ public class Controlador {
 			break;
 		}
 		case SAG_InsertarAgregacion_ERROR_NombreDeYaExiste: {
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEAT_AG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
 		}
 		case SAG_InsertarAgregacion_ERROR_DAO:{
@@ -3757,6 +3789,10 @@ public class Controlador {
 			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
 				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 				
+				break;
+			}
+			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoAgregacion:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 				break;
 			}
 			case SR_InsertarRelacion_ERROR_NombreDelRolYaExiste:{

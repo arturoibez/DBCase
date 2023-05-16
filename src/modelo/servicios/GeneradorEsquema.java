@@ -14,11 +14,13 @@ import controlador.Controlador;
 import controlador.TC;
 import modelo.conectorDBMS.ConectorDBMS;
 import modelo.conectorDBMS.FactoriaConectores;
+import modelo.transfers.TransferAgregacion;
 import modelo.transfers.TransferAtributo;
 import modelo.transfers.TransferConexion;
 import modelo.transfers.TransferDominio;
 import modelo.transfers.TransferEntidad;
 import modelo.transfers.TransferRelacion;
+import persistencia.DAOAgregaciones;
 import persistencia.DAOAtributos;
 import persistencia.DAODominios;
 import persistencia.DAOEntidades;
@@ -35,12 +37,10 @@ public class GeneradorEsquema {
 	private String mr = "";
 	private TransferConexion conexionScriptGenerado = null;
 	private RestriccionesPerdidas restriccionesPerdidas = new RestriccionesPerdidas();
-	//aqui se almacenaran las tablas ya creadas, organizadas por el id de la entidad /relacion (clave) y con el objeto tabla como valor.
+	//aqui se almacenaran las tablas ya creadas, organizadas por el id de la entidad /relacion / agregacion (clave) y con el objeto tabla como valor.
 	private Hashtable<Integer,Tabla> tablasEntidades=new Hashtable<Integer,Tabla>();
 	private Hashtable<Integer,Tabla> tablasRelaciones=new Hashtable<Integer,Tabla>();
-
 	private Hashtable<Integer,Tabla> tablasAgregaciones = new Hashtable<Integer,Tabla>();
-
 	private Vector<Tabla> tablasMultivalorados=new Vector<Tabla>();
 	private Hashtable<Integer,Enumerado> tiposEnumerados = new Hashtable<Integer,Enumerado>();
 	private ValidadorBD validadorBD;
@@ -56,12 +56,66 @@ public class GeneradorEsquema {
 		}
 		return encontrado;
 	}
+	
+	protected TransferRelacion dameRel(String id) {
+		DAORelaciones daoRel = new DAORelaciones(this.controlador.getPath());
+		Vector relaciones = daoRel.ListaDeRelaciones();
+		TransferRelacion rel = null;
+		for(int i = 0; i < relaciones.size(); ++i) {
+			if(((TransferRelacion) relaciones.get(i)).getIdRelacion() == Integer.parseInt(id)) rel = (TransferRelacion) relaciones.get(i);
+		}
+		return rel;
+	}
+	
 
 	//metodos de recorrido de los daos para la creacion de las tablas.
 
 	
 	private void generaTablasAgregaciones() {
 		
+	/*	
+		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(controlador.getPath());
+		Vector<TransferAgregacion> agregaciones = daoAgregaciones.ListaDeAgregaciones();
+		
+		
+		
+		//recorremos las agregaciones generando las tablas correspondientes
+		for(int i = 0; i < agregaciones.size(); ++i) {
+			Vector<TransferAtributo>multivalorados=new Vector<TransferAtributo>();
+			TransferAgregacion tag = agregaciones.elementAt(i);
+			TransferRelacion tr = dameRel((String) tag.getListaRelaciones().get(0));
+			Vector<TransferEntidad> entderel = tr.getListaEntidadesYAridades();
+			TransferEntidad en = entderel.get(0);
+			
+			Tabla tabla = new Tabla(tag.getNombre(),en.getListaRestricciones(), controlador);
+			//recorremos los atributos de la agregacion añadiendolos a la tabla
+			Vector<TransferAtributo> atribs=this.dameAtributosEnTransfer(tag.getListaAtributos());
+			for(int j = 0; j < atribs.size() ; ++j) {
+				TransferAtributo ta=atribs.elementAt(j);
+				if(ta.getUnique()) restriccionesPerdidas.add(new restriccionPerdida(tag.getNombre(), ta+" "+Lenguaje.text(Lenguaje.IS_UNIQUE), restriccionPerdida.TABLA));
+				if (ta.getCompuesto()) 
+					tabla.aniadeListaAtributos(this.atributoCompuesto(ta, tag.getNombre(),""),en.getListaRestricciones(),tiposEnumerados);
+				else if (ta.isMultivalorado()) multivalorados.add(ta);
+				else{ 
+					tabla.aniadeAtributo(ta.getNombre(), ta.getDominio(),tag.getNombre(), tiposEnumerados,ta.getListaRestricciones(), ta.getUnique(), ta.getNotnull());
+					for(String rest : (Vector<String>)ta.getListaRestricciones()) {
+						restriccionesPerdidas.add(new restriccionPerdida(tag.getNombre(), rest, restriccionPerdida.TABLA));
+					}
+				}
+			}
+			//añadimos las claves primarias de las entidades
+			
+			for(int j = 0; j < entderel.size(); ++j) {
+				TransferEntidad te = entderel.get(j);
+				Vector claves_primarias = te.getListaClavesPrimarias();
+				for(int k = 0; k < claves_primarias.size(); ++k) {
+					tabla.aniadeClavePrimaria((String)claves_primarias.get(k), (String)en.getListaRestricciones().get(0), tag.getNombre());
+				}
+			}
+			
+			
+
+		}*/
 	}
 	
 	private void generaTablasEntidades(){
