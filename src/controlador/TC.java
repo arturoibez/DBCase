@@ -237,6 +237,7 @@ public enum TC {
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadEsVacio,
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadYaExiste,
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadYaExisteComoRelacion,
+	SE_InsertarRelacion_ERROR_NombreDeEntidadYaExisteComoAgregacion,
 	SE_ComprobarInsertarEntidad_ERROR_DAO,
 	// Renombrar entidades
 	SE_RenombrarEntidad_HECHO,
@@ -357,6 +358,7 @@ public enum TC {
 	SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio,
 	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExiste,
 	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad,
+	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoAgregacion,
 	SR_InsertarRelacion_ERROR_NombreDelRolYaExiste,
 	SR_InsertarRelacion_ERROR_NombreDeRolNecesario,
 	SR_InsertarRelacion_ERROR_DAORelaciones,
