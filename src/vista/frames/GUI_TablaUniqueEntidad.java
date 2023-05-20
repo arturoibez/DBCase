@@ -391,7 +391,7 @@ public class GUI_TablaUniqueEntidad extends Parent_GUI {
 						}
 						final TransferAtributo atributo = (TransferAtributo)controlador.getTheGUIPrincipal().getListaAtributos().get(numAtributo);
 						TransferAtributo clon_atributo = atributo.clonar();
-						controlador.getTheServiciosAtributos().editarUniqueAtributo(clon_atributo, 0);
+						controlador.getTheServiciosAtributos().editarUniqueAtributo(clon_atributo);
 					}
 				}
 		}
@@ -414,7 +414,7 @@ public class GUI_TablaUniqueEntidad extends Parent_GUI {
 					}
 					final TransferAtributo atributo = (TransferAtributo)controlador.getTheGUIPrincipal().getListaAtributos().get(numAtributo);
 					TransferAtributo clon_atributo = atributo.clonar();
-					controlador.getTheServiciosAtributos().editarUniqueAtributo(clon_atributo, 0);
+					controlador.getTheServiciosAtributos().editarUniqueAtributo(clon_atributo);
 				}
 			}
 		}

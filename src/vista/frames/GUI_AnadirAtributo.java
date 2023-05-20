@@ -241,7 +241,7 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 				clon_atributo2.setClavePrimaria(false);
 				v1.add(clon_atributo2);
 			    v1.add(listaTransfers.get(comboTransfers.getSelectedIndex()));
-			    v1.add(1);
+			    //v1.add(1);
 				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarClavePrimariaAtributo,v1);
 			}
 		}else if(comboTransfers.getSelectedItem() instanceof TransferAtributo) 
@@ -250,7 +250,7 @@ public class GUI_AnadirAtributo extends Parent_GUI{
 			Vector<Object> ve = new Vector<Object>();
 			TransferAtributo clon_atributo = ta.clonar();
 			ve.add(clon_atributo);
-			ve.add(1);
+			//ve.add(1);
 			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarUniqueAtributo, ve);
 		}
 		

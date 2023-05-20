@@ -498,12 +498,13 @@ public class Controlador {
 				this.setFileguardar(temp);
 				File directory = new File(System.getProperty("user.dir")+"/deshacer");
 				if (directory.exists()) {
-					for (File file: Objects.requireNonNull(directory.listFiles())) {
-			            if (!file.isDirectory()) {
+			    	for (File file: Objects.requireNonNull(directory.listFiles())) {
+			             if (!file.isDirectory()) {
 			                file.delete();
-			            }
-			        }
+			             }
+			         }
 				}
+       		 	
 				this.contFicherosDeshacer = 0;
 				this.limiteFicherosDeshacer = 0;
 				this.auxDeshacer = false;
@@ -530,7 +531,7 @@ public class Controlador {
 				if (directory.exists()) {
 			    	for (File file: Objects.requireNonNull(directory.listFiles())) {
 			             if (!file.isDirectory()) {
-			                 file.delete();
+			                file.delete();
 			             }
 			         }
 				}
@@ -1016,7 +1017,7 @@ public class Controlador {
 			//hola
 			Vector<Object> ve = (Vector<Object>) datos;
 			TransferAtributo ta = (TransferAtributo) ve.get(0);
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta, (int) ve.get(1));
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1063,7 +1064,7 @@ public class Controlador {
 		}
 		case PanelDiseno_Click_EliminarReferenciasUniqueAtributo:{
 			TransferAtributo ta = (TransferAtributo) datos;
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 1);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
 			
 			//this.getTheServiciosEntidades().ListaDeEntidades();
 			//this.getTheServiciosAtributos().ListaDeAtributos();
@@ -1113,7 +1114,7 @@ public class Controlador {
 			TransferAtributo ta = (TransferAtributo) v1.get(0);
 			String antiguoNombre =(String)v1.get(1);
 			
-			this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
+			this.getTheServiciosAtributos().editarUniqueAtributo(ta);
 			
 			this.getTheServiciosEntidades().ListaDeEntidades();
 			this.getTheServiciosAtributos().ListaDeAtributos();
@@ -2207,14 +2208,14 @@ public class Controlador {
 				Vector<Object> vClavePrimaria= new Vector<Object>();
 				vClavePrimaria.add(ta);
 				vClavePrimaria.add(te);
-				vClavePrimaria.add(0);
+				//vClavePrimaria.add(0);
 				this.getTheServiciosAtributos().editarClavePrimariaAtributo(vClavePrimaria);
 			}
 			if(compuestoSelected!=ta.getCompuesto()) {
 				this.getTheServiciosAtributos().editarCompuestoAtributo(ta);
 			}
 			if(uniqueSelected!=ta.getUnique()) {
-				this.getTheServiciosAtributos().editarUniqueAtributo(ta, 0);
+				this.getTheServiciosAtributos().editarUniqueAtributo(ta);
 			}
 			if(notNullSelected!=ta.getNotnull()) {
 				this.theServiciosAtributos.editarNotNullAtributo(ta);
@@ -2473,7 +2474,7 @@ public class Controlador {
 		}
 		case GUIEditarClavePrimariaAtributo_Click_BotonAceptar:{
 			Vector<Object> vectorAtributoyEntidad = (Vector<Object>)datos;
-			vectorAtributoyEntidad.add(0);
+			//vectorAtributoyEntidad.add(0);
 			this.getTheServiciosAtributos().editarClavePrimariaAtributo(vectorAtributoyEntidad);
 			ActualizaArbol((Transfer)vectorAtributoyEntidad.get(1));
 			this.getTheServiciosSistema().reset();
@@ -2725,6 +2726,22 @@ public class Controlador {
 		default: break;
 		} // Switch	
 	}
+	
+
+	private void borrarSiguientesDeshacer(){
+		File directory = new File(System.getProperty("user.dir")+"/deshacer");
+		if (directory.exists()) {
+			for (File file: Objects.requireNonNull(directory.listFiles())) {
+	            if (!file.isDirectory()) {
+	            	String str = file.getAbsolutePath();
+	            	
+	                file.delete();
+	            }
+	        }
+		}
+	}
+
+		
 
 	// Mensajes que mandan los Servicios de Entidades al Controlador
 	public void mensajeDesde_SE(TC mensaje, Object datos){
@@ -2736,9 +2753,13 @@ public class Controlador {
 		}
 		
 		if(mensaje == TC.SE_MoverPosicionEntidad_HECHO || mensaje == TC.SE_InsertarEntidad_HECHO || mensaje == TC.SE_RenombrarEntidad_HECHO || mensaje == TC.SE_AnadirAtributoAEntidad_HECHO || (mensaje == TC.SE_EliminarEntidad_HECHO && intAux == 0)) {
-			this.ultimoMensaje = mensaje;
-			this.ultimosDatos = datos;
+			//this.ultimoMensaje = mensaje;
+			//this.ultimosDatos = datos;
+			
+			//this.borrarSiguientesDeshacer();
+			
 			this.guardarDeshacer();
+			
 			this.auxDeshacer = true;
 			
 			if(this.getContFicherosDeshacer()==1)this.getTheGUIPrincipal().getMyMenu().getDeshacer().setBackground(Color.GRAY);
@@ -3077,8 +3098,11 @@ public class Controlador {
 		
 		
 		if(mensaje == TC.SD_InsertarDominio_HECHO || mensaje == TC.SD_RenombrarDominio_HECHO || mensaje == TC.SD_EliminarDominio_HECHO) {
-			this.ultimoMensaje = mensaje;
-			this.ultimosDatos = datos;
+			//this.ultimoMensaje = mensaje;
+			//this.ultimosDatos = datos;
+			
+			
+	
 			this.guardarDeshacer();
 			
 			this.auxDeshacer = true;
@@ -3270,7 +3294,7 @@ public class Controlador {
 			intAux = (int) aux.get(2);
 		}
 		
-		if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
+		/*if (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO){
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributo venga de otra eliminacion
 			intAux = (int) aux.get(2);
 		}
@@ -3278,12 +3302,14 @@ public class Controlador {
 		if (mensaje == TC.SA_EditarUniqueAtributo_HECHO){
 			Vector<Object> aux = (Vector<Object>) datos;//auxiliar para el caso de que la eliminacion del atributo venga de otra eliminacion
 			intAux = (int) aux.get(1);
-		}
+		}*/
 		
 		
-		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || (mensaje == TC.SA_EditarUniqueAtributo_HECHO && intAux== 0) || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || (mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO && intAux == 0)) {
-			this.ultimoMensaje = mensaje;
-			this.ultimosDatos = datos;
+		if(mensaje == TC.SA_MoverPosicionAtributo_HECHO || (mensaje == TC.SA_EliminarAtributo_HECHO && intAux == 0)  || mensaje == TC.SA_EditarUniqueAtributo_HECHO || mensaje == TC.SA_EditarDominioAtributo_HECHO || mensaje == TC.SA_EditarCompuestoAtributo_HECHO || mensaje == TC.SA_EditarMultivaloradoAtributo_HECHO || mensaje == TC.SA_EditarNotNullAtributo_HECHO || mensaje == TC.SA_AnadirSubAtributoAtributo_HECHO || mensaje == TC.SA_EditarClavePrimariaAtributo_HECHO) {
+			//this.ultimoMensaje = mensaje;
+			//this.ultimosDatos = datos;
+			
+			
 			this.guardarDeshacer();
 			
 			this.auxDeshacer = true;
@@ -3613,8 +3639,10 @@ public class Controlador {
 	public void mensajeDesde_AG(TC mensaje, Object datos) {
 
 		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO) {
-			this.ultimoMensaje = mensaje;
-			this.ultimosDatos = datos;
+			//this.ultimoMensaje = mensaje;
+			//this.ultimosDatos = datos;
+			
+			
 			this.guardarDeshacer();
 			
 			this.auxDeshacer = true;
@@ -3716,8 +3744,10 @@ public class Controlador {
 		}
 			
 		if(mensaje == TC.SR_MoverPosicionRelacion_HECHO || mensaje == TC.SR_InsertarRelacion_HECHO || mensaje == TC.SR_EliminarRelacion_HECHO || mensaje == TC.SR_RenombrarRelacion_HECHO || mensaje == TC.SR_AnadirAtributoARelacion_HECHO || mensaje == TC.SR_EstablecerEntidadPadre_HECHO || mensaje == TC.SR_QuitarEntidadPadre_HECHO || mensaje == TC.SR_AnadirEntidadHija_HECHO || mensaje == TC.SR_QuitarEntidadHija_HECHO || mensaje == TC.SR_EliminarRelacionIsA_HECHO || (mensaje == TC.SR_EliminarRelacionNormal_HECHO && intAux == 0) || mensaje == TC.SR_InsertarRelacionIsA_HECHO || mensaje == TC.SR_AnadirEntidadARelacion_HECHO || mensaje == TC.SR_QuitarEntidadARelacion_HECHO || mensaje == TC.SR_EditarCardinalidadEntidad_HECHO) {
-			this.ultimoMensaje = mensaje;
-			this.ultimosDatos = datos;
+			//this.ultimoMensaje = mensaje;
+			//this.ultimosDatos = datos;
+			
+			
 			this.guardarDeshacer();
 			
 			this.auxDeshacer = true;
