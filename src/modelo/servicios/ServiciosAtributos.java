@@ -519,7 +519,7 @@ public class ServiciosAtributos {
 		return;
 	}
 	
-	public void editarUniqueAtributo(TransferAtributo ta, int vieneDeInsertarAtriuto){
+	public void editarUniqueAtributo(TransferAtributo ta){
 		// Modificamos el atributo
 		ta.setUnique(!ta.getUnique());
 		DAOAtributos daoAtributos = new DAOAtributos(this.controlador);
@@ -528,7 +528,6 @@ public class ServiciosAtributos {
 		else {
 			Vector<Object> ve = new Vector<Object>();
 			ve.add(ta);
-			ve.add(vieneDeInsertarAtriuto);
 			controlador.mensajeDesde_SA(TC.SA_EditarUniqueAtributo_HECHO, ve);
 		}
 			
