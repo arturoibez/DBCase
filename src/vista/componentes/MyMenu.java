@@ -520,6 +520,7 @@ public class MyMenu extends JMenuBar{
 			submenuCuadricula.setIcon(cuadricula);
 			submenuCuadricula.setText(Lenguaje.text(Lenguaje.CUADRICULA));
 			submenuCuadricula.setMnemonic(Lenguaje.text(Lenguaje.CUADRICULA).charAt(0));
+			submenuCuadricula.setToolTipText(Lenguaje.text(Lenguaje.DESARROLLO));
 			submenuCuadricula.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					c.mensajeDesde_GUIPrincipal(TC.GUI_Principal_Cuadricula, null);
@@ -539,6 +540,7 @@ public class MyMenu extends JMenuBar{
 				System.out.println(e1);
 			}
 			submenuZoom.setIcon(zoom);
+			submenuZoom.setToolTipText(Lenguaje.text(Lenguaje.DESARROLLO));
 			submenuZoom.setText(Lenguaje.text(Lenguaje.ZOOM));
 			submenuZoom.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {

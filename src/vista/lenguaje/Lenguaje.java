@@ -673,7 +673,7 @@ public class Lenguaje {
 	public static final int PEGAR = 5401;
 	
 	public static final int CANDIDATE_KEYS2 = 5500;
-
+	public static final int DESARROLLO = 5501;
 	
 	// --- --- --- ATRIBUTOS --- --- ---
 	/**
@@ -1430,6 +1430,7 @@ public class Lenguaje {
 		case COPIAR: texto=_textos.get("copiar");break;
 		case PEGAR: texto=_textos.get("pegar");break;
 		case AGGREGATIONS: texto=_textos.get("aggregations");break;
+		case DESARROLLO: texto=_textos.get("desarrollo");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

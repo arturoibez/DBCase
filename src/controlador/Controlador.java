@@ -662,7 +662,7 @@ public class Controlador {
 		 long tiempoActual = System.currentTimeMillis()/1000;
 		 long ti = (tiempoActual - this.tiempoGuardado);
 		 //System.out.println(ti);// lo que ha transcurrido en segundos desde la ultima ve que se guardo
-		 if (cambios && ti > 1800) // si ha pasado mas de media hora
+		 if (cambios && ti > 600) // si ha pasado mas de media hora
 			 this.guardarBackup();
 		
 		switch(mensaje){
