@@ -133,6 +133,25 @@ public class ServiciosAgregaciones {
 		return;
 	}
 	
+	public void eliminarAgregacion(TransferRelacion tr) {
+		String idRel = Integer.toString(tr.getIdRelacion());
+		DAOAgregaciones daoAgre = new DAOAgregaciones(this.controlador.getPath());
+		Vector <TransferAgregacion> agregaciones = daoAgre.ListaDeAgregaciones();
+		for(TransferAgregacion agre : agregaciones) {
+			Vector relacion = agre.getListaRelaciones(); // solo tiene un elemento
+			if(relacion.contains(idRel)) {
+				daoAgre.borrarAgregacion(agre);
+				controlador.mensajeDesde_AG(TC.SAG_EliminarAgregacion_HECHO, agre);
+			}
+		}
+	}
+	
+	public void eliminarAgregacion (TransferAgregacion ta) {
+		DAOAgregaciones daoAgre = new DAOAgregaciones(this.controlador.getPath());
+		daoAgre.borrarAgregacion(ta);
+		controlador.mensajeDesde_AG(TC.SAG_EliminarAgregacion_HECHO, ta);
+	}
+	
 	public Controlador getControlador() {
 		return controlador;
 	}
