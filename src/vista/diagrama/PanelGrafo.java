@@ -949,6 +949,13 @@ public class PanelGrafo extends JPanel implements Printable, KeyListener {
 			relaciones.remove(relacion.getIdRelacion());
 			tablas.remove(relacion);
 		}
+		if (arg0 instanceof TransferAgregacion) {
+			TransferAgregacion agregacion = (TransferAgregacion) arg0;
+			agregacion = agregaciones.get(agregacion.getIdAgregacion());
+			//graph.removeVertex(agregacion);
+			agregaciones.remove(agregacion.getIdAgregacion());
+			tablas.remove(agregacion);
+		}
 		vv.repaint();
 	}
 

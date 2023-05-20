@@ -191,6 +191,7 @@ public enum TC {
 	PanelDiseno_Click_AnadirAtributoRelacion,
 	PanelDiseno_Click_AnadirSubAtributoAAtributo,
 	PanelDiseno_Click_EditarClavePrimariaAtributo,
+	PanelDiseno_Click_Eliminar,
 	PanelDiseno_MoverEntidad,
 	PanelDiseno_MoverAtributo,
 	PanelDiseno_MoverRelacion,
@@ -213,6 +214,7 @@ public enum TC {
 	
 	//Para todos
 	PanelDiseno_Click_InsertarAgregacion,
+	PanelDiseno_Click_EliminarAgregacion,
 	
 	// Dominios
 	PanelDiseno_Click_RenombrarDominio,
@@ -345,6 +347,7 @@ public enum TC {
 	SAG_ListarAgregacion_HECHO,
 	SAG_InsertarAgregacion_HECHO,
 	SAG_AnadirAtributoAAgregacion_HECHO,
+	SAG_EliminarAgregacion_HECHO,
 	
 	//esto no va aqui
 	Controlador_RenombrarAgregacion,
@@ -563,6 +566,7 @@ public enum TC {
 	Controlador_setUniquesRelacion,
 	Controlador_setUniqueUnitarioRelacion,
 	Controlador_AnadirAtributoAAgregacion,
+	Controlador_EliminarAgregacion,
 	PanelDiseno_MostrarDatosEnTablaDeVolumenes,
 	Controlador_MostrarDatosEnTablaDeVolumenes,
 	PanelDiseno_ActualizarDatosEnTablaDeVolumenes,

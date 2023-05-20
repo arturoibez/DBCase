@@ -53,6 +53,7 @@ import vista.frames.GUI_AnadirSubAtributoAtributo;
 import vista.frames.GUI_Conexion;
 import vista.frames.GUI_EditarCardinalidadEntidad;
 import vista.frames.GUI_EditarDominioAtributo;
+import vista.frames.GUI_Eliminar;
 import vista.frames.GUI_EstablecerEntidadPadre;
 import vista.frames.GUI_Galeria;
 import vista.frames.GUI_InsertarDominio;
@@ -116,6 +117,7 @@ public class Controlador {
 	private GUI_RenombrarRelacion theGUIRenombrarRelacion;
 	private GUI_AnadirAtributoRelacion theGUIAnadirAtributoRelacion;
 	private GUI_AnadirAtributo theGUIAnadirAtributo;
+	private GUI_Eliminar theGUIEliminar;
 	private GUI_AnadirEntidadARelacion theGUIAnadirEntidadARelacion;
 	private GUI_QuitarEntidadARelacion theGUIQuitarEntidadARelacion;
 	private GUI_EditarCardinalidadEntidad theGUIEditarCardinalidadEntidad;
@@ -407,6 +409,8 @@ public class Controlador {
 		theGUIConexion.setControlador(this);
 		theGUISeleccionarConexion = new GUI_SeleccionarConexion();
 		theGUISeleccionarConexion.setControlador(this);
+		theGUIEliminar =new GUI_Eliminar();
+		theGUIEliminar.setControlador(this);
 
 		// Entidades
 		theGUIRenombrarEntidad = new GUI_RenombrarEntidad();
@@ -666,6 +670,11 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Click_EliminarAgregacion:{
+			TransferAgregacion agre = (TransferAgregacion) datos;
+			this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			break;
+		}
 		case PanelDiseno_Click_InsertarEntidad:{
 			Point2D punto = (Point2D) datos;
 			this.getTheGUIInsertarEntidad().setPosicionEntidad(punto);
@@ -696,6 +705,21 @@ public class Controlador {
 			}
 			break;
 		}
+		
+		case PanelDiseno_Click_Eliminar:{
+			Vector<Transfer> listaTransfers = (Vector<Transfer>) datos;
+			if(listaTransfers.isEmpty())
+				JOptionPane.showMessageDialog(null,
+					"ERROR.\nAdd an entity, a relation or an aggregation first\n",
+					Lenguaje.text(Lenguaje.DELETE),
+					JOptionPane.PLAIN_MESSAGE);
+			else {
+				this.getTheGUIEliminar().setListaTransfers(listaTransfers);
+				this.getTheGUIEliminar().setActiva();
+			}
+			break;
+		}
+		
 		case PanelDiseno_Click_RenombrarEntidad:{
 			TransferEntidad te = (TransferEntidad) datos;
 			this.getTheGUIRenombrarEntidad().setEntidad(te);
@@ -714,7 +738,7 @@ public class Controlador {
 			TransferEntidad te = (TransferEntidad) v.get(0);
 			this.auxTransferAtributos = te.getListaAtributos();
 			boolean preguntar =  (Boolean) v.get(1);
-			int intAux = (int) v.get(2);
+			int intAux = 1;
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
 			if(preguntar == true){
@@ -1251,8 +1275,10 @@ public class Controlador {
 						Lenguaje.text(Lenguaje.WISH_CONTINUE),
 						Lenguaje.text(Lenguaje.DELETE_ISA_RELATION));	
 			}
-			if (respuesta == 0)
+			if (respuesta == 0) {
 				this.getTheServiciosRelaciones().eliminarRelacionIsA(tr);
+				this.getTheServiciosEntidades().eliminarRelacionDeEntidad(tr);
+			}
 			break;
 		}
 		
@@ -1269,7 +1295,7 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionNormal:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-			int intAux = (int) v.get(2);
+			int intAux = 1;
 			Vector vtaAux = tr.getListaAtributos();
 			Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 			Vector<EntidadYAridad> veya = tr.getListaEntidadesYAridades();
@@ -1363,6 +1389,9 @@ public class Controlador {
 				}
 				
 				// Eliminamos la relacion
+				
+				this.getTheServiciosAgregaciones().eliminarAgregacion(tr);
+				this.getTheServiciosEntidades().eliminarRelacionDeEntidad(tr);
 				this.getTheServiciosRelaciones().eliminarRelacionNormal(tr,intAux);
 			}
 			break;
@@ -1657,6 +1686,8 @@ public class Controlador {
 		default: break;
 		} // switch 
 	}
+	
+
 	/*case GUI_Principal_DESHACER:{
 		funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
 		break;
@@ -3748,6 +3779,15 @@ public class Controlador {
 			if (!esta) this.listaAtributos.add(ta);
 			break;
 		}
+		
+		case SAG_EliminarAgregacion_HECHO:{
+			
+			TransferAgregacion tagre = (TransferAgregacion) datos;
+			
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarAgregacion, tagre);
+			ActualizaArbol(null);
+			break;
+		}
 
 		default:
 			break;
@@ -4777,6 +4817,10 @@ public class Controlador {
 		this.theServiciosDominios = theServiciosDominios;
 	}
 	
+	private GUI_Eliminar getTheGUIEliminar() {
+		// TODO Auto-generated method stub
+		return theGUIEliminar;
+	}
 	public GUI_AnadirEntidadARelacion getTheGUIAnadirEntidadARelacion() {
 		return theGUIAnadirEntidadARelacion;
 	}

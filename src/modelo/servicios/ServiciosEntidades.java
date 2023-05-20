@@ -215,6 +215,19 @@ public class ServiciosEntidades {
 		}
 	}
 	
+	public void eliminarRelacionDeEntidad(TransferRelacion tr) {
+		DAOEntidades dao = new DAOEntidades(this.controlador.getPath());
+		Vector <TransferEntidad> listaentidades = dao.ListaDeEntidades();
+		
+		for(TransferEntidad entidad : listaentidades) {
+			Vector listaRelaciones = entidad.getListaRelaciones();
+			if(listaRelaciones.contains(Integer.toString(tr.getIdRelacion()))) {
+				listaRelaciones.remove(Integer.toString(tr.getIdRelacion()));
+			}
+			entidad.setListaRelaciones(listaRelaciones);
+			dao.modificarEntidad(entidad);
+		}
+	}
 
 	/*
 	 * Anadir un atributo a una entidad
