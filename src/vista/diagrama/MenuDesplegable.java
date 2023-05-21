@@ -309,6 +309,7 @@ public class MenuDesplegable extends JPopupMenu {
 						Vector<Object> v = new Vector<Object>();
 						v.add(clon_atributo);
 						v.add(true);
+						v.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAtributo, v);
 					}
 				});
