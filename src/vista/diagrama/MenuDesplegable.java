@@ -180,6 +180,7 @@ public class MenuDesplegable extends JPopupMenu {
 						Vector<Object> v = new Vector<Object>();
 						v.add(clon_entidad);
 						v.add(true);
+						v.add(0);
 						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarEntidad, v);
 					}
 				});
@@ -693,6 +694,7 @@ public class MenuDesplegable extends JPopupMenu {
 							Vector<Object> v = new Vector<Object>();
 							v.add(clon_relacion);
 							v.add(true);
+							v.add(0);
 							controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarRelacionNormal, v);
 						}
 					});

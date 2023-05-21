@@ -785,6 +785,8 @@ public class ServiciosRelaciones {
 			else cardinalidadMax1Seleccionada=false;
 		}	
 		else cardinalidadMax1Seleccionada=(boolean)v.get(8);
+		//if(v.size()==8)cardinalidadMax1Seleccionada=true;
+		//else cardinalidadMax1Seleccionada=(boolean)v.get(8);
 		
 		String aux = (String)v.get(4);
 		tr.setRol(aux);
@@ -836,10 +838,7 @@ public class ServiciosRelaciones {
 		if(inicioEnInt>finalEnInt){	controlador.mensajeDesde_SR(TC.SR_AnadirEntidadARelacion_ERROR_InicioMayorQueFinal, v); return; }
 		// Aqui ya sabemos que los valores (conjuntamente) son correctos
 		
-		if(cardinalidadMax1Seleccionada) {
-			finalEnInt = 1;//hola
-			//v.set(3,"1");
-		}
+		if (cardinalidadMax1Seleccionada) finalEnInt = 1;
 		Vector veya = tr.getListaEntidadesYAridades();
 		EntidadYAridad eya = new EntidadYAridad();
 		eya.setEntidad(idEntidad);

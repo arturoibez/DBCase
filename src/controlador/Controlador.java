@@ -666,7 +666,7 @@ public class Controlador {
 		 long tiempoActual = System.currentTimeMillis()/1000;
 		 long ti = (tiempoActual - this.tiempoGuardado);
 		 //System.out.println(ti);// lo que ha transcurrido en segundos desde la ultima ve que se guardo
-		 if (cambios && ti > 1800) // si ha pasado mas de media hora
+		 if (cambios && ti > 600) // si ha pasado mas de media hora
 			 this.guardarBackup();
 		
 		switch(mensaje){
@@ -738,7 +738,7 @@ public class Controlador {
 			TransferEntidad te = (TransferEntidad) v.get(0);
 			this.auxTransferAtributos = te.getListaAtributos();
 			boolean preguntar =  (Boolean) v.get(1);
-			int intAux = 1;
+			int intAux = (int) v.get(2);
 			int respuesta=0;
 			if(!confirmarEliminaciones) preguntar=false;
 			if(preguntar == true){
@@ -1295,7 +1295,7 @@ public class Controlador {
 		case PanelDiseno_Click_EliminarRelacionNormal:{
 			Vector<Object> v = (Vector<Object>) datos;
 			TransferRelacion tr = (TransferRelacion) v.get(0);
-			int intAux = 1;
+			int intAux = (int) v.get(2);
 			Vector vtaAux = tr.getListaAtributos();
 			Vector<TransferAtributo> vta = new Vector<TransferAtributo>();
 			Vector<EntidadYAridad> veya = tr.getListaEntidadesYAridades();
@@ -1892,13 +1892,14 @@ public class Controlador {
 				else if (respuesta==0) {
 						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
-						if (this.getTheGUIWorkSpace().setActiva(2)) guardarYSalir();
+						if (this.getTheGUIWorkSpace().setActiva(2)) salir();
 				}	
 				else if (respuesta==2) {
 					
 				}
-				
-			}else guardarYSalir();
+			}
+			
+			else guardarYSalir();
 			break;
 		}
 		case GUI_Principal_Click_Submenu_Abrir:{
@@ -2155,7 +2156,7 @@ public class Controlador {
 			TransferAgregacion agreg = new TransferAgregacion();
 			boolean sepuede = true;
 			
-			//comprobamos que esa relación no pertenece a alguna agregacion existente:
+			//comprobamos que esa relaciï¿½n no pertenece a alguna agregacion existente:
 			Vector<TransferAgregacion> agregaciones = this.getTheServiciosAgregaciones().ListaDeAgregaciones();			
 			for(int i = 0; i < agregaciones.size() && sepuede; ++i) {
 				TransferAgregacion actual_agreg = agregaciones.get(i);
@@ -3701,7 +3702,7 @@ public class Controlador {
 	//mensajes que manda el ServivioAgregaciones al controlador
 	public void mensajeDesde_AG(TC mensaje, Object datos) {
 
-		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO) {
+		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO || mensaje == TC.SAG_EliminarAgregacion_HECHO) {
 			//this.ultimoMensaje = mensaje;
 			//this.ultimosDatos = datos;
 			
