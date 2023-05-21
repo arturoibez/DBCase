@@ -118,8 +118,14 @@ public class GUI_Eliminar extends Parent_GUI{
 		this.setVisible(false);
 	}
 	
-	public void setListaTransfers(Vector<Transfer> listaTransfers) {
-		this.listaTransfers=listaTransfers;
+	public void setListaTransfers(Vector<Transfer> lista) {
+		for(int i = 0; i < lista.size(); ++i) { //no eliminaremos con esta GUI atributos para no sobrecargar el combo
+			if(lista.get(i) instanceof TransferAtributo) {
+				lista.remove(i);
+				--i;
+			}
+		}
+		this.listaTransfers=lista;
 	}
 	
 	public void setControlador(Controlador controlador) {
