@@ -626,4 +626,7 @@ repeat_ag_name=Ese nombre ya existe.
 agg_file_error=Se ha producido un error en el acceso al fichero de relaciones.
 int_nom_agreg =Introduce el nombre de la agregación.
 aggregations=Agregaciones
-
+desarrollo=En desarrollo
+agreg_mas_rel=Las agregaciones solo pueden contener una relación.
+repeatedAgreg=Ya esxiste una agregacion con ese nombre.
+rel_con_agreg=Esa relación ya pertenece a otra agregación.

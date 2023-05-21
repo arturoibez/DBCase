@@ -20,6 +20,7 @@ import persistencia.DAORelaciones;
 import vista.componentes.MyMenu;
 import vista.iconos.IconLabel;
 import vista.iconos.attributeIcon;
+import vista.iconos.deleteIcon;
 import vista.iconos.entityIcon;
 import vista.iconos.isaIcon;
 import vista.iconos.relationIcon;
@@ -46,6 +47,7 @@ public class addTransfersPanel extends JPanel{
 		IconLabel anadirRelacion = new IconLabel(new relationIcon(), Lenguaje.text(Lenguaje.RELATION));
 		IconLabel anadirIsa = new IconLabel(new isaIcon(), Lenguaje.text(Lenguaje.ISA_RELATION));
 		IconLabel anadirAttribute = new IconLabel(new attributeIcon(), Lenguaje.text(Lenguaje.ATTRIBUTE));
+		IconLabel eliminar = new IconLabel(new deleteIcon(), Lenguaje.text(Lenguaje.DELETE));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(Box.createRigidArea(new Dimension(0,30)));
 		this.add(anadirEntidad);
@@ -55,6 +57,8 @@ public class addTransfersPanel extends JPanel{
 		this.add(anadirIsa);
 		this.add(Box.createRigidArea(new Dimension(0,30)));
 		this.add(anadirAttribute);
+		this.add(Box.createRigidArea(new Dimension(0,30)));
+		this.add(eliminar);
 		this.add(Box.createVerticalGlue());
 		this.setBackground(theme.toolBar());
 		this.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
@@ -87,18 +91,29 @@ public class addTransfersPanel extends JPanel{
 		anadirAttribute.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-            	listaTransfers = new Vector<Transfer>();
-            	DAORelaciones daoRelaciones = new DAORelaciones(controlador.getPath());
-            	listaTransfers.addAll(daoRelaciones.ListaDeRelaciones());
-        		DAOEntidades daoEntidades = new DAOEntidades(controlador.getPath());
-        		listaTransfers.addAll(daoEntidades.ListaDeEntidades());
-        		DAOAtributos daoAtributos = new DAOAtributos(controlador);
-        		listaTransfers.addAll(daoAtributos.ListaDeAtributos());
-        		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(controlador.getPath());
-        		listaTransfers.addAll(daoAgregaciones.ListaDeAgregaciones());
+            	getListaTransfers();
 				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_InsertarAtributo, listaTransfers);
             }
         });		
+		eliminar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+            	getListaTransfers();
+				controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_Eliminar, listaTransfers);
+            }
+        });		
+	}
+	
+	private void getListaTransfers() {
+		listaTransfers = new Vector<Transfer>();
+    	DAORelaciones daoRelaciones = new DAORelaciones(controlador.getPath());
+    	listaTransfers.addAll(daoRelaciones.ListaDeRelaciones());
+		DAOEntidades daoEntidades = new DAOEntidades(controlador.getPath());
+		listaTransfers.addAll(daoEntidades.ListaDeEntidades());
+		DAOAtributos daoAtributos = new DAOAtributos(controlador);
+		listaTransfers.addAll(daoAtributos.ListaDeAtributos());
+		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(controlador.getPath());
+		listaTransfers.addAll(daoAgregaciones.ListaDeAgregaciones());
 	}
 	
 	private void aumentaCoords() {

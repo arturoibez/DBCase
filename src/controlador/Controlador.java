@@ -53,6 +53,7 @@ import vista.frames.GUI_AnadirSubAtributoAtributo;
 import vista.frames.GUI_Conexion;
 import vista.frames.GUI_EditarCardinalidadEntidad;
 import vista.frames.GUI_EditarDominioAtributo;
+import vista.frames.GUI_Eliminar;
 import vista.frames.GUI_EstablecerEntidadPadre;
 import vista.frames.GUI_Galeria;
 import vista.frames.GUI_InsertarDominio;
@@ -116,6 +117,7 @@ public class Controlador {
 	private GUI_RenombrarRelacion theGUIRenombrarRelacion;
 	private GUI_AnadirAtributoRelacion theGUIAnadirAtributoRelacion;
 	private GUI_AnadirAtributo theGUIAnadirAtributo;
+	private GUI_Eliminar theGUIEliminar;
 	private GUI_AnadirEntidadARelacion theGUIAnadirEntidadARelacion;
 	private GUI_QuitarEntidadARelacion theGUIQuitarEntidadARelacion;
 	private GUI_EditarCardinalidadEntidad theGUIEditarCardinalidadEntidad;
@@ -407,6 +409,8 @@ public class Controlador {
 		theGUIConexion.setControlador(this);
 		theGUISeleccionarConexion = new GUI_SeleccionarConexion();
 		theGUISeleccionarConexion.setControlador(this);
+		theGUIEliminar =new GUI_Eliminar();
+		theGUIEliminar.setControlador(this);
 
 		// Entidades
 		theGUIRenombrarEntidad = new GUI_RenombrarEntidad();
@@ -666,6 +670,11 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Click_EliminarAgregacion:{
+			TransferAgregacion agre = (TransferAgregacion) datos;
+			this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			break;
+		}
 		case PanelDiseno_Click_InsertarEntidad:{
 			Point2D punto = (Point2D) datos;
 			this.getTheGUIInsertarEntidad().setPosicionEntidad(punto);
@@ -696,6 +705,21 @@ public class Controlador {
 			}
 			break;
 		}
+		
+		case PanelDiseno_Click_Eliminar:{
+			Vector<Transfer> listaTransfers = (Vector<Transfer>) datos;
+			if(listaTransfers.isEmpty())
+				JOptionPane.showMessageDialog(null,
+					"ERROR.\nAdd an entity, a relation or an aggregation first\n",
+					Lenguaje.text(Lenguaje.DELETE),
+					JOptionPane.PLAIN_MESSAGE);
+			else {
+				this.getTheGUIEliminar().setListaTransfers(listaTransfers);
+				this.getTheGUIEliminar().setActiva();
+			}
+			break;
+		}
+		
 		case PanelDiseno_Click_RenombrarEntidad:{
 			TransferEntidad te = (TransferEntidad) datos;
 			this.getTheGUIRenombrarEntidad().setEntidad(te);
@@ -1251,8 +1275,10 @@ public class Controlador {
 						Lenguaje.text(Lenguaje.WISH_CONTINUE),
 						Lenguaje.text(Lenguaje.DELETE_ISA_RELATION));	
 			}
-			if (respuesta == 0)
+			if (respuesta == 0) {
 				this.getTheServiciosRelaciones().eliminarRelacionIsA(tr);
+				this.getTheServiciosEntidades().eliminarRelacionDeEntidad(tr);
+			}
 			break;
 		}
 		
@@ -1363,6 +1389,9 @@ public class Controlador {
 				}
 				
 				// Eliminamos la relacion
+				
+				this.getTheServiciosAgregaciones().eliminarAgregacion(tr);
+				this.getTheServiciosEntidades().eliminarRelacionDeEntidad(tr);
 				this.getTheServiciosRelaciones().eliminarRelacionNormal(tr,intAux);
 			}
 			break;
@@ -1657,6 +1686,8 @@ public class Controlador {
 		default: break;
 		} // switch 
 	}
+	
+
 	/*case GUI_Principal_DESHACER:{
 		funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
 		break;
@@ -1861,13 +1892,14 @@ public class Controlador {
 				else if (respuesta==0) {
 						theGUIWorkSpace = new GUI_SaveAs(true);
 						theGUIWorkSpace.setControlador(this);
-						if (this.getTheGUIWorkSpace().setActiva(2)) guardarYSalir();
+						if (this.getTheGUIWorkSpace().setActiva(2)) salir();
 				}	
 				else if (respuesta==2) {
 					
 				}
-				
-			}else guardarYSalir();
+			}
+			
+			else guardarYSalir();
 			break;
 		}
 		case GUI_Principal_Click_Submenu_Abrir:{
@@ -2119,20 +2151,45 @@ public class Controlador {
 		
 		case GUIInsertarAgregacion:{
 			Vector v = (Vector) datos;
-			TransferRelacion t = (TransferRelacion) v.elementAt(0); //elemento sobre el que se construye la agregacion
+			TransferRelacion t = (TransferRelacion) v.elementAt(0); //relacion sobre el que se construye la agregacion
 			String nombre = (String) v.elementAt(1); //nombre de la nueva agregacion
 			TransferAgregacion agreg = new TransferAgregacion();
-
-			agreg.setNombre(nombre);
-			Vector relaciones = new Vector();
-			this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
-
-			agreg.setListaRelaciones(relaciones);
-			agreg.setListaAtributos(new Vector());
+			boolean sepuede = true;
 			
-			this.getTheServiciosAgregaciones().anadirAgregacion(agreg);
-			ActualizaArbol(agreg);
-			this.getTheServiciosSistema().reset();
+			//comprobamos que esa relaci�n no pertenece a alguna agregacion existente:
+			Vector<TransferAgregacion> agregaciones = this.getTheServiciosAgregaciones().ListaDeAgregaciones();			
+			for(int i = 0; i < agregaciones.size() && sepuede; ++i) {
+				TransferAgregacion actual_agreg = agregaciones.get(i);
+				Vector lista_relaciones = actual_agreg.getListaRelaciones();
+				String relacionId =  (String) lista_relaciones.get(0); //solo hay una relacion por agregacion
+				if( Integer.parseInt(relacionId) == t.getIdRelacion()) {
+					JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.RELACION_YA_TIENE_AGREGACION), Lenguaje.text(Lenguaje.ERROR), 0);
+					sepuede=false;
+				}
+			}
+			
+			if(sepuede) {
+				agreg.setNombre(nombre);
+				Vector relaciones = new Vector();
+				this.getTheServiciosRelaciones().getSubesquema(t,relaciones);//tenemos que quitar del menu conceptual que se pueda hacer sobre entidades(comentalo)
+
+				if(relaciones.size() == 1) {
+					agreg.setListaRelaciones(relaciones);
+					agreg.setListaAtributos(new Vector());
+					
+					this.getTheServiciosAgregaciones().anadirAgregacion(agreg);
+					ActualizaArbol(agreg);
+					this.getTheServiciosSistema().reset();
+					
+				}
+				
+				else {
+					JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.AGREG_MAS_RELACIONES), Lenguaje.text(Lenguaje.ERROR), 0);
+				}
+			}
+
+			
+			
 			break;
 		}
 		
@@ -2811,6 +2868,13 @@ public class Controlador {
 		
 			break;
 		}
+		
+		case SE_InsertarRelacion_ERROR_NombreDeEntidadYaExisteComoAgregacion:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+		
+			break;
+		}
+		
 		case SE_InsertarEntidad_ERROR_NombreDeEntidadYaExisteComoRelacion:{
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			
@@ -3638,7 +3702,7 @@ public class Controlador {
 	//mensajes que manda el ServivioAgregaciones al controlador
 	public void mensajeDesde_AG(TC mensaje, Object datos) {
 
-		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO) {
+		if(mensaje == TC.SAG_RenombrarAgregacion_HECHO || mensaje == TC.SAG_InsertarAgregacion_HECHO || mensaje == TC.SAG_AnadirAtributoAAgregacion_HECHO || mensaje == TC.SAG_EliminarAgregacion_HECHO) {
 			//this.ultimoMensaje = mensaje;
 			//this.ultimosDatos = datos;
 			
@@ -3661,7 +3725,7 @@ public class Controlador {
 			break;
 		}
 		case SAG_InsertarAgregacion_ERROR_NombreDeYaExiste: {
-			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEAT_AG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
 		}
 		case SAG_InsertarAgregacion_ERROR_DAO:{
@@ -3714,6 +3778,15 @@ public class Controlador {
 			}
 			
 			if (!esta) this.listaAtributos.add(ta);
+			break;
+		}
+		
+		case SAG_EliminarAgregacion_HECHO:{
+			
+			TransferAgregacion tagre = (TransferAgregacion) datos;
+			
+			this.getTheGUIPrincipal().mensajesDesde_Controlador(TC.Controlador_EliminarAgregacion, tagre);
+			ActualizaArbol(null);
 			break;
 		}
 
@@ -3784,6 +3857,10 @@ public class Controlador {
 			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad:{
 				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 				
+				break;
+			}
+			case SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoAgregacion:{
+				JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 				break;
 			}
 			case SR_InsertarRelacion_ERROR_NombreDelRolYaExiste:{
@@ -4741,6 +4818,10 @@ public class Controlador {
 		this.theServiciosDominios = theServiciosDominios;
 	}
 	
+	private GUI_Eliminar getTheGUIEliminar() {
+		// TODO Auto-generated method stub
+		return theGUIEliminar;
+	}
 	public GUI_AnadirEntidadARelacion getTheGUIAnadirEntidadARelacion() {
 		return theGUIAnadirEntidadARelacion;
 	}

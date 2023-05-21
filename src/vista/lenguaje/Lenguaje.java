@@ -150,6 +150,7 @@ public class Lenguaje {
 	public static final int WARNING_DELETE_WEAK_ENTITY=1161;//Se eliminará también la entidad débil asociada
 	public static final int WARNING_DELETE_WEAK_RELATION=1162;//Se eliminará también la relación débil asociada
 	public static final int REPEATED_ENTITY_REL=1163;
+	public static final int REPEATED_AGREG_NAME=1164;
 	
 //--- --- --- MENSAJES DE LA GUI --- --- --- 
 	//Ventana GUI_InsertaEntidad 12XX
@@ -666,8 +667,9 @@ public class Lenguaje {
 	public static final int AGGREGATIONS_FILE_ERROR = 5303;
 	public static final int EMPTY_AGREG_NAME = 5304;
 	public static final int INT_NOM_AGREG = 5305;
-
 	public static final int AGGREGATIONS = 5306;
+	public static final int AGREG_MAS_RELACIONES = 5307;
+	public static final int RELACION_YA_TIENE_AGREGACION = 5308;
 	//copiar y pegar
 	public static final int COPIAR = 5400;
 	public static final int PEGAR = 5401;
@@ -924,6 +926,7 @@ public class Lenguaje {
 		case WARNING_DELETE_WEAK_ENTITY:texto = _textos.get("warningDeleteWeakEntity");break;
 		case WARNING_DELETE_WEAK_RELATION:texto = _textos.get("warningDeleteWeakRelation");break;
 		case REPEATED_ENTITY_REL:texto = _textos.get("repeatedEntyRel");break;
+		case REPEATED_AGREG_NAME:texto = _textos.get("repeatedAgreg");break;
 		//SERVICIOS
 		case EMPTY_VALUE: texto = _textos.get("emptyValue"); break;//"Uno de los valores es vacío."
 		case INCORRECT_NUMBER: texto = _textos.get("incorrectNumber"); break;//"Uno de los valores no es correcto. Introduzca valores numéricos enteros"
@@ -1431,6 +1434,8 @@ public class Lenguaje {
 		case PEGAR: texto=_textos.get("pegar");break;
 		case AGGREGATIONS: texto=_textos.get("aggregations");break;
 		case DESARROLLO: texto=_textos.get("desarrollo");break;
+		case AGREG_MAS_RELACIONES: texto=_textos.get("agreg_mas_rel");break;
+		case RELACION_YA_TIENE_AGREGACION: texto=_textos.get("rel_con_agreg");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

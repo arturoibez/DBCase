@@ -28,6 +28,10 @@ public class Parent_GUI extends javax.swing.JDialog implements KeyListener, Mous
 		return boton(x,y,Lenguaje.text(Lenguaje.CANCEL));
 	}
 	
+	protected JButton botonConfirmar(int x, int y) {
+		return boton(x,y,Lenguaje.text(Lenguaje.DELETE));
+	}
+	
 	protected JTextField getCajaNombre(int x, int y) {
 		JTextField cajaNombre = new JTextField();
 		cajaNombre.setFont(theme.font());

@@ -191,6 +191,7 @@ public enum TC {
 	PanelDiseno_Click_AnadirAtributoRelacion,
 	PanelDiseno_Click_AnadirSubAtributoAAtributo,
 	PanelDiseno_Click_EditarClavePrimariaAtributo,
+	PanelDiseno_Click_Eliminar,
 	PanelDiseno_MoverEntidad,
 	PanelDiseno_MoverAtributo,
 	PanelDiseno_MoverRelacion,
@@ -213,6 +214,7 @@ public enum TC {
 	
 	//Para todos
 	PanelDiseno_Click_InsertarAgregacion,
+	PanelDiseno_Click_EliminarAgregacion,
 	
 	// Dominios
 	PanelDiseno_Click_RenombrarDominio,
@@ -237,6 +239,7 @@ public enum TC {
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadEsVacio,
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadYaExiste,
 	SE_ComprobarInsertarEntidad_ERROR_NombreDeEntidadYaExisteComoRelacion,
+	SE_InsertarRelacion_ERROR_NombreDeEntidadYaExisteComoAgregacion,
 	SE_ComprobarInsertarEntidad_ERROR_DAO,
 	// Renombrar entidades
 	SE_RenombrarEntidad_HECHO,
@@ -344,6 +347,7 @@ public enum TC {
 	SAG_ListarAgregacion_HECHO,
 	SAG_InsertarAgregacion_HECHO,
 	SAG_AnadirAtributoAAgregacion_HECHO,
+	SAG_EliminarAgregacion_HECHO,
 	
 	//esto no va aqui
 	Controlador_RenombrarAgregacion,
@@ -357,6 +361,7 @@ public enum TC {
 	SR_InsertarRelacion_ERROR_NombreDeRelacionEsVacio,
 	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExiste,
 	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoEntidad,
+	SR_InsertarRelacion_ERROR_NombreDeRelacionYaExisteComoAgregacion,
 	SR_InsertarRelacion_ERROR_NombreDelRolYaExiste,
 	SR_InsertarRelacion_ERROR_NombreDeRolNecesario,
 	SR_InsertarRelacion_ERROR_DAORelaciones,
@@ -561,6 +566,7 @@ public enum TC {
 	Controlador_setUniquesRelacion,
 	Controlador_setUniqueUnitarioRelacion,
 	Controlador_AnadirAtributoAAgregacion,
+	Controlador_EliminarAgregacion,
 	PanelDiseno_MostrarDatosEnTablaDeVolumenes,
 	Controlador_MostrarDatosEnTablaDeVolumenes,
 	PanelDiseno_ActualizarDatosEnTablaDeVolumenes,

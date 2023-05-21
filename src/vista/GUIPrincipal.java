@@ -845,6 +845,12 @@ public class GUIPrincipal extends JFrame implements WindowListener, KeyListener{
 			this.actualizaArbolDominio(nombre);
 			break;
 		}
+		case Controlador_EliminarAgregacion:{
+			TransferAgregacion tr = (TransferAgregacion) datos;
+			panelDiseno.eliminaNodo(tr);
+			loadInfo();
+			break;
+		}
 		default: break;
 		}
 	}

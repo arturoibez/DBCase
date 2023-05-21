@@ -13,7 +13,7 @@ public class TransferEntidad extends Transfer{
 	private Vector listaClavesPrimarias;
 	private Vector listaRestricciones;
 	private Vector listaUniques;
-	private Vector listaRelaciones; //relaciones en las que participa guarda el Id
+	private Vector listaRelaciones; //relaciones en las que participa guarda el Id aunque lo guarda como un String
 	private Point2D posicion;
 	private int volumen;
 	private int frecuencia;
