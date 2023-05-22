@@ -72,6 +72,20 @@ public class ServiciosAgregaciones {
 	}
 	//public boolean SePuedeAnadirAgregacion(TransferAgregacion te)???
 	
+
+	public boolean perteneceAgregacion(TransferRelacion rel) {
+		// TODO Auto-generated method stub
+		DAOAgregaciones daoAgre = new DAOAgregaciones(this.controlador.getPath());
+		Vector <TransferAgregacion> agregaciones = daoAgre.ListaDeAgregaciones();
+		for(TransferAgregacion agre: agregaciones) {
+			String idRelDeAgre = (String) agre.getListaRelaciones().get(0);
+			if(idRelDeAgre.equals(Integer.toString(rel.getIdRelacion()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void renombrarAgregacion(TransferAgregacion ta, String nuevoNombre){
 		Vector<Object> v = new Vector<Object>();
 		v.add(ta);
@@ -210,4 +224,5 @@ public class ServiciosAgregaciones {
 		// Si todo ha ido bien devolvemos al controlador la agregacion modificada y el nuevo atributo
 		this.controlador.mensajeDesde_AG(TC.SAG_AnadirAtributoAAgregacion_HECHO, v); 
 	}
+
 }

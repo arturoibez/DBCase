@@ -670,9 +670,24 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Pertenece_A_Agregacion:{
+			Vector v = (Vector) datos;
+			TransferRelacion rel = (TransferRelacion) v.get(0);
+			boolean perteneceAgregacion = this.getTheServiciosAgregaciones().perteneceAgregacion(rel);
+			v.add(perteneceAgregacion);
+			break;
+		}
 		case PanelDiseno_Click_EliminarAgregacion:{
-			TransferAgregacion agre = (TransferAgregacion) datos;
-			this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			Transfer t = (Transfer)datos;
+			if(t instanceof TransferAgregacion) {
+				TransferAgregacion agre = (TransferAgregacion) datos;
+				this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			}
+			else if(t instanceof TransferRelacion) {
+				TransferRelacion rel = (TransferRelacion) datos;
+				this.getTheServiciosAgregaciones().eliminarAgregacion(rel);
+			}
+			
 			break;
 		}
 		case PanelDiseno_Click_InsertarEntidad:{
