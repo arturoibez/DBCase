@@ -148,4 +148,9 @@ public class GUI_Pregunta extends Parent_GUI {
 		respuesta = 2;
 		setInactiva();
 	}
+	
+	public void setInactiva2(){
+		respuesta = 2;
+		this.setVisible(false);
+	}
 }
