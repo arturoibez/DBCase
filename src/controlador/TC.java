@@ -195,6 +195,7 @@ public enum TC {
 	PanelDiseno_MoverEntidad,
 	PanelDiseno_MoverAtributo,
 	PanelDiseno_MoverRelacion,
+	PanelDiseno_Pertenece_A_Agregacion,
 
 	// Relaciones IsA
 	PanelDiseno_Click_EstablecerEntidadPadre,

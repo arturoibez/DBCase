@@ -620,3 +620,4 @@ aggregations=Aggregations
 agreg_mas_rel=Aggregations only can contain one relation.
 repeatedAgreg=An aggregation with that name already exists.
 rel_con_agreg=That relation is already owned by other aggregation.
+del_agreg=Delete agregation

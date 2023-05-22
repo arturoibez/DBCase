@@ -670,6 +670,7 @@ public class Lenguaje {
 	public static final int AGGREGATIONS = 5306;
 	public static final int AGREG_MAS_RELACIONES = 5307;
 	public static final int RELACION_YA_TIENE_AGREGACION = 5308;
+	public static final int DEL_AGREG = 5309;
 	//copiar y pegar
 	public static final int COPIAR = 5400;
 	public static final int PEGAR = 5401;
@@ -1435,6 +1436,7 @@ public class Lenguaje {
 		case AGGREGATIONS: texto=_textos.get("aggregations");break;
 		case AGREG_MAS_RELACIONES: texto=_textos.get("agreg_mas_rel");break;
 		case RELACION_YA_TIENE_AGREGACION: texto=_textos.get("rel_con_agreg");break;
+		case DEL_AGREG: texto=_textos.get("del_agreg");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);

@@ -119,17 +119,56 @@ public class GUI_Eliminar extends Parent_GUI{
 	}
 	
 	public void setListaTransfers(Vector<Transfer> lista) {
-		for(int i = 0; i < lista.size(); ++i) { //no eliminaremos con esta GUI atributos para no sobrecargar el combo
-			if(lista.get(i) instanceof TransferAtributo) {
-				lista.remove(i);
-				--i;
-			}
-		}
-		this.listaTransfers=lista;
+		Vector<Transfer> lista_ordenada = ordenar(lista);
+		this.listaTransfers=lista_ordenada;
 	}
 	
 	public void setControlador(Controlador controlador) {
 		this.controlador=controlador;
+	}
+	
+	private Vector<Transfer> ordenar(Vector<Transfer> lista){
+		Vector<Transfer> lista_ordenada = new Vector<Transfer>();
+		Vector<Transfer> lista_entidades = new Vector<Transfer>();
+		Vector<Transfer> lista_relaciones = new Vector<Transfer>();
+		Vector<Transfer> lista_agregaciones = new Vector<Transfer>();
+		//primero cada entidad seguida de sus atributos, luego relaciones y luego agregaciones
+		for(Transfer t: lista) {
+			if(t instanceof TransferEntidad) {
+				lista_entidades.add(t);
+				Vector atributos = ((TransferEntidad) t).getListaAtributos();
+				for (Transfer ta: lista) {
+					if (ta instanceof TransferAtributo && atributos.contains(Integer.toString(((TransferAtributo) ta).getIdAtributo()))){
+						lista_entidades.add(ta);
+					}
+				}
+			}
+			
+			if(t instanceof TransferRelacion) {
+				lista_relaciones.add(t);
+				Vector atributos = ((TransferRelacion) t).getListaAtributos();
+				for (Transfer ta: lista) {
+					if (ta instanceof TransferAtributo && atributos.contains(Integer.toString(((TransferAtributo) ta).getIdAtributo()))){
+						lista_relaciones.add(ta);
+					}
+				}
+			}
+			if(t instanceof TransferAgregacion) {
+				lista_agregaciones.add(t);
+				Vector atributos = ((TransferAgregacion) t).getListaAtributos();
+				for (Transfer ta: lista) {
+					if (ta instanceof TransferAtributo && atributos.contains(Integer.toString(((TransferAtributo) ta).getIdAtributo()))){
+						lista_agregaciones.add(ta);
+					}
+				}
+			}
+		}
+		
+		lista_ordenada.addAll(lista_entidades);
+		lista_ordenada.addAll(lista_relaciones);
+		lista_ordenada.addAll(lista_agregaciones);
+		
+		return lista_ordenada;
 	}
 	
 }

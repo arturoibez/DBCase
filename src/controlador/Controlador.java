@@ -670,9 +670,24 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Pertenece_A_Agregacion:{
+			Vector v = (Vector) datos;
+			TransferRelacion rel = (TransferRelacion) v.get(0);
+			boolean perteneceAgregacion = this.getTheServiciosAgregaciones().perteneceAgregacion(rel);
+			v.add(perteneceAgregacion);
+			break;
+		}
 		case PanelDiseno_Click_EliminarAgregacion:{
-			TransferAgregacion agre = (TransferAgregacion) datos;
-			this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			Transfer t = (Transfer)datos;
+			if(t instanceof TransferAgregacion) {
+				TransferAgregacion agre = (TransferAgregacion) datos;
+				this.getTheServiciosAgregaciones().eliminarAgregacion(agre);
+			}
+			else if(t instanceof TransferRelacion) {
+				TransferRelacion rel = (TransferRelacion) datos;
+				this.getTheServiciosAgregaciones().eliminarAgregacion(rel);
+			}
+			
 			break;
 		}
 		case PanelDiseno_Click_InsertarEntidad:{
@@ -2155,7 +2170,7 @@ public class Controlador {
 			TransferAgregacion agreg = new TransferAgregacion();
 			boolean sepuede = true;
 			
-			//comprobamos que esa relación no pertenece a alguna agregacion existente:
+			//comprobamos que esa relaciï¿½n no pertenece a alguna agregacion existente:
 			Vector<TransferAgregacion> agregaciones = this.getTheServiciosAgregaciones().ListaDeAgregaciones();			
 			for(int i = 0; i < agregaciones.size() && sepuede; ++i) {
 				TransferAgregacion actual_agreg = agregaciones.get(i);

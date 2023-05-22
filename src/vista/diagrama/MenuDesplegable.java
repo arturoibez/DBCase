@@ -755,19 +755,42 @@ public class MenuDesplegable extends JPopupMenu {
 			
 			this.add(new JSeparator());
 			
-			JMenuItem j10 = new JMenuItem(Lenguaje.text(Lenguaje.ADD_AGREG));
-			j10.setFont(theme.font());
-			j10.setForeground(theme.fontColor());
-			j10.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
-					TransferRelacion elemento = (TransferRelacion) menu.nodo;
-					TransferRelacion clon = elemento.clonar();
-					//Gui_Agreg(clon);
-					Gui_Confirm(clon);
-				}
-			});
-			this.add(j10);
+			
+			Vector v = new Vector();
+			v.add(nodo);
+			controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Pertenece_A_Agregacion, v);
+			boolean pertenece_a_agregacion = (boolean) v.get(1);
+			
+			if(pertenece_a_agregacion) {
+				JMenuItem j10 = new JMenuItem(Lenguaje.text(Lenguaje.DEL_AGREG));
+				j10.setFont(theme.font());
+				j10.setForeground(theme.fontColor());
+				j10.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+						TransferRelacion elemento = (TransferRelacion) menu.nodo;
+						TransferRelacion clon = elemento.clonar();
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EliminarAgregacion, clon);
+					}
+				});
+				this.add(j10);
+			}
+
+			else	{
+				JMenuItem j10 = new JMenuItem(Lenguaje.text(Lenguaje.ADD_AGREG));
+				j10.setFont(theme.font());
+				j10.setForeground(theme.fontColor());
+				j10.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+						TransferRelacion elemento = (TransferRelacion) menu.nodo;
+						TransferRelacion clon = elemento.clonar();
+						//Gui_Agreg(clon);
+						Gui_Confirm(clon);
+					}
+				});
+				this.add(j10);
+			}
 		}
 
 	}
