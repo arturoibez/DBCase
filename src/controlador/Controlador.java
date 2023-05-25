@@ -70,6 +70,7 @@ import vista.frames.GUI_QuitarEntidadARelacion;
 import vista.frames.GUI_QuitarEntidadHija;
 import vista.frames.GUI_QuitarEntidadPadre;
 import vista.frames.GUI_Recientes;
+import vista.frames.GUI_RenombrarAgregacion;
 import vista.frames.GUI_RenombrarAtributo;
 import vista.frames.GUI_RenombrarDominio;
 import vista.frames.GUI_RenombrarEntidad;
@@ -123,6 +124,8 @@ public class Controlador {
 	private GUI_EditarCardinalidadEntidad theGUIEditarCardinalidadEntidad;
 	private GUI_InsertarRestriccionARelacion theGUIAnadirRestriccionARelacion;
 	private GUI_TablaUniqueRelacion theGUITablaUniqueRelacion;
+	//Agregaciones
+	private GUI_RenombrarAgregacion theGUIModificarAgregacion;
 	// Dominios
 	private GUI_RenombrarDominio theGUIRenombrarDominio;
 	private GUI_ModificarDominio theGUIModificarElementosDominio;
@@ -466,7 +469,9 @@ public class Controlador {
 		theGUIRenombrarDominio.setControlador(this);
 		theGUIModificarElementosDominio = new GUI_ModificarDominio();
 		theGUIModificarElementosDominio.setControlador(this);
-		
+		//Agregaciones
+		theGUIModificarAgregacion = new GUI_RenombrarAgregacion();
+		theGUIModificarAgregacion.setControlador(this);
 		
 		// Otras
 		about = new GUI_About();
@@ -670,6 +675,12 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Click_EditarAgregacion:{
+			TransferRelacion rel = (TransferRelacion) datos;
+			this.getTheGUIRenombrarAgregacion().setRelacion(rel);
+			this.getTheGUIRenombrarAgregacion().setActiva();
+			break;
+		}
 		case PanelDiseno_Pertenece_A_Agregacion:{
 			Vector v = (Vector) datos;
 			TransferRelacion rel = (TransferRelacion) v.get(0);
@@ -1703,6 +1714,11 @@ public class Controlador {
 	}
 	
 
+	private GUI_RenombrarAgregacion getTheGUIRenombrarAgregacion() {
+		// TODO Auto-generated method stub
+		return theGUIModificarAgregacion;
+	}
+
 	/*case GUI_Principal_DESHACER:{
 		funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
 		break;
@@ -2500,6 +2516,18 @@ public class Controlador {
 		case GUIRenombrarAtributo_Click_BotonRenombrar:{
 			Vector v = (Vector) datos;
 			this.getTheServiciosAtributos().renombrarAtributo(v);	
+			
+			ActualizaArbol((Transfer)v.get(0));
+			this.getTheServiciosSistema().reset();
+			break;
+		}
+		case GUIRenombrarAgregacion_Click_BotonRenombrar:{
+			Vector v = (Vector) datos;
+			TransferRelacion rel = (TransferRelacion)v.get(0);
+			String nombre = (String)v.get(1);
+			this.getTheServiciosAgregaciones().renombrarAgregacion(rel,nombre);	
+			
+			this.getTheGUIRenombrarAgregacion().setInactiva();
 			
 			ActualizaArbol((Transfer)v.get(0));
 			this.getTheServiciosSistema().reset();

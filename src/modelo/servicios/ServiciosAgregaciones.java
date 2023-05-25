@@ -86,7 +86,8 @@ public class ServiciosAgregaciones {
 		return false;
 	}
 	
-	public void renombrarAgregacion(TransferAgregacion ta, String nuevoNombre){
+	public void renombrarAgregacion(TransferRelacion tr, String nuevoNombre){
+		TransferAgregacion ta = this.buscarAgregaciondeRelacion(tr);
 		Vector<Object> v = new Vector<Object>();
 		v.add(ta);
 		v.add(nuevoNombre);
@@ -130,7 +131,7 @@ public class ServiciosAgregaciones {
 		int j = 0;
 		TransferAgregacion agreg;
 		while (j<listaAgregaciones.size()){
-			agreg = listaAgregaciones.get(i);
+			agreg = listaAgregaciones.get(j);
 			if (agreg.getNombre().toLowerCase().equals(nuevoNombre.toLowerCase())&& agreg.getIdAgregacion()!=ta.getIdAgregacion()){
 				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,ta);
 				return;
@@ -147,6 +148,17 @@ public class ServiciosAgregaciones {
 		return;
 	}
 	
+	private TransferAgregacion buscarAgregaciondeRelacion(TransferRelacion rel) {
+		TransferAgregacion ta = new TransferAgregacion();
+		DAOAgregaciones daoAgre = new DAOAgregaciones(this.controlador.getPath());
+		Vector <TransferAgregacion> agregaciones = daoAgre.ListaDeAgregaciones();
+		for(TransferAgregacion agre : agregaciones) {
+			if(agre.getListaRelaciones().contains(Integer.toString(rel.getIdRelacion())))
+				ta = agre;
+		}
+		return ta;
+	}
+
 	public void eliminarAgregacion(TransferRelacion tr) {
 		String idRel = Integer.toString(tr.getIdRelacion());
 		DAOAgregaciones daoAgre = new DAOAgregaciones(this.controlador.getPath());

@@ -631,3 +631,6 @@ agreg_mas_rel=Las agregaciones solo pueden contener una relación.
 repeatedAgreg=Ya esxiste una agregacion con ese nombre.
 rel_con_agreg=Esa relación ya pertenece a otra agregación.
 del_agreg=Eliminar agregacion
+edit_agreg=Renombrar agregación
+rename_agreg=Renombrar agregación
+writeNameAgregSelected=Nuevo nombre de la agregación:

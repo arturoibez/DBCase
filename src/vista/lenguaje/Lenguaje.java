@@ -271,6 +271,9 @@ public class Lenguaje {
 	public static final int RENAME_ATTRIBUTE = 2900;
 	public static final int WRITE_NAME_ATTRIBUTE_SELECTED = 2901;
 	
+	
+	public static final int WRITE_NAME_AGREGATION_SELECTED = 2902;
+	
 	//Ventana GUI_RenombrarDominio 30xx
 	public static final int RENAME_DOMAIN = 3000;
 	public static final int WRITE_NEW_DOMAIN_NAME = 3001;
@@ -671,6 +674,8 @@ public class Lenguaje {
 	public static final int AGREG_MAS_RELACIONES = 5307;
 	public static final int RELACION_YA_TIENE_AGREGACION = 5308;
 	public static final int DEL_AGREG = 5309;
+	public static final int EDIT_AGREG = 5310;
+	public static final int RENAME_AGGREGATION = 5311;
 	//copiar y pegar
 	public static final int COPIAR = 5400;
 	public static final int PEGAR = 5401;
@@ -1154,6 +1159,8 @@ public class Lenguaje {
 		case RENAME_ATTRIBUTE: texto = _textos.get("renameAttribute"); break;
 		case WRITE_NAME_ATTRIBUTE_SELECTED: texto = _textos.get("writeNameAttributeSelected"); break;
 		
+		case WRITE_NAME_AGREGATION_SELECTED: texto = _textos.get("writeNameAgregSelected"); break;
+		
 		//Ventana GUI_RenombrarDominio 
 		case RENAME_DOMAIN: texto = _textos.get("renameDomain"); break;
 		case WRITE_NEW_DOMAIN_NAME: texto = _textos.get("writeNewDomainName"); break;
@@ -1438,6 +1445,8 @@ public class Lenguaje {
 		case AGREG_MAS_RELACIONES: texto=_textos.get("agreg_mas_rel");break;
 		case RELACION_YA_TIENE_AGREGACION: texto=_textos.get("rel_con_agreg");break;
 		case DEL_AGREG: texto=_textos.get("del_agreg");break;
+		case EDIT_AGREG: texto=_textos.get("edit_agreg");break;
+		case RENAME_AGGREGATION: texto=_textos.get("rename_agreg");break;
 		default: texto = Lenguaje.notExistingMessage;
 		}
 		return corrigeCaracteres(texto);
