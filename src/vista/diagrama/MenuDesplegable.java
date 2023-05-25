@@ -776,6 +776,19 @@ public class MenuDesplegable extends JPopupMenu {
 					}
 				});
 				this.add(j10);
+				
+				JMenuItem j11 = new JMenuItem(Lenguaje.text(Lenguaje.EDIT_AGREG));
+				j11.setFont(theme.font());
+				j11.setForeground(theme.fontColor());
+				j11.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
+						TransferRelacion elemento = (TransferRelacion) menu.nodo;
+						TransferRelacion clon = elemento.clonar();
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_EditarAgregacion, clon);
+					}
+				});
+				this.add(j11);
 			}
 
 			else	{

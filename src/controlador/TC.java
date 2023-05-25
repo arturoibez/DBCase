@@ -158,6 +158,7 @@ public enum TC {
 	//agregaciones
 	GUIInsertarAgregacion,
 	GUIAnadirAtributoAgregacion_Click_BotonAnadir,
+	GUIRenombrarAgregacion_Click_BotonRenombrar,
 	
 	
 	//---------------------------------------------------------------------------------
@@ -196,6 +197,7 @@ public enum TC {
 	PanelDiseno_MoverAtributo,
 	PanelDiseno_MoverRelacion,
 	PanelDiseno_Pertenece_A_Agregacion,
+	PanelDiseno_Click_EditarAgregacion,
 
 	// Relaciones IsA
 	PanelDiseno_Click_EstablecerEntidadPadre,
