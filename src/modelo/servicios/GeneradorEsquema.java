@@ -67,14 +67,21 @@ public class GeneradorEsquema {
 		return rel;
 	}
 	
+	protected TransferEntidad dameEnt(int id) {
+		DAOEntidades daoEnt = new DAOEntidades(this.controlador.getPath());
+		Vector entidades = daoEnt.ListaDeEntidades();
+		TransferEntidad ent = null;
+		for(int i = 0; i < entidades.size(); ++i) {
+			if(((TransferEntidad) entidades.get(i)).getIdEntidad() == id) ent = (TransferEntidad) entidades.get(i);
+		}
+		return ent;
+	}
 
 	//metodos de recorrido de los daos para la creacion de las tablas.
 
 	
-	private void generaTablasAgregaciones() {
-		
-	/*	
-		DAOAgregaciones daoAgregaciones = new DAOAgregaciones(controlador.getPath());
+	private void generaTablasAgregaciones() {	
+		/*DAOAgregaciones daoAgregaciones = new DAOAgregaciones(controlador.getPath());
 		Vector<TransferAgregacion> agregaciones = daoAgregaciones.ListaDeAgregaciones();
 		
 		
@@ -84,11 +91,12 @@ public class GeneradorEsquema {
 			Vector<TransferAtributo>multivalorados=new Vector<TransferAtributo>();
 			TransferAgregacion tag = agregaciones.elementAt(i);
 			TransferRelacion tr = dameRel((String) tag.getListaRelaciones().get(0));
-			Vector<TransferEntidad> entderel = tr.getListaEntidadesYAridades();
-			TransferEntidad en = entderel.get(0);
+			tablasRelaciones.remove(tag.getListaRelaciones().get(0)); esto no sirve porqu en generaTablasRelaciones construye las tablas a partir del dao igual que aqui
+			Vector<EntidadYAridad> entderel = tr.getListaEntidadesYAridades();
+			TransferEntidad en = dameEnt(entderel.get(0).getEntidad());
 			
 			Tabla tabla = new Tabla(tag.getNombre(),en.getListaRestricciones(), controlador);
-			//recorremos los atributos de la agregacion añadiendolos a la tabla
+			//recorremos los atributos de la agregacion aï¿½adiendolos a la tabla
 			Vector<TransferAtributo> atribs=this.dameAtributosEnTransfer(tag.getListaAtributos());
 			for(int j = 0; j < atribs.size() ; ++j) {
 				TransferAtributo ta=atribs.elementAt(j);
@@ -103,13 +111,13 @@ public class GeneradorEsquema {
 					}
 				}
 			}
-			//añadimos las claves primarias de las entidades
+			//aï¿½adimos las claves primarias de las entidades
 			
 			for(int j = 0; j < entderel.size(); ++j) {
-				TransferEntidad te = entderel.get(j);
+				TransferEntidad te =  dameEnt(entderel.get(j).getEntidad());
 				Vector claves_primarias = te.getListaClavesPrimarias();
 				for(int k = 0; k < claves_primarias.size(); ++k) {
-					tabla.aniadeClavePrimaria((String)claves_primarias.get(k), (String)en.getListaRestricciones().get(0), tag.getNombre());
+					tabla.aniadeClavePrimaria((String)claves_primarias.get(k), null, tag.getNombre());
 				}
 			}
 			
@@ -409,10 +417,10 @@ public class GeneradorEsquema {
 		sqlHTML=warnings.toString();
 	
 		// Creamos las tablas
-		generaTiposEnumerados();
+		generaTablasAgregaciones(); //creamos primero las de las agregaciones porque ahi se impide que se creen las tablas de sus relaciones internas
 		generaTablasEntidades();
 		generaTablasRelaciones();
-		generaTablasAgregaciones();
+		generaTiposEnumerados();
 		//sacamos el codigo de cada una de ellas recorriendo las hashtables e imprimiendo.
 		creaTablas(conexion);
 		creaEnums(conexion);
@@ -773,6 +781,7 @@ public class GeneradorEsquema {
 		StringBuilder warnings = new StringBuilder();
 		if (!validadorBD.validaBaseDeDatos(true, warnings)) return;
 		restriccionesPerdidas = new RestriccionesPerdidas();
+		generaTablasAgregaciones(); //creamos primero las de las agregaciones porque ahi se impide que se creen las tablas de sus relaciones internas
 		generaTablasEntidades();
 		generaTablasRelaciones();
 		mr = warnings.toString();
@@ -785,6 +794,12 @@ public class GeneradorEsquema {
 		
 		Iterator tablasR = tablasRelaciones.values().iterator();
 		while (tablasR.hasNext()){
+			Tabla t =(Tabla)tablasR.next();
+			mr+=t.modeloRelacionalDeTabla(true);
+		}
+		
+		Iterator tablasA = tablasAgregaciones.values().iterator();
+		while (tablasA.hasNext()){
 			Tabla t =(Tabla)tablasR.next();
 			mr+=t.modeloRelacionalDeTabla(true);
 		}
