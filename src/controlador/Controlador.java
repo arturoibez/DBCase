@@ -3771,6 +3771,14 @@ public class Controlador {
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_AGREG_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
 		}
+		case SAG_InsertarAgregacion_ERROR_NombreDeEntYaExiste:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_ENT_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
+		case SAG_InsertarAgregacion_ERROR_NombreDeRelYaExiste:{
+			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.REPEATED_REL_NAME), Lenguaje.text(Lenguaje.ERROR), 0);
+			break;
+		}
 		case SAG_InsertarAgregacion_ERROR_DAO:{
 			JOptionPane.showMessageDialog(null, Lenguaje.text(Lenguaje.AGGREGATIONS_FILE_ERROR), Lenguaje.text(Lenguaje.ERROR), 0);
 			break;
