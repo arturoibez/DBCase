@@ -48,7 +48,7 @@ public class ServiciosAgregaciones {
 		for (Iterator it = listaE.iterator(); it.hasNext(); ){
 			TransferEntidad elem_te = (TransferEntidad)it.next();
 			if (elem_te.getNombre().toLowerCase().equals(ta.getNombre().toLowerCase())){
-				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,ta);
+				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeEntYaExiste,ta);
 				return;
 			}
 		}
@@ -58,7 +58,7 @@ public class ServiciosAgregaciones {
 		for (Iterator it = listaR.iterator(); it.hasNext(); ){
 			TransferRelacion elem_tr = (TransferRelacion)it.next();
 			if (elem_tr.getNombre().toLowerCase().equals(ta.getNombre().toLowerCase())){
-				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,ta);
+				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeRelYaExiste,ta);
 				return;
 			}
 		}
@@ -106,7 +106,7 @@ public class ServiciosAgregaciones {
 		while (i<listaRelaciones.size()){
 			rel = listaRelaciones.get(i);
 			if (rel.getNombre().toLowerCase().equals(nuevoNombre.toLowerCase())){
-				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,ta);
+				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeRelYaExiste,ta);
 				return;
 			}
 			i++;
@@ -121,7 +121,7 @@ public class ServiciosAgregaciones {
 		for (Iterator it = listaE.iterator(); it.hasNext(); ){
 			TransferEntidad elem_te = (TransferEntidad)it.next();
 			if (elem_te.getNombre().toLowerCase().equals(nuevoNombre.toLowerCase())){
-				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,ta);
+				controlador.mensajeDesde_AG(TC.SAG_InsertarAgregacion_ERROR_NombreDeEntYaExiste,ta);
 				return;
 			}
 		}

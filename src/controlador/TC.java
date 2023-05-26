@@ -344,6 +344,8 @@ public enum TC {
 	// Mensajes desde los servicios de Agregaciones
 	SAG_InsertarAgregacion_ERROR_NombreVacio,
 	SAG_InsertarAgregacion_ERROR_NombreDeYaExiste,
+	SAG_InsertarAgregacion_ERROR_NombreDeEntYaExiste,
+	SAG_InsertarAgregacion_ERROR_NombreDeRelYaExiste,
 	SAG_InsertarAgregacion_ERROR_DAO,
 	SAG_RenombrarAgregacion_ERROR_NombreVacio,
 	SAG_RenombrarAgregacion_HECHO,
