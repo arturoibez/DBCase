@@ -228,6 +228,8 @@ public enum TC {
 	// Mensajes desde AccionMenu
 	PanelDiseno_Click_ModificarDominio,
 	PanelDiseno_Click_OrdenarValoresDominio,
+	
+	PanelDiseno_Click_AddAgregacion,
 
 	//---------------------------------------------------------------------------------
 	// Mensajes desde los Servicios de Entidades

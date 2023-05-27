@@ -43,6 +43,7 @@ import persistencia.EntidadYAridad;
 import vista.GUIPrincipal;
 import vista.componentes.ArchivosRecientes;
 import vista.frames.GUI_About;
+import vista.frames.GUI_AnadirAgregacion;
 import vista.frames.GUI_Manual;
 import vista.frames.GUI_AnadirAtributo;
 import vista.frames.GUI_AnadirAtributoEntidad;
@@ -126,6 +127,7 @@ public class Controlador {
 	private GUI_TablaUniqueRelacion theGUITablaUniqueRelacion;
 	//Agregaciones
 	private GUI_RenombrarAgregacion theGUIModificarAgregacion;
+	private GUI_AnadirAgregacion theGUIAddAgregacion;
 	// Dominios
 	private GUI_RenombrarDominio theGUIRenombrarDominio;
 	private GUI_ModificarDominio theGUIModificarElementosDominio;
@@ -472,6 +474,8 @@ public class Controlador {
 		//Agregaciones
 		theGUIModificarAgregacion = new GUI_RenombrarAgregacion();
 		theGUIModificarAgregacion.setControlador(this);
+		theGUIAddAgregacion = new GUI_AnadirAgregacion();
+		theGUIAddAgregacion.setControlador(this);
 		
 		// Otras
 		about = new GUI_About();
@@ -675,6 +679,12 @@ public class Controlador {
 			 this.guardarBackup();
 		
 		switch(mensaje){
+		case PanelDiseno_Click_AddAgregacion:{
+			TransferRelacion rel = (TransferRelacion) datos;
+			this.getTheGUIAddAgregacion().setRelacion(rel);
+			this.getTheGUIAddAgregacion().setActiva();
+			break;
+		}
 		case PanelDiseno_Click_EditarAgregacion:{
 			TransferRelacion rel = (TransferRelacion) datos;
 			this.getTheGUIRenombrarAgregacion().setRelacion(rel);
@@ -1719,6 +1729,9 @@ public class Controlador {
 		return theGUIModificarAgregacion;
 	}
 
+	private GUI_AnadirAgregacion getTheGUIAddAgregacion() {
+		return theGUIAddAgregacion;
+	}
 	/*case GUI_Principal_DESHACER:{
 		funcionDeshacer(this.ultimoMensaje, this.ultimosDatos);
 		break;
