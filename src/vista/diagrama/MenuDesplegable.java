@@ -800,8 +800,7 @@ public class MenuDesplegable extends JPopupMenu {
 						MenuDesplegable menu = (MenuDesplegable) ((JMenuItem) e.getSource()).getParent();
 						TransferRelacion elemento = (TransferRelacion) menu.nodo;
 						TransferRelacion clon = elemento.clonar();
-						//Gui_Agreg(clon);
-						Gui_Confirm(clon);
+						controlador.mensajeDesde_PanelDiseno(TC.PanelDiseno_Click_AddAgregacion, clon);
 					}
 				});
 				this.add(j10);
@@ -937,120 +936,7 @@ public class MenuDesplegable extends JPopupMenu {
 	protected void setControlador(Controlador controlador) {
 		this.controlador = controlador;
 	}
-/*
-	private void Gui_Agreg(Transfer t) {
-		JDialog pane = new JDialog();
-		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		pane.setResizable(false);
-		pane.setModal(true);
-		pane.setTitle(Lenguaje.text(Lenguaje.WARNING));
 
-		pane.setSize(620, 200);
-		pane.setAlwaysOnTop(false);
-		pane.setLocationRelativeTo(null);
-		pane.setLayout(null);
-		
-		JLabel texto = new JLabel(Lenguaje.text(Lenguaje.CONFIRM_AGREG)); //mensaje aviso se creara agreg
-		pane.add(texto);
-		texto.setBounds(10, -10, 700, 100);
-		
-		JButton confirm = new JButton(Lenguaje.text(Lenguaje.ACCEPT));
-		confirm.setBounds(50, 90, 100, 60);
-		pane.add(confirm);
-		confirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pane.dispose();
-				Gui_Confirm(t);
-			}
-		});
-		
-		JButton cancel = new JButton(Lenguaje.text(Lenguaje.CANCEL));
-		pane.add(cancel);
-
-		cancel.setBounds(430,90,120,60);
-
-		cancel.setBackground(Color.red);
-		cancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pane.dispose();
-			}
-			
-		});
-		
-		pane.setVisible(true);
-		
-		
-	}
-*/
-	private void Gui_Confirm(Transfer t) {
-		JDialog pane = new JDialog();
-		pane.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		pane.setResizable(false);
-		pane.setModal(true);
-		pane.setTitle(Lenguaje.text(Lenguaje.INT_NOM_AGREG));
-		pane.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(ImagePath.LOGODBDT)).getImage());
-		pane.setSize(700, 200);
-		pane.setAlwaysOnTop(false);
-		pane.setLocationRelativeTo(null);
-		pane.setLayout(null);
-		
-		JTextField cajaNombre = new JTextField();
-		cajaNombre.setFont(theme.font());
-		cajaNombre.setBounds(100,10, 232, 30);
-		cajaNombre.setForeground(theme.labelFontColorDark());
-		cajaNombre.addKeyListener(new KeyListener() {
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==10){botonInsertarActionPerformed(t,cajaNombre.getText());pane.dispose();}
-				else if(e.getKeyCode()==27){pane.dispose();}
-			}
-			public void keyReleased(KeyEvent e) {}
-			public void keyTyped(KeyEvent e) {}
-		});
-		{
-			JButton botonInsertar = new JButton();
-			botonInsertar.setFont(theme.font());
-			botonInsertar.setText(Lenguaje.text(Lenguaje.INSERT));
-			botonInsertar.setBounds(200,100, Lenguaje.text(Lenguaje.INSERT).length()>8 ? 110+Lenguaje.text(Lenguaje.INSERT).length()*4: Lenguaje.text(Lenguaje.INSERT).length()<4 ?60:110, 30);
-			pane.add(botonInsertar);
-			botonInsertar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					botonInsertarActionPerformed(t,cajaNombre.getText());
-					pane.dispose();
-				}
-			});
-			botonInsertar.addKeyListener(new KeyListener() {
-				public void keyPressed(KeyEvent e) {
-					if(e.getKeyCode()==10){botonInsertarActionPerformed(t,cajaNombre.getText());pane.dispose();}
-					else if(e.getKeyCode()==27){pane.dispose();}
-				}
-				public void keyReleased(KeyEvent e) {}
-				public void keyTyped(KeyEvent e) {}
-			});
-			botonInsertar.setMnemonic(Lenguaje.text(Lenguaje.INSERT).charAt(0));
-		}
-		pane.add(cajaNombre);
-		
-		{
-			JLabel explicacion = new JLabel();
-			pane.add(explicacion);
-			explicacion.setText(Lenguaje.text(Lenguaje.NAME));
-			explicacion.setOpaque(false);
-			explicacion.setBounds(25, 10, 67, 25);
-			explicacion.setFont(theme.font());
-			explicacion.setFocusable(false);
-			explicacion.setAlignmentX(0.0f);
-		}
-		
-		pane.setVisible(true);
-
-	}
-	
-	private void botonInsertarActionPerformed(Transfer t, String nombre) {
-		Vector<Object> v = new Vector<Object>();
-		v.add(t);
-		v.add(nombre);
-		controlador.mensajeDesde_GUI(TC.GUIInsertarAgregacion, v);
-	}
 	
 	public Point2D getPunto() {
 		return this.punto;
