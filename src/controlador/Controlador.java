@@ -1818,8 +1818,11 @@ public class Controlador {
 		
 		case GUI_Principal_DESHACER2:{
 			String str = fileguardar.getPath().replace(".xml","");
-			String ruta;
-		    ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml"; 
+			String ruta = "";
+		    if (str.contains("projects"))
+				ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml";
+			else if (str.contains("Examples"))
+				ruta = str.replace("Examples","deshacer") + Integer.toString(this.contFicherosDeshacer-2) + ".xml";
 		    if(this.contFicherosDeshacer > 1) 
 		    	this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
 		    else return;
@@ -1832,7 +1835,13 @@ public class Controlador {
 		
 		case GUI_Principal_REHACER:{
 			String str = fileguardar.getPath().replace(".xml","");
-		    String ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml"; 
+			String ruta = "";
+		    
+		    if (str.contains("projects"))
+				ruta = str.replace("projects","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml";
+			else if (str.contains("Examples"))
+				ruta = str.replace("Examples","deshacer") + Integer.toString(this.contFicherosDeshacer) + ".xml";
+		    
 		    if (this.contFicherosDeshacer == this.limiteFicherosDeshacer || this.auxDeshacer == true) return;
 		    this.mensajeDesde_GUIWorkSpace(TC.GUI_WorkSpace_Click_Abrir_Deshacer, ruta);
 		    ++this.contFicherosDeshacer;
