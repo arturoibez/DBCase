@@ -291,4 +291,5 @@
         </Attribute>
     </AttributeList>
     <DomainList proximoID="1"/>
+    <AggregationList proximoID="1"/>
 </Inf_dbcase>
